@@ -10,6 +10,7 @@
 			#top {
 				height: 160px;
 				width: 100vw;
+				background: url('img/columbus-banner.png') no-repeat center #3f3f3f;
 			}
 		
 			.header {
@@ -17,11 +18,13 @@
 				left: 0px;
 				top: 15px;
 				padding: 20px 50px;
-				font-size: 24pt;
+				font-size: 28pt;
 				height: 44px;
 				color: white;
-				background-color: mediumblue;
+				background-color: #0071bc;
 				width: 67vw;
+				font-weight: bold;
+				font-style: italic;
 			}
 			
 			.header + .helper {
@@ -30,25 +33,84 @@
 				top: 15px;			
 				width: 0px;
 				height: 0px;
-				border-top: 84px solid mediumblue;
+				border-top: 84px solid #0071bc;
 				border-right: 60px solid transparent;
 			}
 			
 			#content {
 				padding: 10px;
+				background-color: #cc0000;
+				height: calc(100% - 180px);
+				color: #ffffff;
+			}
+			
+			#content a {
+				text-decoration: none;
+				color: black;
+				font-style: italic;
+			}
+			
+			#content a:visited {
+				text-decoration: none;
+				color: darkgray;
+				font-style: italic;
+			}
+			
+			#content a:hover {
+				text-decoration: none;
+				color: maroon;
+				font-style: italic;
+			}
+			
+			.row {
+				width: 100%;
+			}
+			
+			.row > div {
+				display: inline-block;
+				margin: 2px;
+				vertical-align: middle;
+			}
+			
+			.row > .left, .row > .right {
+				width: calc(24% - 1px);
+				text-align: center;
+			}
+			
+			.row > .center {
+				width: calc(50% - 1px);
 			}
 		</style>
 	</head>
 	<body>
 		<div id="top">
-			<div class="header">Chadmin10: a celebration of ten years of chadminton</div>
+			<div class="header">CHADMINTON</div>
 			<div class="helper"></div>
 		</div>
 		<div id="links">
 		</div>
 		<div id="content">
-			Chadminton is a team sport played on a small field (generally about 50 to 60 yards long by 25 to 30 yards wide). Each team is equipped with scoops, which are 3-4 feet long and have a scoop-shaped basket on the end; one exception is that each team has a player called the CHAD, who brandishes a pillow and whose job it is to generally cause havoc for the opposing team in any way possible. As with most field sports, the goal of the game is to score more points than your opponent by putting the ball into the goal. <br/><br/>
-			Chadminton has been around since 2006, where it was played at Ohio State for a number of years before the club finally folded in 2013. Now we're trying to revive the sport, and that's why we're hosting Chadmin10, the tenth anniversary event. It's being held at <a href="https://goo.gl/maps/7ssXqnFRdF22">Fancyburg Park</a> on Saturday, August 27th from 2:00 pm to 7:00 pm, and anyone over the age of 18 is welcome! If you'd like to join us, you can <a href="https://goo.gl/forms/ByrytfQzFvoVjnth2">sign up here</a>.
+			<div class="row">
+				<div class="left">
+					Next Game: Thursday, Oct 6 @ 7:00 PM
+					<br/>
+					Fred Beekman Park <a href="https://www.google.com/maps/place/Fred+Beekman+Park/@40.0043929,-83.0368646,17z/data=!4m5!3m4!1s0x0:0x25a365fae24949fb!8m2!3d40.0056391!4d-83.0384344">(map)</a>
+				</div>
+				<div class="center">
+					Chadminton is a team sport played on a small field (generally about 50 to 60 yards long by 25 to 30 yards wide). Each team is equipped with scoops, which are 3-4 feet long and have a scoop-shaped basket on the end; one exception is that each team has a player called the CHAD, who brandishes a pillow and whose job it is to generally cause havoc for the opposing team in any way possible. As with most field sports, the goal of the game is to score more points than your opponent by putting the ball into the goal.
+				</div>
+				<div class="right">
+					Follow us on Twitter <a href="https://twitter.com/chadm1nton">@Chadm1nton</a>
+				</div>
+			</div>
+			<div class="row">
+				<div class="left">
+				</div>
+				<div class="center">
+				</div>
+				<div class="right">
+				</div>
+			</div>
 		</div>
 		<div id="footer">
 		</div>
