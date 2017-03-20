@@ -339,6 +339,7 @@
 					
 					if (time <= 0) {
 						time = 0;
+						document.getElementById('buzzer-sound').play();
 						play = false;
 						var message = '';
 						var style = { b: '#000', f: '#fff' };
@@ -374,12 +375,19 @@
 					
 				var min = Math.floor(time/60000);
 				var sec = Math.floor((time % 60000)/1000);
-				var tenths = Math.floor((time % 1000) / 100)
+				var tenths = Math.floor((time % 1000) / 100);
 				
 				var display = '';
 				
 				if (min == 0) {
 					display = sec.toString() + '.' + tenths;
+					if (sec <= 33 && tenths == 0) {
+						window.setTimeout(function () {
+							document.getElementById('beep-sound').pause();
+							document.getElementById('beep-sound').load();
+						}, 100);
+						document.getElementById('beep-sound').play();
+					}
 				} else {
 					var zero = sec < 10 ? '0' : '';
 					display = min.toString() + ':' + zero + sec;
@@ -402,7 +410,18 @@
 			var otWinner = false;
 			var addGoal = function (side) {
 				teams[side].g++;
-				teams[side].goals.push({ time: document.getElementById('clock').innerHTML, scorer: '' });
+				
+				var timeCalc = defaultTime - time;
+				if (period == 2) timeCalc += defaultTime;
+				if (period == 'OT') timeCalc += defaultTime * 2;
+				var min = Math.floor(timeCalc/60000);
+				var sec = Math.floor((timeCalc % 60000)/1000);
+				var tenths = Math.floor((timeCalc % 1000) / 100);
+				var zero = sec < 10 ? '0' : '';
+				var timeDisplay = min + ':' + zero + sec + '.' + tenths;				
+				
+				var display = '';
+				teams[side].goals.push({ time: timeDisplay, scorer: '' });
 				lastScore = side;
 				var gs = document.getElementById('goal-scored');
 				gs.style.display = 'block';
@@ -566,5 +585,11 @@
 			<div id="info"></div>
 			<div class="shine"></div>
 		</div>
+		<audio id="beep-sound" preload="true">
+			<source src="sounds/beep.mp3" type="audio/mp3"/>
+		</audio>
+		<audio id="buzzer-sound" preload="true">
+			<source src="sounds/buzzer.mp3" type="audio/mp3"/>
+		</audio>
 	</body>
 </html>
