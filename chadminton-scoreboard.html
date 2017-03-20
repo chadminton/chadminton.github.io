@@ -1,0 +1,380 @@
+<html>
+	<head>
+		<title>Chadminton Scoreboard</title>
+		<style>
+			html, body {
+				margin: 0px;
+				background: black;
+				color: white;
+				font-family: Segoe UI;
+				font-weight: bold;
+				font-style: italic;
+			}
+			
+			div {
+				user-select: none;
+			}
+			
+			.top {
+				width: 100%;
+				height: 15vh;
+			}
+			
+			.top > div {
+				display: inline-block;
+			}
+			
+			.bottom {
+				position: absolute;
+				bottom: 0px;
+				left: 0px;
+				right: 0px;
+			}
+			
+			.button {
+				text-transform: uppercase;
+				background-color: black;
+				color: #fff;
+				display: inline-block !important;
+				text-align: center;
+				font-size: 12pt;
+				border: solid #fff 1px;
+				padding: 5px 20px;
+				margin: 5px;
+				cursor: pointer;
+				width: auto;
+				-webkit-user-select: none;
+			}
+			
+			.button:hover {
+				background-color: #888888;
+			}
+			
+			#period {
+				font-size: 36pt;
+				margin-left: 38vw;
+				cursor: pointer;
+			}
+			
+			#clock {
+				font-size: 60pt;
+				margin-left: 20px;
+				width: 220px;
+				text-align: right;
+				cursor: pointer;
+				padding: 5px;
+			}
+			
+			#clock.stopped {
+				box-shadow: 0px 0px 0px 3px #f00;
+			}
+			
+			.bottom {
+				width: 100%;
+				height: 85vh;
+			}
+			
+			.bottom > div {
+				display: inline-block;
+			}
+			
+			.team {
+				width: calc(50vw - 11px);
+				height: calc(100% - 4px);
+				position: relative;
+			}
+			
+			.goals {
+				position: absolute;
+				left: 0px;
+				top: 0px;
+				font-size: 360pt;
+				cursor: pointer;
+				width: 100%;
+				text-align: center;
+			}
+
+			.menu {
+				opacity: 0.1;
+				position: absolute;
+				bottom: 0px;
+			}
+
+			.menu:hover {
+				opacity: 0.9;
+			}
+
+			.menu > .button {
+				width: 50px;
+				height: 50px;
+				border-radius: 25px;
+				background-color: black;
+				color: white;
+				cursor: pointer;
+				text-align: center;
+				font-size: 24pt;
+				display: inline-block;
+				padding: 0px;
+				margin: 0px;
+				border: none;
+			}
+
+			.menu > .button.small {
+				width: 30px;
+				height: 30px;
+				border-radius: 15px;
+				font-size: 16pt;
+			}
+			
+			.menu > .button:hover {
+				background-color: #444444;
+			}
+
+			#away .menu {
+				right: 5px;
+			}
+
+			#home .menu {
+				left: 5px;
+			}
+			
+			.name {
+				padding: 3px;
+				font-size: 48pt;
+				position: absolute;
+				top: 0px;
+			}
+			
+			#away .name {
+				text-align: right;
+				right: 25px;
+			}
+			
+			#home .name {
+				left: 25px;
+			}
+
+			.swatch {
+				display: inline-block;
+				border: 1px solid white;
+				height: 25px;
+				width: 25px;
+				border-radius: 13px;
+				margin-right: 2px;
+				margin-bottom: 2px;
+			}
+			
+			#color-picker {
+				position: absolute;
+				width: 30%;
+				height: 30%;
+				background-color: black;
+				padding: 15px;
+				top: 50%;
+				left: 50%;
+				-webkit-transform: translate(-50%, -50%); /* translate by 50% of the element's height/width */
+			}
+
+		</style>
+		<script type="text/javascript">
+		
+			var getHex = function (value, mult) {
+				mult = mult || 1;
+				var x = value * mult;
+				var hex = x.toString(16);
+				while (hex.length < 2) {
+					hex = '0' + hex;
+				}
+				return hex;
+			};
+
+			var fillColors = function fillColors () {
+				var html = '';
+				var steps = 4;
+				var x = Math.floor(255 / (steps - 1));
+				for (var g = 0; g < steps; g++) {
+					for (var r = 0; r < steps; r++) {
+						for (var b = 0; b < steps; b++) {
+							color = '#' + getHex(r, x) + getHex(g, x) + getHex(b, x);
+							html += '<div class="swatch" style="background-color: ' + color + ';" onclick="setColor(\'' + color + '\')"></div>';
+						}
+					}
+				}
+				document.getElementById('swatches').innerHTML = html;
+			};
+
+			var play = false;
+			var defaultTime = 20 * 60 * 1000; // X minutes * 60 seconds * 1000 thousandths
+			var period = 1;
+			var time = defaultTime;
+			var last = null;
+			
+			var teams = [
+				{ g: 0, b: 0, n: 'AWAY', to: 2, colors: { f: 'white', b: 'red' } },
+				{ g: 0, b: 0, n: 'HOME', to: 2, colors: { f: 'white', b: 'blue' } }
+			];
+		
+			var toggleClock = function () {
+				play = !play;
+				last = play ? new Date() : null;
+			};
+			
+			var timeout = function (team) {
+				if (teams[team].to > 0) {	
+					teams[team].to--;			
+					if (play) toggleClock();
+				}
+			};
+			
+			var displayTime = function () {
+				window.requestAnimationFrame(displayTime);
+				
+				var awayBlock = document.getElementById('away');
+				awayBlock.style.backgroundColor = teams[0].colors.b;
+				awayBlock.style.color = teams[0].colors.f;				
+				document.getElementById('away-goals').innerHTML = teams[0].g;
+				var awayname = teams[0].n;
+				for (var i = 0; i < teams[0].to; i++) {
+					awayname = '&bullet;' + awayname;
+				}
+				document.getElementById('away-name').innerHTML = awayname;	
+				
+				var homeBlock = document.getElementById('home');
+				homeBlock.style.backgroundColor = teams[1].colors.b;
+				homeBlock.style.color = teams[1].colors.f;			
+				document.getElementById('home-goals').innerHTML = teams[1].g;
+				var homename = teams[1].n;
+				for (var i = 0; i < teams[1].to; i++) {
+					homename += '&bullet;';
+				}
+				document.getElementById('home-name').innerHTML = homename;	
+				
+				if (play) {
+					var now = new Date();
+					var difference = now.getTime() - last.getTime();
+					last = now;
+					time -= difference;
+					
+					if (time <= 0) {
+						time = 0;
+						toggleClock();
+					}
+					
+					var min = Math.floor(time/60000);
+					var sec = Math.floor((time % 60000)/1000);
+					var tenths = Math.floor((time % 1000) / 100)
+					
+					var display = '';
+					
+					if (min == 0) {
+						display = sec.toString() + '.' + tenths;
+					} else {
+						var zero = sec < 10 ? '0' : '';
+						display = min.toString() + ':' + zero + sec;
+					}
+					
+					document.getElementById('clock').innerHTML = display;
+					document.getElementById('clock').classList.remove('stopped');
+				} else {
+					document.getElementById('clock').classList.add('stopped');
+				}
+			};
+			
+			var addGoal = function (side) {
+				teams[side].g++;
+			};
+
+			var subtractGoal = function (side) {
+				teams[side].g--;
+			};
+			
+			var togglePeriod = function (side) {
+				if (period == 1) {
+					period = 2;
+				} else {
+					period = 'OT';
+				}
+				time = defaultTime;
+				document.getElementById('period').innerHTML = period;
+			};
+			
+			var ready = function ready () {
+				fillColors();
+				displayTime();
+			};
+			
+			var colorOption = { team: 0, which: 0 };
+			var openColorDialog = function (team, which) {			
+				colorOption.team = team;
+				colorOption.which = which;
+				document.getElementById('color-picker').style.display = 'block';
+			};
+
+			var setColor = function setColor (c) {
+				document.getElementById('color-value').value = c;
+				document.getElementById('selected-color').style.backgroundColor = c;
+			};
+
+			var updateColor = function () {
+				document.getElementById('selected-color').style.backgroundColor = document.getElementById('color-value').value;
+			};
+			
+			var applyColor = function () {
+				teams[colorOption.team].colors[colorOption.which] = document.getElementById('color-value').value;
+				cancelColor();
+			};
+			
+			var cancelColor = function () {
+				colorOption = { team: 0, which: 0 };
+				document.getElementById('color-picker').style.display = 'none';
+			};
+			
+			var setName = function (team) {
+				var value = window.prompt('name this team');
+				teams[team].n = value;
+			};
+		
+		</script>
+	</head>
+	<body onload="ready()">
+		<div class="top">
+			<div id="period" onclick="togglePeriod()">1</div>
+			<div id="clock" onclick="toggleClock()">20:00</div>
+		</div>
+		<div class="bottom">
+			<div id="away" class="team">
+				<div id="away-name" class="name"></div>
+				<div class="goals" onclick="addGoal(0)" id="away-goals">0</div>
+				<div class="menu">
+					<div class="button" onclick="timeout(0)">TO</div>
+					<div class="button" onclick="addGoal(0)">+</div>
+					<div class="button" onclick="subtractGoal(0)">-</div>
+					<div class="small button" onclick="setName(0)">N</div>
+					<div class="small button" onclick="openColorDialog(0, 'f')">fg</div>
+					<div class="small button" onclick="openColorDialog(0, 'b')">bg</div>
+				</div>
+			</div>
+			<div id="home" class="team">
+				<div id="home-name" class="name"></div>
+				<div class="goals" onclick="addGoal(1)" id="home-goals">0</div>
+				<div class="menu">
+					<div class="button" onclick="timeout(1)">TO</div>
+					<div class="button" onclick="addGoal(1)">+</div>
+					<div class="button" onclick="subtractGoal(1)">-</div>
+					<div class="small button" onclick="setName(1)">N</div>
+					<div class="small button" onclick="openColorDialog(1, 'f')">fg</div>
+					<div class="small button" onclick="openColorDialog(1, 'b')">bg</div>
+				</div>
+			</div>
+		</div>
+		<div id="color-picker" style="display: none;">
+			<div id="swatches"></div>
+			<div>
+				<input id="color-value" onchange="updateColor()"/>
+				<div class="swatch" id="selected-color"></div>
+				<div class="button" onclick="applyColor()">OK</div>
+				<div class="button" onclick="cancelColor()">CANCEL</div>
+			</div>
+		</div>
+	</body>
+</html>
