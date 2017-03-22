@@ -199,6 +199,17 @@
                 height: 25px;
             }
 			
+			.team-select.big {
+				height: 100px;
+				width: 100px;
+				border-radius: 50px;
+			}
+			
+			.team-select.big > img {
+				height: 100px;
+				width: 100px;
+			}
+			
 			.picker {
 				position: absolute;
 				width: 30%;
@@ -790,7 +801,7 @@
 		<div id="team-picker" class="picker" style="display: none;">
 			<div id="teams"></div>
 			<div>
-				<div class="team-select"><img id="selected-team" src=""/></div>
+				<div class="team-select big"><img id="selected-team" src=""/></div>
 				<div class="button" onclick="applyTeam()">OK</div>
 				<div class="button" onclick="cancelTeam()">CANCEL</div>
 			</div>
