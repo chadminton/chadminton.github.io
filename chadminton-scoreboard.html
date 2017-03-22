@@ -182,8 +182,24 @@
 				margin-right: 2px;
 				margin-bottom: 2px;
 			}
+
+			.team-select {
+				display: inline-block;
+				border: 1px solid white;
+				height: 25px;
+				width: 25px;
+				border-radius: 13px;
+				margin-right: 2px;
+				margin-bottom: 2px;
+                background-color: white;
+			}
+            
+            .team-select > img {
+                width: 25px;
+                height: 25px;
+            }
 			
-			#color-picker {
+			.picker {
 				position: absolute;
 				width: 30%;
 				height: 30%;
@@ -252,6 +268,38 @@
 		</style>
 		<script type="text/javascript">
 		
+			var getJSONfile = function (filename, callback) {
+				var xmlhttp;
+				if (window.XMLHttpRequest) {
+					xmlhttp = new XMLHttpRequest();
+				} else {
+				// code for older browsers
+					xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+				}
+				xmlhttp.onreadystatechange = function() {
+					if (this.readyState == 4 && this.status == 200) {
+						try {
+							callback(JSON.parse(this.responseText));
+						} catch (ex) {
+							callback(ex);
+						}
+					}
+				};
+				xmlhttp.open("GET", filename, true);
+				xmlhttp.send();
+			};
+            
+            Array.prototype.getElementById = function (id) {
+                var value = null;
+                for (var i in this) {
+                    if (this[i].id == id) {
+                        value = this[i];
+                        break;
+                    }
+                }
+                return value;
+            }
+		
 			var getHex = function (value, mult) {
 				mult = mult || 1;
 				var x = value * mult;
@@ -275,6 +323,19 @@
 					}
 				}
 				document.getElementById('swatches').innerHTML = html;
+			};
+			
+            var allTeams;
+			var fillTeams = function () {
+				getJSONfile('teams.json', function (teams) {
+                    allTeams = teams;
+					var html = '';
+					for (var t = 0; t < teams.length; t++) {
+						var team = teams[t];
+						html += '<div onclick="setTeamTooltip(\'' + team.name + '\')" class="team-select"><img src="img/teams/'> + team.abbr + '.png" /></div>';
+					}
+					document.getElementById('teams').innerHTML = html;
+				});
 			};
 
 			var play = false;
@@ -474,7 +535,37 @@
 			
 			var ready = function ready () {
 				fillColors();
+                fillTeams();
 				displayTime();
+			};
+            
+            var selectedTeam = { side: null, team: null };
+			var openTeamDialog = function (side) {			
+				selectedTeam.side = side;
+				selectedTeam.team = null;
+				document.getElementById('team-picker').style.display = 'block';
+			};
+
+			var setTeam = function setColor (c) {
+                var team = allTeams.getElementById(c);
+                selectedTeam.team = team;
+				document.getElementById('selected-color').src = 'img/teams/'> + team.abbr + '.png';
+			};
+			
+			var applyTeam = function () {
+				teams[selectedTeam.side].n = selectedTeam.team.name;
+				teams[selectedTeam.side].colors.b = selectedTeam.team.color1;
+				teams[selectedTeam.side].colors.f = selectedTeam.team.color2;
+				cancelTeam();
+			};
+			
+			var cancelTeam = function () {
+				colorOption = { side: null, team: null };
+				document.getElementById('team-picker').style.display = 'none';
+			};
+			
+			var setTeamTooltip = function (t) {
+				// do nothing
 			};
 			
 			var colorOption = { team: 0, which: 0 };
@@ -545,6 +636,7 @@
 					<div class="button" onclick="timeout(0)">TO</div>
 					<div class="button" onclick="addGoal(0)">+</div>
 					<div class="button" onclick="subtractGoal(0)">-</div>
+					<div class="small button" onclick="openTeamDialog(0)">?</div>
 					<div class="small button" onclick="setName(0)">N</div>
 					<div class="small button" onclick="openColorDialog(0, 'f')">fg</div>
 					<div class="small button" onclick="openColorDialog(0, 'b')">bg</div>
@@ -558,19 +650,28 @@
 					<div class="button" onclick="timeout(1)">TO</div>
 					<div class="button" onclick="addGoal(1)">+</div>
 					<div class="button" onclick="subtractGoal(1)">-</div>
+					<div class="small button" onclick="openTeamDialog(1)">?</div>
 					<div class="small button" onclick="setName(1)">N</div>
 					<div class="small button" onclick="openColorDialog(1, 'f')">fg</div>
 					<div class="small button" onclick="openColorDialog(1, 'b')">bg</div>
 				</div>
 			</div>
 		</div>
-		<div id="color-picker" style="display: none;">
+		<div id="color-picker" class="picker" style="display: none;">
 			<div id="swatches"></div>
 			<div>
 				<input id="color-value" onchange="updateColor()"/>
 				<div class="swatch" id="selected-color"></div>
 				<div class="button" onclick="applyColor()">OK</div>
 				<div class="button" onclick="cancelColor()">CANCEL</div>
+			</div>
+		</div>
+		<div id="team-picker" class="picker" style="display: none;">
+			<div id="teams"></div>
+			<div>
+				<div class="swatch"><img id="selected-team" src=""/></div>
+				<div class="button" onclick="applyTeam()">OK</div>
+				<div class="button" onclick="cancelTeam()">CANCEL</div>
 			</div>
 		</div>
 		<div id="goal-scored" class="info-popup" style="display: none;">
@@ -581,7 +682,7 @@
 			<div class="button" onclick="subtractGoal(lastScore)">CANCEL</div>
 			<div class="shine"></div>
 		</div>
-		<div id="game-over" class="info-popup" onclick="document.getElementById('game-over').style.display = 'none';" style="display: none;">
+		<div id="game-over" class="info-popup" onclick="document.getElementById('game-over').style.display = 'none';" style="text-transform: uppercase; display: none;">
 			<div id="info"></div>
 			<div class="shine"></div>
 		</div>
