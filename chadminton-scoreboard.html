@@ -305,6 +305,37 @@
 				z-index: 7;
 				display: none;
 			}
+			
+			@media only screen and (orientation: portrait) {
+				
+				.team {
+					width: 100%;
+					height: 50%;
+				}
+			
+				.goals {
+					position: absolute;
+					left: 15px;
+					top: -20px;
+					font-size: 140pt;
+					cursor: pointer;
+				}
+				
+				.behinds {
+					position: absolute;
+					left: 30px;
+					top: 200px;
+					font-size: 100pt;
+					cursor: pointer;
+				}
+				
+				.score {
+					position: absolute;
+					left: 200px;
+					top: 100px;
+					font-size: 100pt;
+				}
+			}
 
 		</style>
 		<script type="text/javascript">
@@ -561,6 +592,10 @@
 				info.style.fontSize = (1200 / msg.length) + 'pt';
 			};
 			
+			var editGoal = function (team, index) {
+				teams[team].goals[teams[team].goals.length - 1].scorer = prompt('who scored this goal?');
+			}
+			
 			var lastScore = null;
 			var otWinner = false;
 			var addGoal = function (side) {
@@ -766,6 +801,7 @@
 					<div class="small button" onclick="setName(0)">N</div>
 					<div class="small button" onclick="openColorDialog(0, 'f')">fg</div>
 					<div class="small button" onclick="openColorDialog(0, 'b')">bg</div>
+					<div class="small button" onclick="editGoal(0)">e</div>
 				</div>
 			</div>
 			<div id="home" class="team">
@@ -781,6 +817,7 @@
 					<div class="small button" onclick="setName(1)">N</div>
 					<div class="small button" onclick="openColorDialog(1, 'f')">fg</div>
 					<div class="small button" onclick="openColorDialog(1, 'b')">bg</div>
+					<div class="small button" onclick="editGoal(1)">e</div>
 				</div>
 			</div>
 		</div>
@@ -809,7 +846,7 @@
 			<div class="button" onclick="subtractGoal(lastScore)">CANCEL</div>
 			<div class="shine"></div>
 		</div>
-		<div id="game-over" class="info-popup" onclick="document.getElementById('game-over').style.display = 'none';" style="text-transform: uppercase; display: none;">
+		<div id="game-over" class="info-popup" onclick="document.getElementById('game-over').style.display = 'none'; modal(false);" style="text-transform: uppercase; display: none;">
 			<div id="info"></div>
 			<div class="shine"></div>
 		</div>
