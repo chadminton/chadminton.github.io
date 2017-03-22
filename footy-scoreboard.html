@@ -76,7 +76,7 @@
 				document.getElementById('period').innerHTML = period;
 			}
 			
-			displayTime();
+			var ready = displayTime;
 		
 		</script>
 		<style>
@@ -159,7 +159,7 @@
 			}
 		</style>
 	</head>
-	<body>
+	<body onload="ready()">
 		<div class="top">
 			<div id="period" onclick="togglePeriod()">1</div>
 			<div id="clock" onclick="toggleClock()">20:00</div>
