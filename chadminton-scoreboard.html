@@ -332,7 +332,7 @@
 					var html = '';
 					for (var t = 0; t < teams.length; t++) {
 						var team = teams[t];
-						html += '<div class="team-select"><img src="img/teams/'> + team.abbr + '.png" /></div>';
+						html += '<div onclick="setTeamTooltip(\'' + team.name + '\')" class="team-select"><img src="img/teams/' + team.abbr + '.png" /></div>';
 					}
 					document.getElementById('teams').innerHTML = html;
 				});
