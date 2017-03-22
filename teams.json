@@ -6,7 +6,7 @@
 	{ "id": 5, "city": "Baltimore", "name": "Oreos", "color1": "#0071bc", "color2": "#321e00", "logo": "images/BAL.png", "abbr": "BAL" },
 	{ "id": 6, "city": "Washington", "name": "Fat Cats", "color1": "#ff8c00", "color2": "#ffffff", "logo": "images/WSH.png", "abbr": "WSH" },
 	{ "id": 11, "city": "Toronto", "name": "Maple Syrups", "color1": "#ff0000", "color2": "#ffffff", "logo": "images/TOR.png", "abbr": "TOR" },
-	{ "id": 13, "city": "Brooklyn", "name": "Scoops", "color1": "#640080", "color2": "#1cb11cf", "logo": "images/BRK.png", "abbr": "BRK" },
+	{ "id": 13, "city": "Brooklyn", "name": "Scoops", "color1": "#640080", "color2": "#1cb11c", "logo": "images/BRK.png", "abbr": "BRK" },
 	{ "id": 7, "city": "Cleveland", "name": "Rocks", "color1": "#d62920", "color2": "#000000", "logo": "images/CLE.png", "abbr": "CLE" },
 	{ "id": 8, "city": "Cincinnati", "name": "Coneys", "color1": "#0071bc", "color2": "#fdd500", "logo": "images/CIN.png", "abbr": "CIN" },
 	{ "id": 9, "city": "Columbus", "name": "Griffins", "color1": "#8b0000", "color2": "#ffd700", "logo": "images/CMB.png", "abbr": "CMB" },
