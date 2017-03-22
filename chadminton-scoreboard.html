@@ -371,15 +371,10 @@
 				window.localStorage.removeItem(key);
 			};
 			
-			var cache;
-			var play = false;
-			var periodLength;
-			var period;
-			var time;
-			var last = null;			
-			var teams;
+			var cache, play, periodLength, period, time, last, teams;
 			
 			var setup = function () {
+				play = false;
 				cache = getLocalValue('cache') || {};
 				periodLength = cache.periodLength || 20 * 60 * 1000; // X minutes * 60 seconds * 1000 thousandths
 				period = cache.period || 1;

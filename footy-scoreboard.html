@@ -1,0 +1,180 @@
+<html>
+	<head>
+		<title>Footy/Ausball Scoreboard</title>
+		<script type="text/javascript">
+		
+			var play = false;
+			var defaultTime = 20 * 60 * 1000; // X minutes * 60 seconds * 1000 thousandths
+			var period = 1;
+			var time = defaultTime;
+			var last = null;
+			
+			var teams = [
+				{ g: 0, b: 0 },
+				{ g: 0, b: 0 }
+			];
+		
+			var toggleClock = function () {
+				play = !play;
+				last = play ? new Date() : null;
+			}
+			
+			var displayTime = function () {
+				window.requestAnimationFrame(displayTime);
+				
+				document.getElementById('away-goals').innerHTML = teams[0].g;
+				document.getElementById('away-behinds').innerHTML = teams[0].b;
+				document.getElementById('away-score').innerHTML = (teams[0].g * 6) + teams[0].b;				
+				
+				document.getElementById('home-goals').innerHTML = teams[1].g;
+				document.getElementById('home-behinds').innerHTML = teams[1].b;
+				document.getElementById('home-score').innerHTML = (teams[1].g * 6) + teams[1].b;
+				
+				if (play) {
+					var now = new Date();
+					var difference = now.getTime() - last.getTime();
+					last = now;
+					time -= difference;
+					
+					if (time <= 0) {
+						time = 0;
+						toggleClock();
+					}
+					
+					var min = Math.floor(time/60000);
+					var sec = Math.floor((time % 60000)/1000);
+					var tenths = Math.floor((time % 1000) / 100)
+					
+					var display = '';
+					
+					if (min == 0) {
+						display = sec.toString() + '.' + tenths;
+					} else {
+						var zero = sec < 10 ? '0' : '';
+						display = min.toString() + ':' + zero + sec;
+					}
+					
+					document.getElementById('clock').innerHTML = display;
+				}
+			}
+			
+			var addGoal = function (side) {
+				teams[side].g++;
+			}
+			
+			var addBehind = function (side) {
+				teams[side].b++;
+			}
+			
+			var togglePeriod = function (side) {
+				if (period == 1) {
+					period = 2;
+				} else {
+					period = 'OT';
+				}
+				time = defaultTime;
+				document.getElementById('period').innerHTML = period;
+			}
+			
+			displayTime();
+		
+		</script>
+		<style>
+			html, body {
+				margin: 0px;
+				background: black;
+				color: white;
+				font-family: Segoe UI;
+				font-weight: bold;
+				font-style: italic;
+			}
+			
+			.top {
+				width: 100%;
+				height: 15vh;
+			}
+			
+			.top > div {
+				display: inline-block;
+			}
+			
+			#period {
+				font-size: 36pt;
+				margin-left: 38vw;
+				cursor: pointer;
+			}
+			
+			#clock {
+				font-size: 60pt;
+				margin-left: 20px;
+				width: 220px;
+				text-align: right;
+				cursor: pointer;
+			}
+			
+			.bottom {
+				width: 100%;
+				height: 85vh;
+			}
+			
+			.bottom > div {
+				display: inline-block;
+			}
+			
+			.away {
+				width: 100%;
+				height: 50%;
+				background: red;
+				position: relative;
+			}
+			
+			.home {
+				width: 100%;
+				height: 50%;
+				background: blue;
+				position: relative;
+			}
+			
+			.goals {
+				position: absolute;
+				left: 15px;
+				top: 15px;
+				font-size: 72pt;
+				cursor: pointer;
+			}
+			
+			.behinds {
+				position: absolute;
+				left: 30px;
+				top: 140px;
+				font-size: 50pt;
+				cursor: pointer;
+			}
+			
+			.score {
+				position: absolute;
+				left: 250px;
+				top: 15px;
+				font-size: 150pt;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="top">
+			<div id="period" onclick="togglePeriod()">1</div>
+			<div id="clock" onclick="toggleClock()">20:00</div>
+		</div>
+		<div class="bottom">
+			<div class="away">
+				<div class="goals" onclick="addGoal(0)" id="away-goals">0</div>
+				<div class="behinds" onclick="addBehind(0)" id="away-behinds">0</div>
+				<div class="score" id="away-score">0</div>
+			</div>
+			<div class="home">
+				<div class="goals" onclick="addGoal(1)" id="home-goals">0</div>
+				<div class="behinds" onclick="addBehind(1)" id="home-behinds">0</div>
+				<div class="score" id="home-score">0</div>
+			</div>
+		</div>
+	</body>
+</html>
