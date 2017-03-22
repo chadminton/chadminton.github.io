@@ -267,11 +267,18 @@
 			
 			.transparent-background {
 				position: absolute;
-				left: 0px;
 				top: 0px;
-				width: 100%;
+				width: 30%;
 				height: auto;
 				opacity: 0.18;
+			}
+			
+			#away .transparent-background {
+				left: 0px;
+			}
+			
+			#home .transparent-background {
+				right: 0px;
 			}
 
 		</style>
@@ -347,16 +354,53 @@
 				});
 			};
 
+			var getLocalValue = function (key) {
+				var value = window.localStorage.getItem(key);
+				if (typeof value == 'undefined' || value == 'undefined') {
+					window.localStorage.removeItem(key);
+					value = null;
+				}
+				try {
+					if (value) {
+						value = JSON.parse(value);
+					}
+				} catch (e) { }
+
+				return value;
+			};
+
+			var setLocalValue = function (key, value) {
+				try {
+					if (typeof value == 'undefined' || value == 'undefined') {
+						return;
+					}
+					value = JSON.stringify(value);
+				} catch (e) { }
+
+				window.localStorage.setItem(key, value);
+			};
+			
+			var cache = getLocalValue('cache') || {};
+
 			var play = false;
-			var defaultTime = 20 * 60 * 1000; // X minutes * 60 seconds * 1000 thousandths
-			var period = 1;
-			var time = defaultTime;
+			var periodLength = cache.periodLength || 20 * 60 * 1000; // X minutes * 60 seconds * 1000 thousandths
+			var period = cache.period || 1;
+			var time = cache.time || periodLength;
 			var last = null;
 			
-			var teams = [
-				{ g: 0, b: 0, n: 'RED', to: 2, goals: [], img: '', colors: { f: 'white', b: 'red' } },
-				{ g: 0, b: 0, n: 'BLUE', to: 2, goals: [], img: '', colors: { f: 'white', b: 'blue' } }
+			var teams = cache.teams || [
+				{ g: 0, b: 0, n: 'select away team', to: 2, goals: [], img: '', colors: { f: 'white', b: 'red' } },
+				{ g: 0, b: 0, n: 'select home team', to: 2, goals: [], img: '', colors: { f: 'white', b: 'blue' } }
 			];
+			
+			window.onbeforeunload = function () {
+				setLocalValue('cache', {
+					periodLength: periodLength,
+					period: period,
+					time: time,
+					teams: teams
+				});
+			};
 		
 			var toggleClock = function () {
 				play = !play;
@@ -483,9 +527,9 @@
 			var addGoal = function (side) {
 				teams[side].g++;
 				
-				var timeCalc = defaultTime - time;
-				if (period == 2) timeCalc += defaultTime;
-				if (period == 'OT') timeCalc += defaultTime * 2;
+				var timeCalc = periodLength - time;
+				if (period == 2) timeCalc += periodLength;
+				if (period == 'OT') timeCalc += periodLength * 2;
 				var min = Math.floor(timeCalc/60000);
 				var sec = Math.floor((timeCalc % 60000)/1000);
 				var tenths = Math.floor((timeCalc % 1000) / 100);
@@ -540,7 +584,7 @@
 				} else {
 					period = 1;
 				}
-				time = defaultTime;
+				time = periodLength;
 				document.getElementById('period').innerHTML = period;
 			};
 			
@@ -572,6 +616,7 @@
 			};
 			
 			var cancelTeam = function () {
+				document.getElementById('selected-team').src = '	';
 				colorOption = { side: null, team: null };
 				document.getElementById('team-picker').style.display = 'none';
 			};
@@ -622,6 +667,19 @@
 				}
 			};
 			
+			var setPeriodLength = function () {
+				play = false;
+				var value = window.prompt('enter time [mm:ss.xxx]');
+				var timesplit = value.split(':');
+				if (timesplit.length == 2) {
+					var min = parseInt(timesplit[0]);
+					var sec = parseFloat(timesplit[1]);
+					var swap = time == periodLength;
+					periodLength = Math.round((min * 60 + sec) * 1000);
+					if (swap) time = periodLength;
+				}
+			};
+			
 			var checkSubmit = function (event) {
 				var code = event.keyCode;
 				if (code == 13 || code == '13') {
@@ -637,6 +695,7 @@
 			<div id="clock" onclick="toggleClock()">20:00</div>
 			<div class="menu">
 				<div class="button" onclick="setTime()">&bullet;</div>
+				<div class="small button" onclick="setPeriodLength()">P</div>
 			</div>
 		</div>
 		<div class="bottom">
