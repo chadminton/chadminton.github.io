@@ -264,6 +264,15 @@
 				text-align: right;
 				right: 2px;
 			}
+			
+			.transparent-background {
+				position: absolute;
+				left: 0px;
+				top: 0px;
+				width: 100%;
+				height: auto;
+				opacity: 0.3;
+			}
 
 		</style>
 		<script type="text/javascript">
@@ -345,8 +354,8 @@
 			var last = null;
 			
 			var teams = [
-				{ g: 0, b: 0, n: 'RED', to: 2, goals: [], colors: { f: 'white', b: 'red' } },
-				{ g: 0, b: 0, n: 'BLUE', to: 2, goals: [], colors: { f: 'white', b: 'blue' } }
+				{ g: 0, b: 0, n: 'RED', to: 2, goals: [], img: '', colors: { f: 'white', b: 'red' } },
+				{ g: 0, b: 0, n: 'BLUE', to: 2, goals: [], img: '', colors: { f: 'white', b: 'blue' } }
 			];
 		
 			var toggleClock = function () {
@@ -377,6 +386,7 @@
 				for (var i = 0; i < teams[0].goals.length; i++) {
 					document.getElementById('away-scores').innerHTML += '<div>' + teams[0].goals[i].time + ' [' + teams[0].goals[i].scorer + ']</div>';
 				}
+				document.getElementById('away-logo').src = teams[0].img;
 				
 				var homeBlock = document.getElementById('home');
 				homeBlock.style.backgroundColor = teams[1].colors.b;
@@ -391,6 +401,7 @@
 				for (var i = 0; i < teams[1].goals.length; i++) {
 					document.getElementById('home-scores').innerHTML += '<div>' + teams[1].goals[i].time + ' [' + teams[1].goals[i].scorer + ']</div>';
 				}
+				document.getElementById('home-logo').src = teams[1].img;
 				
 				if (play) {
 					var now = new Date();
@@ -549,13 +560,14 @@
 			var setTeam = function setColor (c) {
                 var team = allTeams.getElementById(c);
                 selectedTeam.team = team;
-				document.getElementById('selected-team').src = 'img/teams/'> + team.abbr + '.png';
+				document.getElementById('selected-team').src = 'img/teams/' + team.abbr + '.png';
 			};
 			
 			var applyTeam = function () {
 				teams[selectedTeam.side].n = selectedTeam.team.name;
 				teams[selectedTeam.side].colors.b = selectedTeam.team.color1;
 				teams[selectedTeam.side].colors.f = selectedTeam.team.color2;
+				teams[selectedTeam.side].img = 'img/teams/' + selectedTeam.team.abbr + '.png';
 				cancelTeam();
 			};
 			
@@ -629,6 +641,7 @@
 		</div>
 		<div class="bottom">
 			<div id="away" class="team">
+				<img id="away-logo" class="transparent-background" src="" />
 				<div id="away-name" class="name"></div>
 				<div class="goals" onclick="addGoal(0)" id="away-goals">0</div>
 				<div id="away-scores" class="scores"></div>
@@ -643,6 +656,7 @@
 				</div>
 			</div>
 			<div id="home" class="team">
+				<img id="home-logo" class="transparent-background" src="" />
 				<div id="home-name" class="name"></div>
 				<div class="goals" onclick="addGoal(1)" id="home-goals">0</div>
 				<div id="home-scores" class="scores"></div>
