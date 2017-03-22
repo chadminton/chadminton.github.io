@@ -208,6 +208,7 @@
 				top: 50%;
 				left: 50%;
 				-webkit-transform: translate(-50%, -50%); /* translate by 50% of the element's height/width */
+				z-index: 10;
 			}
 			
 			.info-popup {
@@ -220,6 +221,7 @@
 				text-align: center;
 				box-shadow: 0px 0px 0px 3px #fff;
 				overflow: hidden;
+				z-index: 10;
 			}
 			
 			.info-popup > div.shine {
@@ -280,6 +282,18 @@
 			#home .transparent-background {
 				right: 0px;
 			}
+			
+			#shroud {
+				position: absolute;
+				left: 0px;
+				right: 0px;
+				top: 0px;
+				bottom: 0px;
+				background-color: #000000;
+				opacity: 0.3;
+				z-index: 7;
+				display: none;
+			}
 
 		</style>
 		<script type="text/javascript">
@@ -315,6 +329,55 @@
                 }
                 return value;
             }
+
+			var getLocalValue = function (key) {
+				var value = window.localStorage.getItem(key);
+				if (typeof value == 'undefined' || value == 'undefined') {
+					window.localStorage.removeItem(key);
+					value = null;
+				}
+				try {
+					if (value) {
+						value = JSON.parse(value);
+					}
+				} catch (e) { }
+
+				return value;
+			};
+
+			var setLocalValue = function (key, value) {
+				try {
+					if (typeof value == 'undefined' || value == 'undefined') {
+						return;
+					}
+					value = JSON.stringify(value);
+				} catch (e) { }
+
+				window.localStorage.setItem(key, value);
+				};
+
+			var clearLocalValue = function (key) {
+				window.localStorage.removeItem(key);
+			};
+			
+			var cache;
+			var play = false;
+			var periodLength;
+			var period;
+			var time;
+			var last = null;			
+			var teams;
+			
+			var setup = function () {
+				cache = getLocalValue('cache') || {};
+				periodLength = cache.periodLength || 20 * 60 * 1000; // X minutes * 60 seconds * 1000 thousandths
+				period = cache.period || 1;
+				time = cache.time || periodLength;
+				teams = cache.teams || [
+					{ g: 0, b: 0, n: 'select away team', to: 2, goals: [], img: '', colors: { f: 'white', b: 'red' } },
+					{ g: 0, b: 0, n: 'select home team', to: 2, goals: [], img: '', colors: { f: 'white', b: 'blue' } }
+				];
+			};
 		
 			var getHex = function (value, mult) {
 				mult = mult || 1;
@@ -353,45 +416,6 @@
 					document.getElementById('teams').innerHTML = html;
 				});
 			};
-
-			var getLocalValue = function (key) {
-				var value = window.localStorage.getItem(key);
-				if (typeof value == 'undefined' || value == 'undefined') {
-					window.localStorage.removeItem(key);
-					value = null;
-				}
-				try {
-					if (value) {
-						value = JSON.parse(value);
-					}
-				} catch (e) { }
-
-				return value;
-			};
-
-			var setLocalValue = function (key, value) {
-				try {
-					if (typeof value == 'undefined' || value == 'undefined') {
-						return;
-					}
-					value = JSON.stringify(value);
-				} catch (e) { }
-
-				window.localStorage.setItem(key, value);
-			};
-			
-			var cache = getLocalValue('cache') || {};
-
-			var play = false;
-			var periodLength = cache.periodLength || 20 * 60 * 1000; // X minutes * 60 seconds * 1000 thousandths
-			var period = cache.period || 1;
-			var time = cache.time || periodLength;
-			var last = null;
-			
-			var teams = cache.teams || [
-				{ g: 0, b: 0, n: 'select away team', to: 2, goals: [], img: '', colors: { f: 'white', b: 'red' } },
-				{ g: 0, b: 0, n: 'select home team', to: 2, goals: [], img: '', colors: { f: 'white', b: 'blue' } }
-			];
 			
 			window.onbeforeunload = function () {
 				setLocalValue('cache', {
@@ -512,7 +536,16 @@
 				document.getElementById('clock').innerHTML = display;
 			};
 			
+			var modal = function (b) {
+				if (b) {
+					document.getElementById('shroud').style.display = 'block';
+				} else {					
+					document.getElementById('shroud').style.display = 'none';
+				}
+			};
+			
 			var showInfo = function (msg, style) {
+				modal(true);
 				var go = document.getElementById('game-over');
 				go.style.display = 'block';
 				go.style.backgroundColor = style.b;
@@ -539,6 +572,7 @@
 				var display = '';
 				teams[side].goals.push({ time: timeDisplay, scorer: '' });
 				lastScore = side;
+				modal(true);
 				var gs = document.getElementById('goal-scored');
 				gs.style.display = 'block';
 				gs.style.backgroundColor = teams[side].colors.b;
@@ -557,6 +591,7 @@
 				var who = document.getElementById('who-scored');
 				teams[lastScore].goals[teams[lastScore].goals.length - 1].scorer = who.value;
 				who.value = '';
+				modal(false);
 				var gs = document.getElementById('goal-scored');
 				gs.style.display = 'none';
 				if (otWinner) {
@@ -572,6 +607,7 @@
 					teams[side].goals.pop();
 				}
 				lastScore = null;
+				modal(false);
 				var gs = document.getElementById('goal-scored');
 				gs.style.display = 'none';
 			};
@@ -589,6 +625,7 @@
 			};
 			
 			var ready = function ready () {
+				setup();
 				fillColors();
                 fillTeams();
 				displayTime();
@@ -598,6 +635,7 @@
 			var openTeamDialog = function (side) {			
 				selectedTeam.side = side;
 				selectedTeam.team = null;
+				modal(true);
 				document.getElementById('team-picker').style.display = 'block';
 			};
 
@@ -618,6 +656,7 @@
 			var cancelTeam = function () {
 				document.getElementById('selected-team').src = '	';
 				colorOption = { side: null, team: null };
+				modal(false);
 				document.getElementById('team-picker').style.display = 'none';
 			};
 			
@@ -629,6 +668,7 @@
 			var openColorDialog = function (team, which) {			
 				colorOption.team = team;
 				colorOption.which = which;
+				modal(true);
 				document.getElementById('color-picker').style.display = 'block';
 			};
 
@@ -648,6 +688,7 @@
 			
 			var cancelColor = function () {
 				colorOption = { team: 0, which: 0 };
+				modal(false);
 				document.getElementById('color-picker').style.display = 'none';
 			};
 			
@@ -686,15 +727,22 @@
 					submitGoalScorer();
 				}
 			};
+			
+			var refresh = function () {
+				clearLocalValue('cache');
+				setup();
+			};
 		
 		</script>
 	</head>
 	<body onload="ready()">
+		<div id="shroud"></div>
 		<div class="top">
 			<div id="period" onclick="togglePeriod()">1</div>
 			<div id="clock" onclick="toggleClock()">20:00</div>
 			<div class="menu">
 				<div class="button" onclick="setTime()">&bullet;</div>
+				<div class="button" onclick="refresh()">&#10227;</div>
 				<div class="small button" onclick="setPeriodLength()">P</div>
 			</div>
 		</div>
