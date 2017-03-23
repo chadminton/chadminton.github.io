@@ -1,8 +1,10 @@
 <html>
 	<head>
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="viewport" content="target-densitydpi=device-dpi, width=device-width, user-scalable=no, maximum-scale=1, minimum-scale=1" />
+
 		<title>Footy/Ausball Scoreboard</title>
 		<script type="text/javascript">
-		
 			var play = false;
 			var defaultTime = 20 * 60 * 1000; // X minutes * 60 seconds * 1000 thousandths
 			var period = 1;
@@ -31,6 +33,7 @@
 			}
 			
 			var displayTime = function () {
+				window.scroll(0, 1);
 				window.requestAnimationFrame(displayTime);
 				
 				document.getElementById('away-goals').innerHTML = teams[0].g;
