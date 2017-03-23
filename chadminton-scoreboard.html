@@ -988,6 +988,7 @@
 				if (code == 13 || code == '13') {
 					submitGoalScorer();
 				}
+				event.chadmintonCancel = true;
 			};
 			
 			var refresh = function () {
@@ -1017,10 +1018,24 @@
 				var set = Math.min(curr + dist, max);
 				elem.scrollLeft = set;
 			};
+			
+			var checkKey = function (event) {
+				if (!checkEvent(event)) return;
+				
+				if (event.keyCode == 32) {
+					toggleClock();
+				}
+				event.stopPropagation();
+				event.preventDefault();
+			};
+			
+			var checkEvent = function (event) {
+				return !event.chadmintonCancel;
+			};
 		
 		</script>
 	</head>
-	<body onload="ready()">
+	<body onload="ready()" onkeydown="checkKey(event)">
 		<div id="shroud"></div>
 		<div class="top">
 			<div id="period" onclick="togglePeriod()">1</div>
