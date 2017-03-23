@@ -1,5 +1,7 @@
 <html>
 	<head>
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="viewport" content="target-densitydpi=device-dpi, width=device-width, user-scalable=no, maximum-scale=1, minimum-scale=1" />
 		<title>Chadminton Scoreboard</title>
 		<style>
 			html, body {
@@ -22,13 +24,6 @@
 			
 			.top > div {
 				display: inline-block;
-			}
-			
-			.bottom {
-				position: absolute;
-				bottom: 0px;
-				left: 0px;
-				right: 0px;
 			}
 			
 			.button {
@@ -100,6 +95,7 @@
 			}
 			
 			.bottom {
+				position: relative;
 				width: 100%;
 				height: 85vh;
 			}
@@ -109,9 +105,18 @@
 			}
 			
 			.team {
-				width: calc(50vw - 11px);
-				height: calc(100% - 4px);
-				position: relative;
+				position: absolute;
+				top: 0px;
+				bottom: 0px;
+				width: 50%;
+			}
+			
+			#away.team {
+				left: 0px;
+			}
+			
+			#home.team {
+				right: 0px;
 			}
 			
 			.goals {
@@ -396,11 +401,23 @@
 				padding: 2px;
 			}
 			
-			@media only screen and (orientation: portrait) {
-				
+			@media only screen and (orientation: portrait) {				
+			
 				.team {
-					width: 100%;
+					left: 0px;
+					right: 0px;
 					height: 50%;
+					width: auto;
+				}
+				
+				#away.team {
+					top: 0px;
+					bottom: 50%;
+				}
+				
+				#home.team {
+					top: 50%;
+					bottom: 0px;
 				}
 			
 				.goals {
