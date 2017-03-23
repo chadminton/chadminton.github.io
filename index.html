@@ -1,117 +1,24 @@
 <html>
 	<head>
 		<title>Chadminton</title>
-		<style>
-			html, body {
-				margin: 0px;			
-				font-family: "Segoe UI";
-			}
-		
-			#top {
-				height: 160px;
-				width: 100vw;
-				background: url('img/chadminton-banner.png') no-repeat center #3f3f3f;
-			}
-		
-			.header {
-				position: absolute;
-				left: 0px;
-				top: 15px;
-				padding: 20px 50px;
-				font-size: 28pt;
-				height: 44px;
-				color: white;
-				background-color: #0071bc;
-				width: 67vw;
-				font-weight: bold;
-				font-style: italic;
-			}
-			
-			.header + .helper {
-				position: absolute;
-				left: calc(67vw + 100px);
-				top: 15px;			
-				width: 0px;
-				height: 0px;
-				border-top: 84px solid #0071bc;
-				border-right: 60px solid transparent;
-			}
-			
-			#content {
-				padding: 10px;
-				background-color: #cc0000;
-				height: calc(100% - 180px);
-				color: #ffffff;
-			}
-			
-			#content a {
-				text-decoration: none;
-				color: black;
-				font-style: italic;
-			}
-			
-			#content a:visited {
-				text-decoration: none;
-				color: darkgray;
-				font-style: italic;
-			}
-			
-			#content a:hover {
-				text-decoration: none;
-				color: maroon;
-				font-style: italic;
-			}
-			
-			.row {
-				width: 100%;
-			}
-			
-			.row > div {
-				display: inline-block;
-				margin: 2px;
-				vertical-align: middle;
-			}
-			
-			.row > .left, .row > .right {
-				width: calc(24% - 1px);
-				text-align: center;
-			}
-			
-			.row > .center {
-				width: calc(50% - 1px);
-			}
-		</style>
+        <link rel="stylesheet" href="style.css">
 	</head>
 	<body>
 		<div id="top">
-			<div class="header">CHADMINTON</div>
-			<div class="helper"></div>
-		</div>
-		<div id="links">
+			<div class="links">
+				<a href="index.html">HOME</a>
+				<a href="about.html">ABOUT</a>
+				<a href="https://www.facebook.com/chadmintonOhio/"><img src="img/facebook.png" /></a>
+				<a href=""><img src="img/twitter.png" /></a>
+			</div>
+			<div class="logo"></div>
 		</div>
 		<div id="content">
-			<div class="row">
-				<div class="left">
-					
-				</div>
-				<div class="center">
-					We're BACK. Chadminton returns to Thursday nights this spring. Every week we'll be meeting for some pickup games followed by happy hour. As always, chadminton is completely free!
-				</div>
-				<div class="right">
-					Follow us on Twitter <a href="https://twitter.com/chadm1nton">@Chadm1nton</a>
-				</div>
-			</div>
-			<div class="row">
-				<div class="left">
-				</div>
-				<div class="center">
-					Chadminton was born and raised right here in Columbus. Chadminton is a team sport played on a small field (generally about 50 to 60 yards long by 25 to 30 yards wide). Each team is equipped with scoops, which are 3-4 feet long and have a scoop-shaped basket on the end; one exception is that each team has a player called the CHAD, who brandishes a pillow and whose job it is to generally cause havoc for the opposing team in any way possible. As with most field sports, the goal of the game is to score more points than your opponent by putting the ball into the goal.
-					<br/>
-					Chadminton is for people of all ages, genders, races, orientations, abilities, and beliefs. We don't discriminate! Chadminton is safe (as safe as any other sport) and fun, as well as an excellent way to get some excercise if you want it. It's also a great way to meet new friends!
-					<br/>
-					
-				</div>
-				<div class="right">
+			<img class="block" src="img/chadminton-banner.png"/>
+			<div class="story">
+				<div class="title">We're BACK</div><div></div>
+				<div class="body">
+					Chadminton returns to Thursday nights this spring. Come hang out at Fancyburg Park from 6:30 to 8:00 pm every Thursday starting on March 30th. If you're new to chadminton, we'll go over the rules with you and teach you some skills, then we'll play a few games. As always, chadminton is completely free!
 				</div>
 			</div>
 		</div>
