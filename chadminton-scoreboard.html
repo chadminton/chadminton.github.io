@@ -604,9 +604,12 @@
 					var changeAd = function () {
 						var ad = advertisements[currentAd];
 						var adBox = document.getElementById('ad');
+						adBox.onclick = function () {
+							window.open(ad.href);
+						};
 						var image = ad.images[Math.floor(Math.random()*ad.images.length)];
 						adBox.style.backgroundImage = 'url(\'' + image + '\')';
-						adBox.innerHTML = '<div class="pad" style="font-family: ' + ad.font + ';" onclick="window.open(\'' + ad.href + '\')">' +
+						adBox.innerHTML = '<div class="pad" style="font-family: ' + ad.font + ';">' +
 										  ad.name +
 										  '</div>';
 						currentAd = (currentAd + 1) % advertisements.length;
