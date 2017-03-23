@@ -67,7 +67,7 @@
 						time = 0;
 						play = false;
 						document.getElementById('buzzer-sound').play();
-						navigator.vibrate(2000);
+						navigator.vibrate(1000);
 					}
 					document.getElementById('clock').classList.remove('stopped');
 				} else {
@@ -82,13 +82,13 @@
 				
 				if (min == 0) {
 					display = sec.toString() + '.' + tenths;
-					if (tenths == 0) {
+					if (sec <= 30 tenths == 0) {
 						window.setTimeout(function () {
 							document.getElementById('beep-sound').pause();
 							document.getElementById('beep-sound').load();
 						}, 250);
 						document.getElementById('beep-sound').play();
-						navigator.vibrate(250);
+						navigator.vibrate(100);
 					}
 				} else {
 					var zero = sec < 10 ? '0' : '';
@@ -332,7 +332,7 @@
 	</head>
 	<body onload="ready()">
 		<div class="top">
-			<div id="version">1.0</div>
+			<div id="version">1.1</div>
 			<div id="period" onclick="togglePeriod()">1</div>
 			<div id="clock" onclick="toggleClock()">20:00</div>
 		</div>
