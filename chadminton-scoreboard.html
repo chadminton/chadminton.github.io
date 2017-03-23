@@ -638,8 +638,8 @@
 				if (teams[team].to > 0) {	
 					teams[team].to--;			
 					if (play) toggleClock();
+					showInfo('TIMEOUT', { f: teams[team].colors.f, b: teams[team].colors.b }, true);
 				}
-				showInfo('TIMEOUT', { f: teams[team].colors.f, b: teams[team].colors.b }, true);
 			};
 			
 			var displayTime = function () {
