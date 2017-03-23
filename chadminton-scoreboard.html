@@ -117,6 +117,7 @@
 				padding: 0px;
 				margin: 0px;
 				border: none;
+				font-style: normal;
 			}
 
 			.menu > .button.small {
@@ -186,34 +187,34 @@
 			.team-select {
 				display: inline-block;
 				border: 1px solid white;
-				height: 25px;
-				width: 25px;
-				border-radius: 13px;
+				height: 120px;
+				width: 120px;
+				border-radius: 60px;
 				margin-right: 2px;
 				margin-bottom: 2px;
                 background-color: white;
 			}
             
             .team-select > img {
-                width: 25px;
-                height: 25px;
+                width: 120px;
+                height: 120px;
             }
 			
 			.team-select.big {
-				height: 100px;
-				width: 100px;
-				border-radius: 50px;
+				height: 200px;
+				width: 200px;
+				border-radius: 100px;
 			}
 			
 			.team-select.big > img {
-				height: 100px;
-				width: 100px;
+				height: 200px;
+				width: 200px;
 			}
 			
 			.picker {
 				position: absolute;
 				width: 30%;
-				height: 30%;
+				height: 40%;
 				background-color: black;
 				padding: 15px;
 				top: 50%;
@@ -305,6 +306,38 @@
 				z-index: 7;
 				display: none;
 			}
+
+			.scroller {
+				width: 9%;
+				cursor: pointer;
+				position: absolute;
+				top: 10px;
+				font-style: normal;
+				font-size: 32pt;
+			}
+
+			.scroller:hover {
+				color: #00ff44;
+			}
+
+			.scroll-div {
+				position: absolute;
+				width: 80%;
+				top: 0px;
+				left: 10%;
+				height: 140px;
+				overflow-x: hidden;
+				overflow-y: hidden;
+				white-space: nowrap;
+			}
+
+			.left {
+				left: 0px;
+			}
+
+			.right {
+				right: 0px;
+			}
 			
 			@media only screen and (orientation: portrait) {
 				
@@ -357,8 +390,24 @@
 						}
 					}
 				};
-				xmlhttp.open("GET", filename, true);
-				xmlhttp.send();
+
+				if (window.location.protocol == 'file:') {
+					callback([
+						{ name: 'Squirrels', abbr: 'MIN', color1: '#aaaaaa', color2: '#001144' },
+						{ name: 'Squirrels', abbr: 'NY', color1: '#aaaaaa', color2: '#001144' },
+						{ name: 'Squirrels', abbr: 'BRK', color1: '#aaaaaa', color2: '#001144' },
+						{ name: 'Squirrels', abbr: 'PHI', color1: '#aaaaaa', color2: '#001144' },
+						{ name: 'Squirrels', abbr: 'NE', color1: '#aaaaaa', color2: '#001144' },
+						{ name: 'Squirrels', abbr: 'LOU', color1: '#aaaaaa', color2: '#001144' },
+						{ name: 'Squirrels', abbr: 'ATL', color1: '#aaaaaa', color2: '#001144' },
+						{ name: 'Squirrels', abbr: 'ORL', color1: '#aaaaaa', color2: '#001144' },
+						{ name: 'Squirrels', abbr: 'SD', color1: '#aaaaaa', color2: '#001144' },
+						{ name: 'Squirrels', abbr: 'CMB', color1: '#aaaaaa', color2: '#001144' }
+					]);
+				} else {
+					xmlhttp.open("GET", filename, true);
+					xmlhttp.send();
+				}
 			};
             
             Array.prototype.getElementById = function (id) {
@@ -428,7 +477,7 @@
 
 			var fillColors = function fillColors () {
 				var html = '';
-				var steps = 4;
+				var steps = 3;
 				var x = Math.floor(255 / (steps - 1));
 				for (var g = 0; g < steps; g++) {
 					for (var r = 0; r < steps; r++) {
@@ -773,6 +822,29 @@
 				clearLocalValue('cache');
 				setup();
 			};
+
+			var scrollInterval;
+			
+			var startScroll = function (id, dist, speed) {
+				scrollInterval = window.setInterval(function () {
+					scroll(id, dist);
+				}, speed);
+			};
+
+			var stopScroll = function () {
+				if (scrollInterval) {
+					window.clearInterval(scrollInterval);
+					scrollInterval = null;
+				}
+			};
+
+			var scroll = function (id, dist) {
+				var elem = document.getElementById(id);
+				var curr = elem.scrollLeft;
+				var max = elem.scrollWidth;
+				var set = Math.min(curr + dist, max);
+				elem.scrollLeft = set;
+			};
 		
 		</script>
 	</head>
@@ -831,9 +903,13 @@
 			</div>
 		</div>
 		<div id="team-picker" class="picker" style="display: none;">
-			<div id="teams"></div>
+			<div style="position: relative; height: 160px;">
+				<div class="scroller left" onmousedown="startScroll('teams', -20, 8)" onmouseup="stopScroll()" onmouseout="stopScroll()">&ltrif;</div>
+				<div id="teams" class="scroll-div"></div>
+				<div class="scroller right" onmousedown="startScroll('teams', 20, 8)" onmouseup="stopScroll()" onmouseout="stopScroll()">&rtrif;</div>
+			</div>
 			<div>
-				<div class="team-select big"><img id="selected-team" src=""/></div>
+				<div class="team-select"><img id="selected-team" src=""/></div>
 				<div class="button" onclick="applyTeam()">OK</div>
 				<div class="button" onclick="cancelTeam()">CANCEL</div>
 			</div>
