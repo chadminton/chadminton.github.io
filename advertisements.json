@@ -2,7 +2,7 @@
 	{
 		"id": 1,
 		"name": "Hot Chicken Takeover",
-		"font": "Impact",
+		"font": "Arial",
 		"href": "http://hotchickentakeover.com/",
 		"images": [
 			"img/ads/hct-meal.png",
@@ -12,7 +12,7 @@
 	{
 		"id": 2,
 		"name": "",
-		"font": "Impact",
+		"font": "Arial",
 		"href": "http://pjscolumbus.com/5448",
 		"images": [
 			"img/ads/pjs-logo.png"
@@ -21,7 +21,7 @@
 	{
 		"id": 3,
 		"name": "Neighbor's Deli",
-		"font": "Impact",
+		"font": "Arial",
 		"href": "http://www.therealneighborsdeli.com/",
 		"images": [
 			"img/ads/neighbors-logo.png"
