@@ -74,10 +74,10 @@
 				top: 0.5vh;
 				left: 0.5vh;
 				height: 14vh;
-				width: 15vw;
+				width: 25vw;
 				cursor: pointer;
-				background-color: #fff;
-				color: #000;
+				background-color: #000;
+				color: #fff;
 				font-style: normal;
 				font-size: 18pt;
 				background-position: top left;
@@ -86,8 +86,17 @@
 				text-align: right;
 			}
 			
+			.pad::before {
+				display: block;
+				font-size: 8pt;
+				content: 'advertisement';
+			}
+			
 			.pad {
 				padding: 3px;
+				width: 50%;
+				float: right;
+				height: 100%;
 			}
 			
 			.bottom {
@@ -235,13 +244,18 @@
 			.picker {
 				position: absolute;
 				width: 30%;
-				height: 40%;
+				height: 30%;
 				background-color: black;
 				padding: 15px;
 				top: 50%;
 				left: 50%;
 				-webkit-transform: translate(-50%, -50%); /* translate by 50% of the element's height/width */
 				z-index: 10;
+			}
+			
+			#team-picker {
+				height: 40%;
+				width: 80%;
 			}
 
 			#commercial {
@@ -372,6 +386,16 @@
 				right: 0px;
 			}
 			
+			#tool-tip {
+				display: none;
+				position: fixed;
+				left: 0px;
+				top: 0px;
+				z-index: 1000;
+				background-color: #000;
+				padding: 2px;
+			}
+			
 			@media only screen and (orientation: portrait) {
 				
 				.team {
@@ -492,10 +516,10 @@
 								{
 									"id": 1,
 									"name": "Hot Chicken Takeover",
-									"font": "Impact",
+									"font": "Arial",
 									"href": "http://hotchickentakeover.com/",
 									"images": [
-										"img/ads/hct-food.png",
+										"img/ads/hct-meal.png",
 										"img/ads/hct-logo.png"
 									]
 								}
@@ -614,7 +638,7 @@
 					var html = '';
 					for (var t = 0; t < teams.length; t++) {
 						var team = teams[t];
-						html += '<div onmouseenter="setTeamTooltip(\'' + team.name + '\')" onclick="setTeam(' + team.id + ')" class="team-select"><img src="img/teams/' + team.abbr + '.png" /></div>';
+						html += '<div onmousemove="setTeamTooltip(event, \'' + team.city + ' ' + team.name + '\')" onmouseleave="clearTeamTooltip()" onclick="setTeam(' + team.id + ')" class="team-select"><img src="img/teams/' + team.abbr + '.png" /></div>';
 					}
 					document.getElementById('teams').innerHTML = html;
 				});
@@ -866,6 +890,7 @@
                 var team = allTeams.getElementById(c);
                 selectedTeam.team = team;
 				document.getElementById('selected-team').src = 'img/teams/' + team.abbr + '.png';
+				document.getElementById('selected-team-name').innerHTML = team.city + ' ' + team.name;
 			};
 			
 			var applyTeam = function () {
@@ -877,14 +902,25 @@
 			};
 			
 			var cancelTeam = function () {
-				document.getElementById('selected-team').src = '	';
+				document.getElementById('selected-team-name').innerHTML = '';
+				document.getElementById('selected-team').src = '';
 				colorOption = { side: null, team: null };
 				modal(false);
 				document.getElementById('team-picker').style.display = 'none';
 			};
 			
-			var setTeamTooltip = function (t) {
-				// do nothing
+			var setTeamTooltip = function (event, teamname) {
+				var tip = document.getElementById('tool-tip');
+				tip.style.left = event.x - 20;
+				tip.style.top = event.y + 20;
+				tip.innerHTML = teamname;
+				tip.style.display = 'block';
+			};
+			
+			var clearTeamTooltip = function () {
+				var tip = document.getElementById('tool-tip');
+				tip.style.display = 'none';
+				tip.innerHTML = '';
 			};
 			
 			var colorOption = { team: 0, which: 0 };
@@ -1042,10 +1078,13 @@
 				<div id="teams" class="scroll-div"></div>
 				<div class="scroller right" onmousedown="startScroll('teams', 20, 8)" onmouseup="stopScroll()" onmouseout="stopScroll()">&rtrif;</div>
 			</div>
-			<div>
+			<div style="margin-left: 10%;">
 				<div class="team-select"><img id="selected-team" src=""/></div>
-				<div class="button" onclick="applyTeam()">OK</div>
-				<div class="button" onclick="cancelTeam()">CANCEL</div>
+				<span style="font-size: 32pt;" id="selected-team-name"></span>
+				<div style="float: right; margin-right: 10%; margin-top: 100px;">
+					<div class="button" onclick="applyTeam()">OK</div>
+					<div class="button" onclick="cancelTeam()">CANCEL</div>
+				</div>
 			</div>
 		</div>
 		<div id="goal-scored" class="info-popup" style="display: none;">
@@ -1069,5 +1108,6 @@
 		<audio id="buzzer-sound" preload="true">
 			<source src="sounds/buzzer.mp3" type="audio/mp3"/>
 		</audio>
+		<div id="tool-tip"></div>
 	</body>
 </html>
