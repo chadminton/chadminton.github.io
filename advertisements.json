@@ -26,5 +26,23 @@
 		"images": [
 			"img/ads/neighbors-logo.png"
 		]
+	},
+	{
+		"id": 4,
+		"name": "Dirty Frank's",
+		"font": "Arial",
+		"href": "http://dirtyfrankscolumbus.com/",
+		"images": [
+			"img/ads/dirtyfranks-logo.png"
+		]
+	},
+	{
+		"id": 5,
+		"name": "16-Bit",
+		"font": "Arial",
+		"href": "http://www.16-bitbar.com/columbus",
+		"images": [
+			"img/ads/16-bit-logo.png"
+		]
 	}
 ]
