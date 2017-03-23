@@ -66,6 +66,7 @@
 					if (time <= 0) {
 						time = 0;
 						play = false;
+						document.getElementById('buzzer-sound').play();
 					}
 					document.getElementById('clock').classList.remove('stopped');
 				} else {
@@ -80,6 +81,13 @@
 				
 				if (min == 0) {
 					display = sec.toString() + '.' + tenths;
+					if (tenths == 0) {
+						window.setTimeout(function () {
+							document.getElementById('beep-sound').pause();
+							document.getElementById('beep-sound').load();
+						}, 250);
+						document.getElementById('beep-sound').play();
+					}
 				} else {
 					var zero = sec < 10 ? '0' : '';
 					display = min.toString() + ':' + zero + sec;
@@ -198,7 +206,7 @@
 				font-size: 40pt;
 				margin-left: 8vw;
 				cursor: pointer;
-				color: #ccc;
+				color: #0f4;
 			}
 			
 			#period::before { 
@@ -354,5 +362,11 @@
 			<button onclick="saveSettings()">SAVE</button>
 			<button onclick="cancelSettings()">CANCEL</button>
 		</div>
+		<audio id="beep-sound" preload="true">
+			<source src="sounds/beep.mp3" type="audio/mp3"/>
+		</audio>
+		<audio id="buzzer-sound" preload="true">
+			<source src="sounds/buzzer.mp3" type="audio/mp3"/>
+		</audio>
 	</body>
 </html>
