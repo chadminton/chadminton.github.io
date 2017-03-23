@@ -1,0 +1,30 @@
+[
+	{
+		"id": 1,
+		"name": "Hot Chicken Takeover",
+		"font": "Impact",
+		"href": "http://hotchickentakeover.com/",
+		"images": [
+			"img/ads/hct-food.png",
+			"img/ads/hct-logo.png"
+		]
+	},
+	{
+		"id": 2,
+		"name": "",
+		"font": "Impact",
+		"href": "http://pjscolumbus.com/5448",
+		"images": [
+			"img/ads/pjs-logo.png"
+		]
+	},
+	{
+		"id": 3,
+		"name": "Neighbor's Deli",
+		"font": "Impact",
+		"href": "http://www.therealneighborsdeli.com/",
+		"images": [
+			"img/ads/neighbors-logo.png"
+		]
+	}
+]
