@@ -222,6 +222,18 @@
 				-webkit-transform: translate(-50%, -50%); /* translate by 50% of the element's height/width */
 				z-index: 10;
 			}
+
+			#commercial {
+				position: absolute;
+				width: 640px;
+				height: 390px;
+				background-color: black;
+				top: 50%;
+				left: 50%;
+				-webkit-transform: translate(-50%, -50%); /* translate by 50% of the element's height/width */
+				z-index: 20;
+				display: none;
+			}
 			
 			.info-popup {
 				position: absolute;
@@ -371,7 +383,54 @@
 			}
 
 		</style>
+		<script src="http://www.youtube.com/player_api"></script>
 		<script type="text/javascript">
+
+			var ytReady = false;
+			var commercials = [
+				'B4PNk7Y4XSE', // sonic
+				'E03D1PS3ypk', // pacific life
+				'aZo4yKpROL0', // kfc
+				'F1WOtKbIPJA', // arby's
+				'6FcFUINjjAk', // oreo
+				'VNw8SJ1nIHc', // skyline
+				'ZUDkrkykvZs', // nintendo switch
+				'D692JJPPUe4', // VW mr. roboto
+				'3tSiE6bTnxE', // captain morgan
+			];
+
+			function onYouTubePlayerAPIReady() {
+				ytReady = true;
+			}
+
+			var playRandomCommercial = function (callback) {
+				
+				var c = document.getElementById('commercial');
+				c.innerHTML = 'LOADING ADVERTISEMENT';
+				c.style.display = 'block';
+				var video = commercials.splice(Math.floor(Math.random() * commercials.length), 1)[0];
+				
+				var player = new YT.Player('commercial', {
+				  height: '390',
+				  width: '640',
+				  videoId: video,
+				  events: {
+					onReady: function (event) {
+						event.target.playVideo();
+					},
+					onStateChange: function (event) {        
+						if(event.data === 0) {
+							var c = document.getElementById('commercial');
+							c.innerHTML = '';
+							c.style.display = 'none';
+							if(callback) callback();
+						}
+					}
+				  }
+				});
+			}
+
+			// --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- end of youtube stuff
 		
 			var getJSONfile = function (filename, callback) {
 				var xmlhttp;
@@ -522,6 +581,7 @@
 					teams[team].to--;			
 					if (play) toggleClock();
 				}
+				showInfo('TIMEOUT', { f: teams[team].colors.f, b: teams[team].colors.b }, true);
 			};
 			
 			var displayTime = function () {
@@ -630,15 +690,29 @@
 				}
 			};
 			
-			var showInfo = function (msg, style) {
+			var resumeOnInfoClose = null;
+			var showInfo = function (msg, style, resume) {
+				resumeOnInfoClose = resume;
+				style = style || { b: '#000', f: '#fff' };
 				modal(true);
-				var go = document.getElementById('game-over');
-				go.style.display = 'block';
-				go.style.backgroundColor = style.b;
-				go.style.color = style.f;
-				var info = document.getElementById('info');
-				info.innerHTML = msg;
-				info.style.fontSize = (1200 / msg.length) + 'pt';
+				playRandomCommercial(function () {
+					var go = document.getElementById('game-over');
+					go.style.display = 'block';
+					go.style.backgroundColor = style.b;
+					go.style.color = style.f;
+					var info = document.getElementById('info');
+					info.innerHTML = msg;
+					info.style.fontSize = (1200 / msg.length) + 'pt';
+				});
+			};
+
+			var closeInfo = function () {
+				document.getElementById('game-over').style.display = 'none';
+				modal(false);
+				if (resumeOnInfoClose) {
+					resumeOnInfoClose = null;
+					toggleClock();
+				}
 			};
 			
 			var editGoal = function (team, index) {
@@ -922,10 +996,11 @@
 			<div class="button" onclick="subtractGoal(lastScore)">CANCEL</div>
 			<div class="shine"></div>
 		</div>
-		<div id="game-over" class="info-popup" onclick="document.getElementById('game-over').style.display = 'none'; modal(false);" style="text-transform: uppercase; display: none;">
+		<div id="game-over" class="info-popup" onclick="closeInfo()" style="text-transform: uppercase; display: none;">
 			<div id="info"></div>
 			<div class="shine"></div>
 		</div>
+		<div id="commercial"></div>
 		<audio id="beep-sound" preload="true">
 			<source src="sounds/beep.mp3" type="audio/mp3"/>
 		</audio>
