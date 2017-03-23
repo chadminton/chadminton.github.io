@@ -406,11 +406,11 @@
 			var playRandomCommercial = function (callback) {
 				
 				var c = document.getElementById('commercial');
-				c.innerHTML = 'LOADING ADVERTISEMENT';
+				c.innerHTML = '<div id="commercial-inner">LOADING ADVERTISEMENT</div>';
 				c.style.display = 'block';
 				var video = commercials.splice(Math.floor(Math.random() * commercials.length), 1)[0];
 				
-				var player = new YT.Player('commercial', {
+				var player = new YT.Player('commercial-inner', {
 				  height: '390',
 				  width: '640',
 				  videoId: video,
@@ -452,16 +452,16 @@
 
 				if (window.location.protocol == 'file:') {
 					callback([
-						{ name: 'Squirrels', abbr: 'MIN', color1: '#aaaaaa', color2: '#001144' },
-						{ name: 'Squirrels', abbr: 'NY', color1: '#aaaaaa', color2: '#001144' },
-						{ name: 'Squirrels', abbr: 'BRK', color1: '#aaaaaa', color2: '#001144' },
-						{ name: 'Squirrels', abbr: 'PHI', color1: '#aaaaaa', color2: '#001144' },
-						{ name: 'Squirrels', abbr: 'NE', color1: '#aaaaaa', color2: '#001144' },
-						{ name: 'Squirrels', abbr: 'LOU', color1: '#aaaaaa', color2: '#001144' },
-						{ name: 'Squirrels', abbr: 'ATL', color1: '#aaaaaa', color2: '#001144' },
-						{ name: 'Squirrels', abbr: 'ORL', color1: '#aaaaaa', color2: '#001144' },
-						{ name: 'Squirrels', abbr: 'SD', color1: '#aaaaaa', color2: '#001144' },
-						{ name: 'Squirrels', abbr: 'CMB', color1: '#aaaaaa', color2: '#001144' }
+						{ id: 1, name: 'Squirrels', abbr: 'MIN', color1: 'gray', color2: 'navy' },
+						{ id: 2, name: 'Metts', abbr: 'NY', color1: 'orange', color2: 'blue' },
+						{ id: 3, name: 'Scoops', abbr: 'BRK', color1: 'purple', color2: 'green' },
+						{ id: 4, name: 'Cheesesteaks', abbr: 'PHI', color1: 'blue', color2: 'gold' },
+						{ id: 5, name: 'Lobsters', abbr: 'NE', color1: 'maroon', color2: 'navy' },
+						{ id: 6, name: 'Sluggers', abbr: 'LOU', color1: 'lime', color2: 'green' },
+						{ id: 7, name: 'Peaches', abbr: 'ATL', color1: 'orange', color2: 'green' },
+						{ id: 8, name: 'Ocelots', abbr: 'ORL', color1: 'gray', color2: 'orange' },
+						{ id: 9, name: 'Whalers', abbr: 'SD', color1: 'navy', color2: 'white' },
+						{ id: 10, name: 'Archers', abbr: 'CMB', color1: 'maroon', color2: 'gold' }
 					]);
 				} else {
 					xmlhttp.open("GET", filename, true);
@@ -1000,7 +1000,9 @@
 			<div id="info"></div>
 			<div class="shine"></div>
 		</div>
-		<div id="commercial"></div>
+		<div id="commercial">
+			<div id="commercial-inner"></div>
+		</div>
 		<audio id="beep-sound" preload="true">
 			<source src="sounds/beep.mp3" type="audio/mp3"/>
 		</audio>
