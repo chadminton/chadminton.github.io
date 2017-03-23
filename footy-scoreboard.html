@@ -18,6 +18,17 @@
 				play = !play;
 				last = play ? new Date() : null;
 			}
+
+			var getColorValue = function (hexcode) {
+				if (hexcode.length == 7 && hexcode[0] == '#') {
+					var r = parseInt(hexcode.substr(1, 2), 16);
+					var g = parseInt(hexcode.substr(3, 2), 16);
+					var b = parseInt(hexcode.substr(5, 2), 16);
+					return r + g + b;
+				} else {
+					return 0;
+				}
+			}
 			
 			var displayTime = function () {
 				window.requestAnimationFrame(displayTime);
@@ -27,10 +38,22 @@
 				document.getElementById('away-score').innerHTML = (teams[0].g * 6) + teams[0].b;
 				document.getElementsByClassName('away')[0].style.backgroundColor = teams[0].c;
 				
+				if (getColorValue(teams[0].c) > getColorValue('#ffffff') * 0.5	) {
+					document.getElementsByClassName('away')[0].style.color = '#000000';
+				} else {
+					document.getElementsByClassName('away')[0].style.color = '#ffffff';
+				}
+				
 				document.getElementById('home-goals').innerHTML = teams[1].g;
 				document.getElementById('home-behinds').innerHTML = teams[1].b;
 				document.getElementById('home-score').innerHTML = (teams[1].g * 6) + teams[1].b;
 				document.getElementsByClassName('home')[0].style.backgroundColor = teams[1].c;
+				
+				if (getColorValue(teams[1].c) > getColorValue('#ffffff') * 0.5) {
+					document.getElementsByClassName('home')[0].style.color = '#000000';
+				} else {
+					document.getElementsByClassName('home')[0].style.color = '#ffffff';
+				}
 				
 				if (play) {
 					var now = new Date();
