@@ -286,6 +286,9 @@
 				box-shadow: 0px 0px 0px 3px #fff;
 				overflow: hidden;
 				z-index: 10;
+				background-position: center center;
+				background-size: auto 150%;
+				background-repeat: no-repeat;
 			}
 			
 			.info-popup > div.shine {
@@ -447,6 +450,18 @@
 		</style>
 		<script src="https://www.youtube.com/player_api"></script>
 		<script type="text/javascript">
+		
+		Array.prototype.shuffle = function() {
+			var i = this.length, j, temp;
+			if ( i == 0 ) return this;
+			while ( --i ) {
+				j = Math.floor( Math.random() * ( i + 1 ) );
+				temp = this[i];
+				this[i] = this[j];
+				this[j] = temp;
+			}
+			return this;
+		}
 
 			var ytReady = false;
 			var commercials = [
@@ -460,17 +475,22 @@
 				'D692JJPPUe4', // VW mr. roboto
 				'3tSiE6bTnxE', // captain morgan
 			];
+			
+			commercials.shuffle();
 
 			function onYouTubePlayerAPIReady() {
 				ytReady = true;
 			}
-
-			var playRandomCommercial = function (callback) {
+			
+			var adWait = false;
+			var nextCommercial = 0;
+			var playNextCommercial = function (callback) {
+				adWait = true;
 				
 				var c = document.getElementById('commercial');
 				c.innerHTML = '<div id="commercial-inner">LOADING ADVERTISEMENT</div>';
 				c.style.display = 'block';
-				var video = commercials.splice(Math.floor(Math.random() * commercials.length), 1)[0];
+				var video = commercials[nextCommercial];
 				
 				var player = new YT.Player('commercial-inner', {
 				  height: '390',
@@ -485,14 +505,16 @@
 							var c = document.getElementById('commercial');
 							c.innerHTML = '';
 							c.style.display = 'none';
+							adWait = false;
 							if(callback) callback();
+							nextCommercial = (nextCommercial + 1) % commercials.length;
 						}
 					}
 				  }
 				});
 			}
 
-			// --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- end of youtube stuff
+			// --------------------------------------------------------------------------------------------------------------------------------- end of youtube stuff
 		
 			var getJSONfile = function (filename, callback) {
 				var xmlhttp;
@@ -675,14 +697,46 @@
 		
 			var toggleClock = function () {
 				play = !play;
-				last = play ? new Date() : null;
+				last = play ? new Date() : null;				
+			};
+			
+			var playAnthem = function (anthem) {
+				modal(true);
+				var flag = document.createElement('div');
+				flag.id = 'anthem';
+				flag.style.position = 'absolute';
+				flag.style.top = '0px';
+				flag.style.left = '0px';
+				flag.style.bottom = '0px';
+				flag.style.right = '0px';
+				flag.style.zIndex = '1005';
+				document.body.appendChild(flag);
+				
+				var adWait = true;
+				var player = new YT.Player('anthem', {
+				  height: window.innerHeight,
+				  width: window.innerWidth,
+				  videoId: anthem,
+				  events: {
+					onReady: function (event) {
+						event.target.playVideo();
+					},
+					onStateChange: function (event) {        
+						if(event.data === 0) {
+							document.body.removeChild(document.getElementById('anthem'));
+							adWait = false;
+							modal(false);
+						}
+					}
+				  }
+				});
 			};
 			
 			var timeout = function (team) {
 				if (teams[team].to > 0) {	
 					teams[team].to--;			
 					if (play) toggleClock();
-					showInfo('TIMEOUT', { f: teams[team].colors.f, b: teams[team].colors.b }, true);
+					showInfo('TIMEOUT', { f: teams[team].colors.f, b: teams[team].colors.b, i: teams[team].img }, { resume: true });
 				}
 			};
 			
@@ -731,6 +785,7 @@
 						play = false;
 						var message = '';
 						var style = { b: '#000', f: '#fff' };
+						var delayAd = false;
 						switch(period) {
 							case 1:
 								message = "HALFTIME";
@@ -739,10 +794,13 @@
 							case 2:
 								if (teams[0].g > teams[1].g) {
 									style = teams[0].colors;
+									style.i = teams[0].img;
 									message = teams[0].n + ' WIN!';
 								} else if (teams[0].g < teams[1].g) {
 									style = teams[1].colors;
+									style.i = teams[1].img;
 									message = teams[1].n + ' WIN!';
+									delayAd = true;
 								} else {
 									message = "OVERTIME";
 									togglePeriod();
@@ -752,7 +810,7 @@
 								message = "OVERTIME";
 								break;
 						}
-						showInfo(message, style);
+						showInfo(message, style, { delayAd: delayAd });
 					} else if (time <= 60000 && lastScore != null) {
 						play = false;
 					}
@@ -784,7 +842,9 @@
 				document.getElementById('clock').innerHTML = display;
 			};
 			
+			var isModal;
 			var modal = function (b) {
+				isModal = b;
 				if (b) {
 					document.getElementById('shroud').style.display = 'block';
 				} else {					
@@ -793,22 +853,33 @@
 			};
 			
 			var resumeOnInfoClose = null;
-			var showInfo = function (msg, style, resume) {
-				resumeOnInfoClose = resume;
-				style = style || { b: '#000', f: '#fff' };
+			var showInfo = function (msg, style, options) {
+				options = options || {};
+				resumeOnInfoClose = options.resume;
+				style = style || { b: '#000', f: '#fff', i: '' };
 				modal(true);
-				playRandomCommercial(function () {
+				var showMe = function () {
 					var go = document.getElementById('game-over');
 					go.style.display = 'block';
 					go.style.backgroundColor = style.b;
 					go.style.color = style.f;
+					go.style.backgroundImage = 'url(\'' + style.i + '\')';
 					var info = document.getElementById('info');
 					info.innerHTML = msg;
 					info.style.fontSize = (1200 / msg.length) + 'pt';
-				});
+				};
+				if (options.delayAd) {
+					adWait = true;
+					showMe();
+					window.setTimeout(playNextCommercial, 8000);
+				} else {
+					playNextCommercial(showMe);
+				}
 			};
 
 			var closeInfo = function () {
+				if (adWait) return;
+				
 				document.getElementById('game-over').style.display = 'none';
 				modal(false);
 				if (resumeOnInfoClose) {
@@ -861,7 +932,9 @@
 				var gs = document.getElementById('goal-scored');
 				gs.style.display = 'none';
 				if (otWinner) {
-					showInfo(teams[lastScore].n + ' WIN!', teams[lastScore].colors);
+					var style = teams[lastScore].colors;
+					style.i = teams[lastScore].img;
+					showInfo(teams[lastScore].n + ' WIN!', teams[lastScore].colors, { delayAd: true }); // pass true to save the ad until the end
 					otWinner = false;
 				}
 				lastScore = null;
@@ -1037,7 +1110,7 @@
 			};
 			
 			var checkKey = function (event) {
-				if (!checkEvent(event)) return;
+				if (!checkEvent(event) || isModal) return;
 				var handled = true;
 				switch (event.keyCode) {
 					case 32: // space
@@ -1065,8 +1138,10 @@
 			<div id="period" onclick="togglePeriod()">1</div>
 			<div id="clock" onclick="toggleClock()">20:00</div>
 			<div class="menu">
-				<div class="button" onclick="setTime()">&bullet;</div>
+				<div class="button" onclick="playAnthem('JElrnk3btxo')">US</div>
+				<div class="button" onclick="playAnthem('hr6kzHTPY1Y')">CA</div>
 				<div class="button" onclick="refresh()">&#10227;</div>
+				<div class="small button" onclick="setTime()">&bullet;</div>
 				<div class="small button" onclick="setPeriodLength()">P</div>
 			</div>
 			<div id="ad"></div>
