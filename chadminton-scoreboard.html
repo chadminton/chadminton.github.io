@@ -1021,12 +1021,19 @@
 			
 			var checkKey = function (event) {
 				if (!checkEvent(event)) return;
-				
-				if (event.keyCode == 32) {
-					toggleClock();
+				var handled = true;
+				switch (event.keyCode) {
+					case 32: // space
+						toggleClock();
+						break;
+					default: // in this case pass the event on
+						handled = false;
+						break;
 				}
-				event.stopPropagation();
-				event.preventDefault();
+				if (handled) {
+					event.stopPropagation();
+					event.preventDefault();
+				}
 			};
 			
 			var checkEvent = function (event) {
