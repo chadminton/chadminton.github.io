@@ -67,6 +67,7 @@
 						time = 0;
 						play = false;
 						document.getElementById('buzzer-sound').play();
+						navigator.vibrate(2000);
 					}
 					document.getElementById('clock').classList.remove('stopped');
 				} else {
@@ -87,6 +88,7 @@
 							document.getElementById('beep-sound').load();
 						}, 250);
 						document.getElementById('beep-sound').play();
+						navigator.vibrate(250);
 					}
 				} else {
 					var zero = sec < 10 ? '0' : '';
@@ -294,6 +296,14 @@
 				z-index: 99;
 			}
 			
+			#version {
+				position: absolute;
+				left: 0px;
+				top: 0px;
+				font-size: 8pt;
+				color: '#00f';
+			}
+			
 			@media only screen and (orientation: landscape) {
 				.top {
 					height: 20vh;
@@ -322,6 +332,7 @@
 	</head>
 	<body onload="ready()">
 		<div class="top">
+			<div id="version">1.0</div>
 			<div id="period" onclick="togglePeriod()">1</div>
 			<div id="clock" onclick="toggleClock()">20:00</div>
 		</div>
