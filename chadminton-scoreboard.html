@@ -620,11 +620,26 @@
 				cache = getLocalValue('cache') || {};
 				periodLength = cache.periodLength || 20 * 60 * 1000; // X minutes * 60 seconds * 1000 thousandths
 				period = cache.period || 1;
-				time = cache.time || periodLength;
+				time = cache.time != null ? cache.time : periodLength;
 				teams = cache.teams || [
 					{ g: 0, b: 0, n: 'select away team', to: 2, goals: [], img: '', colors: { f: 'white', b: 'red' } },
 					{ g: 0, b: 0, n: 'select home team', to: 2, goals: [], img: '', colors: { f: 'white', b: 'blue' } }
 				];
+				if (time == 0) {
+					if (period != 1 && teams[0].g != teams[1].g) {
+						teams[0].g = 0;
+						teams[0].goals = [];
+						teams[0].to = 2;
+						teams[1].g = 0;
+						teams[1].goals = [];
+						teams[1].to = 2;
+						
+						if (period == 2) {
+							toggglePeriod();
+						}
+					}
+					togglePeriod();
+				}
 			};
 		
 			var getHex = function (value, mult) {
@@ -937,6 +952,7 @@
 					style.i = teams[lastScore].img;
 					showInfo(teams[lastScore].n + ' WIN!', teams[lastScore].colors, { delayAd: true }); // pass true to save the ad until the end
 					otWinner = false;
+					time = 0;
 				}
 				lastScore = null;
 			};
