@@ -58,6 +58,7 @@ a:hover {
 	background-repeat: no-repeat;
 	background-color: #fff;
 	border: solid thin white;
+	border-radius: 5px;
 }
 
 #content {
