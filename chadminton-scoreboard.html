@@ -128,6 +128,70 @@
 				width: 100%;
 				text-align: center;
 			}
+			
+			#versus {
+				width: 50px;
+				height: 50px;
+				border-radius: 25px;
+				background-color: black;
+				color: white;
+				cursor: pointer;
+				text-align: center;
+				font-size: 26pt;
+				padding: 0px;
+				margin: 0px;
+				box-shadow: 0px 0px 0px 1px #fff;
+				font-style: normal;
+				position: absolute;
+				top: 50%;
+				left: 50%;
+				-webkit-transform: translate(-50%, -50%); /* translate by 50% of the element's height/width */
+				z-index: 7;
+			}
+			
+			#versus:hover {
+				background-color: #fff;
+				color: #000;
+			}
+			
+			#matchup-card {
+				display: none;
+				position: absolute;
+				top: 50%;
+				left: 50%;
+				height: 80vh;
+				width: 80vw;
+				box-shadow: 0px 0px 0px 300px #000;
+				-webkit-transform: translate(-50%, -50%); /* translate by 50% of the element's height/width */
+				z-index: 1000;
+				background-color: #000;
+			}
+			
+			#matchup-card > div {
+				position: relative;
+				height: 80vh;
+				width: 40vw;
+				background-position: bottom center;
+				background-size: auto 60%;
+				background-repeat: no-repeat;
+				text-align: center;
+			}
+			
+			#matchup-card > div > .matchup-city {
+				font-size: 2vmax;
+			}
+			
+			#matchup-card > div > .matchup-name {
+				font-size: 5vmax;
+			}
+			
+			#matchup-card > div:first-child {
+				float: left;
+			}
+			
+			#matchup-card > div:last-child {
+				float: right;
+			}
 
 			.menu {
 				opacity: 0.1;
@@ -474,7 +538,8 @@
 				'ZUDkrkykvZs', // nintendo switch
 				'D692JJPPUe4', // VW mr. roboto
 				'3tSiE6bTnxE', // captain morgan
-				'PtLXjgKe3v0' // hot chicken takeover
+				'QkMUZ1U1Ye8', // huntington
+				'7LQpRQh2KSQ'  // quiznos
 			];
 			
 			commercials.shuffle();
@@ -1004,6 +1069,7 @@
 			};
 			
 			var applyTeam = function () {
+				teams[selectedTeam.side].c = selectedTeam.team.city;
 				teams[selectedTeam.side].n = selectedTeam.team.name;
 				teams[selectedTeam.side].colors.b = selectedTeam.team.color1;
 				teams[selectedTeam.side].colors.f = selectedTeam.team.color2;
@@ -1146,6 +1212,38 @@
 			var checkEvent = function (event) {
 				return !event.chadmintonCancel;
 			};
+			
+			var showMatchupCard = function () {
+				modal(true);
+				var a = document.getElementById('matchup-away');
+				a.style.backgroundColor = teams[0].colors.b;
+				a.style.color = teams[0].colors.f;
+				a.style.backgroundImage = 'url(\'' + teams[0].img + '\')';
+				document.getElementById('matchup-away-city').innerHTML = teams[0].c;
+				document.getElementById('matchup-away-name').innerHTML = teams[0].n;
+				
+				var h = document.getElementById('matchup-home');
+				h.style.backgroundColor = teams[1].colors.b;
+				h.style.color = teams[1].colors.f;
+				h.style.backgroundImage = 'url(\'' + teams[1].img + '\')';
+				document.getElementById('matchup-home-city').innerHTML = teams[1].c;
+				document.getElementById('matchup-home-name').innerHTML = teams[1].n;
+				
+				document.getElementById('matchup-card').style.display = 'block';
+			};
+			
+			var hideMatchupCard = function () {
+				document.getElementById('matchup-away').style.backgroundImage = '';
+				document.getElementById('matchup-away-city').innerHTML = '';
+				document.getElementById('matchup-away-name').innerHTML = '';
+				
+				document.getElementById('matchup-home').style.backgroundImage = '';
+				document.getElementById('matchup-home-city').innerHTML = '';
+				document.getElementById('matchup-home-name').innerHTML = '';
+				
+				document.getElementById('matchup-card').style.display = 'none';
+				modal(false);
+			};
 		
 		</script>
 	</head>
@@ -1164,6 +1262,7 @@
 			<div id="ad"></div>
 		</div>
 		<div class="bottom">
+			<div id="versus" class="button" onclick="showMatchupCard()">vs</div>
 			<div id="away" class="team">
 				<img id="away-logo" class="transparent-background" src="" />
 				<div id="away-name" class="name"></div>
@@ -1232,6 +1331,16 @@
 		<div id="game-over" class="info-popup" onclick="closeInfo()" style="text-transform: uppercase; display: none;">
 			<div id="info"></div>
 			<div class="shine"></div>
+		</div>
+		<div id="matchup-card" onclick="hideMatchupCard()">
+			<div id="matchup-away">
+				<div id="matchup-away-city" class="matchup-city"></div>
+				<div id="matchup-away-name" class="matchup-name"></div>
+			</div>
+			<div id="matchup-home">
+				<div id="matchup-home-city" class="matchup-city"></div>
+				<div id="matchup-home-name" class="matchup-name"></div>
+			</div>
 		</div>
 		<div id="commercial">
 			<div id="commercial-inner"></div>
