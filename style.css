@@ -57,6 +57,7 @@ a:hover {
 	background-position: top left;
 	background-repeat: no-repeat;
 	background-color: #fff;
+	border: solid thin white;
 }
 
 #content {
