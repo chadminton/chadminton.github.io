@@ -100,7 +100,30 @@ img.block {
 	top: 0px;
 }
 
-.story > .body {
+.story > .image {
+	display: inline-block;
+	height: 100px;
+	width: auto;
+	box-shadow: 0px 0px 0px 1px #444;
+}
+
+.story > .image > img {
+	height: 100px;
+	width: auto;
+}
+
+.story > .image + .body {
+	display: inline-block;
+	margin-left: 10px;
+	width: 85%;
+}
+
+.story > .body > a {
+	color: #07d;
+}
+
+.story > .body > a:hover {
+	color: #d00;
 }
 
 #footer {
