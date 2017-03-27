@@ -18,6 +18,14 @@ a:hover {
 	position: relative;
 }
 
+.links::before {
+	content: 'CHADMINTON';
+	position: absolute;
+	left: 200px;
+	font-size: 20pt;
+	opacity: 0.2;
+}
+
 .links {
 	position: absolute;
 	top: 50px;
