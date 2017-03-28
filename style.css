@@ -18,6 +18,14 @@ a:hover {
 	position: relative;
 }
 
+.twitter-container {
+	position: absolute;
+	right: 0px;
+	top: 150px;
+	bottom: 30px;
+	overflow-y: auto;
+}
+
 .links::before {
 	content: 'CHADMINTON';
 	position: absolute;
