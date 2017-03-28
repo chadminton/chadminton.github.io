@@ -604,16 +604,16 @@
 					switch(filename) {
 						case 'teams.json':
 							callback([
-								{ id: 1, name: 'Squirrels', abbr: 'MIN', color1: 'gray', color2: 'navy' },
-								{ id: 2, name: 'Metts', abbr: 'NY', color1: 'orange', color2: 'blue' },
-								{ id: 3, name: 'Scoops', abbr: 'BRK', color1: 'purple', color2: 'green' },
-								{ id: 4, name: 'Cheesesteaks', abbr: 'PHI', color1: 'blue', color2: 'gold' },
-								{ id: 5, name: 'Lobsters', abbr: 'NE', color1: 'maroon', color2: 'navy' },
-								{ id: 6, name: 'Sluggers', abbr: 'LOU', color1: 'lime', color2: 'green' },
-								{ id: 7, name: 'Peaches', abbr: 'ATL', color1: 'orange', color2: 'green' },
-								{ id: 8, name: 'Ocelots', abbr: 'ORL', color1: 'gray', color2: 'orange' },
-								{ id: 9, name: 'Whalers', abbr: 'SD', color1: 'navy', color2: 'white' },
-								{ id: 10, name: 'Archers', abbr: 'CMB', color1: 'maroon', color2: 'gold' }
+								{ id: 1, city: 'Minneapolis', name: 'Squirrels', abbr: 'MIN', color1: 'gray', color2: 'navy' },
+								{ id: 2, city: 'New York', name: 'Metts', abbr: 'NY', color1: 'orange', color2: 'blue' },
+								{ id: 3, city: 'Brooklyn', name: 'Scoops', abbr: 'BRK', color1: 'purple', color2: 'green' },
+								{ id: 4, city: 'Philadelphia', name: 'Cheesesteaks', abbr: 'PHI', color1: 'blue', color2: 'gold' },
+								{ id: 5, city: 'New England', name: 'Lobsters', abbr: 'NE', color1: 'maroon', color2: 'navy' },
+								{ id: 6, city: 'Louisville', name: 'Sluggers', abbr: 'LOU', color1: 'lime', color2: 'green' },
+								{ id: 7, city: 'Atlanta', name: 'Peaches', abbr: 'ATL', color1: 'orange', color2: 'green' },
+								{ id: 8, city: 'Orlando', name: 'Ocelots', abbr: 'ORL', color1: 'gray', color2: 'orange' },
+								{ id: 9, city: 'San Diego', name: 'Whalers', abbr: 'SD', color1: 'navy', color2: 'white' },
+								{ id: 10, city: 'Columbus', name: 'Griffins', abbr: 'CMB', color1: 'maroon', color2: 'gold' }
 							]);
 							break;
 						case 'advertisements.json':
@@ -1127,6 +1127,11 @@
 				document.getElementById('color-picker').style.display = 'none';
 			};
 			
+			var swapColors = function (side) {
+				var old = teams[side].colors;
+				teams[side].colors = { f: old.b, b: old.f };
+			};
+			
 			var setName = function (team) {
 				var value = window.prompt('name this team');
 				teams[team].n = value;
@@ -1276,6 +1281,7 @@
 					<div class="small button" onclick="setName(0)">N</div>
 					<div class="small button" onclick="openColorDialog(0, 'f')">fg</div>
 					<div class="small button" onclick="openColorDialog(0, 'b')">bg</div>
+					<div class="small button" onclick="swapColors(0)">sw</div>
 					<div class="small button" onclick="editGoal(0)">e</div>
 				</div>
 			</div>
@@ -1292,6 +1298,7 @@
 					<div class="small button" onclick="setName(1)">N</div>
 					<div class="small button" onclick="openColorDialog(1, 'f')">fg</div>
 					<div class="small button" onclick="openColorDialog(1, 'b')">bg</div>
+					<div class="small button" onclick="swapColors(1)">sw</div>
 					<div class="small button" onclick="editGoal(1)">e</div>
 				</div>
 			</div>
