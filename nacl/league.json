@@ -128,7 +128,9 @@
 			"color1": "#850000",
 			"color2": "#00192e",
 			"logo": "images/NE.png",
-			"abbr": "NE",
+      "abbr": "NE",
+      "wins": 1,
+      "losses": 0,
 			"conference": "Atlantic",
 			"conferenceId": 1,
 			"roster": {
@@ -295,6 +297,8 @@
 			"color2": "#ffd700",
 			"logo": "images/PHI.png",
 			"abbr": "PHI",
+      "wins": 0,
+      "losses": 1,
 			"conference": "Atlantic",
 			"conferenceId": 1,
 			"roster": {
@@ -433,6 +437,8 @@
 			"color2": "#f5deb3",
 			"logo": "images/CT.png",
 			"abbr": "CT",
+      "wins": 0,
+      "losses": 1,
 			"conference": "Atlantic",
 			"conferenceId": 1,
 			"roster": {
@@ -571,6 +577,8 @@
 			"color2": "#321e00",
 			"logo": "images/BAL.png",
 			"abbr": "BAL",
+      "wins": 1,
+      "losses": 0,
 			"conference": "Atlantic",
 			"conferenceId": 1,
 			"roster": {
@@ -851,6 +859,8 @@
 			"color2": "#ffffff",
 			"logo": "images/TOR.png",
 			"abbr": "TOR",
+      "wins": 0,
+      "losses": 1,
 			"conference": "Atlantic",
 			"conferenceId": 1,
 			"roster": {
@@ -993,6 +1003,8 @@
 			"color2": "#1cb11c",
 			"logo": "images/BRK.png",
 			"abbr": "BRK",
+      "wins": 1,
+      "losses": 0,
 			"conference": "Atlantic",
 			"conferenceId": 1,
 			"roster": {
@@ -1141,9 +1153,9 @@
 					}, {
 						"first": "HENRY",
 						"last": "HUGHES",
-						"skill": 85.,
-            "stats": [ ]67356497583822,
-						"number": 49
+						"skill": 85.67356497583822,
+						"number": 49,
+            "stats": [ ]
 					}
 				]
 			}
@@ -1155,6 +1167,8 @@
 			"color2": "#000000",
 			"logo": "images/CLE.png",
 			"abbr": "CLE",
+      "wins": 1,
+      "losses": 0,
 			"conference": "Midwest",
 			"conferenceId": 2,
 			"roster": {
@@ -1333,6 +1347,8 @@
 			"color2": "#fdd500",
 			"logo": "images/CIN.png",
 			"abbr": "CIN",
+      "wins": 1,
+      "losses": 0,
 			"conference": "Midwest",
 			"conferenceId": 2,
 			"roster": {
@@ -1483,6 +1499,8 @@
 			"color2": "#ffd700",
 			"logo": "images/CMB.png",
 			"abbr": "CMB",
+      "wins": 0,
+      "losses": 1,
 			"conference": "Midwest",
 			"conferenceId": 2,
 			"roster": {
@@ -1625,6 +1643,8 @@
 			"color2": "#e3bb55",
 			"logo": "images/PIT.png",
 			"abbr": "PIT",
+      "wins": 0,
+      "losses": 1,
 			"conference": "Midwest",
 			"conferenceId": 2,
 			"roster": {
@@ -1783,6 +1803,8 @@
 			"color2": "#ee781f",
 			"logo": "images/BUF.png",
 			"abbr": "BUF",
+      "wins": 1,
+      "losses": 0,
 			"conference": "Midwest",
 			"conferenceId": 2,
 			"roster": {
@@ -1941,6 +1963,8 @@
 			"color2": "#0071bc",
 			"logo": "images/IND.png",
 			"abbr": "IND",
+      "wins": 0,
+      "losses": 1,
 			"conference": "Midwest",
 			"conferenceId": 2,
 			"roster": {
@@ -2103,6 +2127,8 @@
 			"color2": "#b0c4de",
 			"logo": "images/DET.png",
 			"abbr": "DET",
+      "wins": 0,
+      "losses": 1,
 			"conference": "Midwest",
 			"conferenceId": 2,
 			"roster": {
@@ -2253,6 +2279,8 @@
 			"color2": "#008000",
 			"logo": "images/LOU.png",
 			"abbr": "LOU",
+      "wins": 1,
+      "losses": 0,
 			"conference": "Midwest",
 			"conferenceId": 2,
 			"roster": {
@@ -2419,6 +2447,8 @@
 			"color2": "#fc8b02",
 			"logo": "images/ORL.png",
 			"abbr": "ORL",
+      "wins": 0,
+      "losses": 1,
 			"conference": "South",
 			"conferenceId": 3,
 			"roster": {
@@ -2805,6 +2835,8 @@
 			"color2": "#ff1493",
 			"logo": "images/MIA.png",
 			"abbr": "MIA",
+      "wins": 0,
+      "losses": 1,
 			"conference": "South",
 			"conferenceId": 3,
 			"roster": {
@@ -3109,6 +3141,8 @@
 			"color2": "#2ab6ad",
 			"logo": "images/NO.png",
 			"abbr": "NO",
+      "wins": 1,
+      "losses": 0,
 			"conference": "South",
 			"conferenceId": 3,
 			"roster": {
@@ -3401,6 +3435,8 @@
 			"color2": "#ff4500",
 			"logo": "images/NSH.png",
 			"abbr": "NSH",
+      "wins": 1,
+      "losses": 0,
 			"conference": "South",
 			"conferenceId": 3,
 			"roster": {
@@ -3637,6 +3673,8 @@
 			"color2": "#fffac9",
 			"logo": "images/MIL.png",
 			"abbr": "MIL",
+      "wins": 1,
+      "losses": 0,
 			"conference": "Central",
 			"conferenceId": 4,
 			"roster": {
@@ -4055,6 +4093,8 @@
 			"color2": "#193542",
 			"logo": "images/MIN.png",
 			"abbr": "MIN",
+      "wins": 0,
+      "losses": 1,
 			"conference": "Central",
 			"conferenceId": 4,
 			"roster": {
@@ -4319,6 +4359,8 @@
 			"color2": "#8b4513",
 			"logo": "images/DAL.png",
 			"abbr": "DAL",
+      "wins": 0,
+      "losses": 1,
 			"conference": "Central",
 			"conferenceId": 4,
 			"roster": {
@@ -4607,6 +4649,8 @@
 			"color2": "#828282",
 			"logo": "images/OKC.png",
 			"abbr": "OKC",
+      "wins": 1,
+      "losses": 0,
 			"conference": "Central",
 			"conferenceId": 4,
 			"roster": {
@@ -4757,6 +4801,8 @@
 			"color2": "#deb887",
 			"logo": "images/SA.png",
 			"abbr": "SA",
+      "wins": 0,
+      "losses": 1,
 			"conference": "Southwest",
 			"conferenceId": 6,
 			"roster": {
@@ -5151,6 +5197,8 @@
 			"color2": "#7f009f",
 			"logo": "images/LA.png",
 			"abbr": "LA",
+      "wins": 1,
+      "losses": 0,
 			"conference": "Southwest",
 			"conferenceId": 6,
 			"roster": {
@@ -5403,6 +5451,8 @@
 			"color2": "#ffffff",
 			"logo": "images/SD.png",
 			"abbr": "SD",
+      "wins": 1,
+      "losses": 0,
 			"conference": "Southwest",
 			"conferenceId": 6,
 			"roster": {
@@ -5683,6 +5733,8 @@
 			"color2": "#fc8a00",
 			"logo": "images/COL.png",
 			"abbr": "COL",
+      "wins": 0,
+      "losses": 1,
 			"conference": "Southwest",
 			"conferenceId": 6,
 			"roster": {
@@ -5805,6 +5857,8 @@
 			"color2": "#4169e1",
 			"logo": "images/VAN.png",
 			"abbr": "VAN",
+      "wins": 0,
+      "losses": 1,
 			"conference": "Northwest",
 			"conferenceId": 8,
 			"roster": {
@@ -5939,6 +5993,8 @@
 			"color2": "#fdd600",
 			"logo": "images/OAK.png",
 			"abbr": "OAK",
+      "wins": 1,
+      "losses": 0,
 			"conference": "Northwest",
 			"conferenceId": 8,
 			"roster": {
@@ -6101,6 +6157,8 @@
 			"color2": "#ff781e",
 			"logo": "images/SF.png",
 			"abbr": "SF",
+      "wins": 0,
+      "losses": 1,
 			"conference": "Northwest",
 			"conferenceId": 8,
 			"roster": {
@@ -6365,6 +6423,8 @@
 			"color2": "#6495ed",
 			"logo": "images/SLC.png",
 			"abbr": "SLC",
+      "wins": 0,
+      "losses": 1,
 			"conference": "Northwest",
 			"conferenceId": 8,
 			"roster": {
@@ -6519,6 +6579,8 @@
 			"color2": "#b3b3b3",
 			"logo": "images/SEA.png",
 			"abbr": "SEA",
+      "wins": 1,
+      "losses": 0,
 			"conference": "Northwest",
 			"conferenceId": 8,
 			"roster": {
@@ -6677,6 +6739,8 @@
 			"color2": "#05e1e1",
 			"logo": "images/SJ.png",
 			"abbr": "SJ",
+      "wins": 1,
+      "losses": 0,
 			"conference": "Northwest",
 			"conferenceId": 8,
 			"roster": {
@@ -6703,11 +6767,11 @@
 						"last": "KELLY",
 						"skill": 59.813911187373,
 						"number": 6,
-            "stats": 
+            "stats": [
               {
                 "date": "3/28/2017",
                 "type": 1
-              }[ ]
+              } ]
 					}, {
 						"first": "FRANCIS",
 						"last": "MORENO",
