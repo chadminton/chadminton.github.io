@@ -51,6 +51,7 @@
 			var hideAll = function () {
 				var divs = get('#content > div');
 				for(var i in divs) {
+					if (i == 'length') continue;
 					divs[i].style.display = 'none';
 				}
 			};

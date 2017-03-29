@@ -30,11 +30,13 @@ var getFile = function (filename, callback) {
 		
 var getJSONfile = function (filename, callback) {
 	getFile(filename, function (value) {
+		var o;
 		try {
-			callback(JSON.parse(value));
+			o = JSON.parse(value);
 		} catch (ex) {
-			callback(ex);
+			o = ex;
 		}
+		callback(o);
 	});
 };
 
