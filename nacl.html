@@ -53,11 +53,17 @@
                     getFile('nacl/game-template.html', function (template) {
                         
                         var getTeamInfo = function (team) {
-                            return team.wins + '-' + team.losses + ' ' + team.city + ' ' + team.name;  
+							var wins = team.wins || 0;
+							var losses = team.losses || 0;
+                            return wins + '-' + losses + ' ' + team.city + ' ' + team.name;  
                         };
                         
                         var guts = '';
                         t[0].games.each(function (game) {
+							// if game hasn't been played yet
+							game.aScore = game.aScore || '';
+							game.bScore = game.bScore || '';
+							
                             var away = teams.getElementById(game.away == 'a' ? game.a : game.b);
                             var home = teams.getElementById(game.home == 'a' ? game.a : game.b);
                             var awayScore = game.away == 'a' ? game.aScore : game.bScore;
