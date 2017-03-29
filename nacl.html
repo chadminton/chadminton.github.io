@@ -22,7 +22,7 @@
 			var setup = function (page) {
 				hideAll();
 				var path = page.split('/');
-				var first = path[0];
+				var first = (path[0] || '#day').substring(1);
 				
 				switch(first) {
 					case 'team':
@@ -36,6 +36,10 @@
 						var day = new Date();
 						if (path.length > 1) {
 							day = new Date(path[1]);
+						} else {
+							day.setHours(0);
+							day.setMinutes(0);
+							day.setSeconds(0);
 						}
 						showGames(day);
 						break;
