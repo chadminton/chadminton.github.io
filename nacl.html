@@ -13,14 +13,56 @@
 				getJSONfile('nacl/league.json', function (lg) {
 					teams = lg.league;
 					getJSONfile('nacl/games.json', function (gm) {
-						games = gm;
+						pods = gm.schedule;
+						updatePage();
 					});
 				});
 			};
 			
+			var setup = function (page) {
+				hideAll();
+				var path = page.split('/');
+				var first = path[0];
+				
+				switch(first) {
+					case 'team':
+						break;
+					case 'standings':
+						break;
+					case 'stats':
+						break;
+					case 'day':
+					default:
+						var day = new Date();
+						if (path.length > 1) {
+							day = new Date(path[1]);
+						}
+						showGames(day);
+						break;
+				}
+				
+				get(first).style.display = 'block';
+			};
+			
+			var showGames = function (day) {
+				console.log('showing games for ' + day);
+			};
+			
+			var hideAll = function () {
+				var divs = get('#content > div');
+				for(var i in divs) {
+					divs[i].style.display = 'none';
+				}
+			};
+			
+			var updatePage = function () {
+				var page = window.location.hash;
+				setup(page);
+			};
+			
 		</script>
 	</head>
-	<body onload="ready()">
+	<body onload="ready()" onhashchange="updatePage()">
 		<div id="top" class="nacl">
 			<div class="links">
 				<a href="https://www.facebook.com/chadmintonOhio/"><img src="img/facebook.png" /></a>
@@ -28,9 +70,16 @@
 			</div>
 			<div class="logo"></div>
 		</div>
-		<div id="today-games" class="content">
-			<div class="header">TODAY'S GAMES</div>
-			<div class="body">
+		<div id="content">
+			<div id="day">
+				<div class="header">TODAY'S GAMES</div>
+				<div class="body">
+				</div>
+			</div>
+			<div id="team">
+				<div id="team-header" class="header"></div>
+				<div class="body">
+				</div>
 			</div>
 		</div>
 		<div id="footer">

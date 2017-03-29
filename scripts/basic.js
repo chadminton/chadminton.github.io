@@ -3,8 +3,7 @@ var get = function (query) {
 	return document.querySelectorAll(query);
 };
 
-		
-var getJSONfile = function (filename, callback) {
+var getFile = function (filename, callback) {
 	var xmlhttp;
 	if (window.XMLHttpRequest) {
 		xmlhttp = new XMLHttpRequest();
@@ -14,23 +13,29 @@ var getJSONfile = function (filename, callback) {
 	}
 	xmlhttp.onreadystatechange = function() {
 		if (this.readyState == 4 && this.status == 200) {
-			try {
-				callback(JSON.parse(this.responseText));
-			} catch (ex) {
-				callback(ex);
-			}
+			callback(this.responseText);
 		}
 	};
 
 	if (window.location.protocol == 'file:') {
 		switch(filename) {
 			default:
-				return [];
+				return '';
 		}
 	} else {
 		xmlhttp.open("GET", filename, true);
 		xmlhttp.send();
 	}
+};
+		
+var getJSONfile = function (filename, callback) {
+	getFile(filename, function (value) {
+		try {
+			callback(JSON.parse(value));
+		} catch (ex) {
+			callback(ex);
+		}
+	});
 };
 
 Array.prototype.getElementById = function (id) {
