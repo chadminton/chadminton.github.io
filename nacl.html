@@ -50,7 +50,7 @@
 			
 			var showGames = function (day) {
 				console.log('showing games for ' + day);
-				var games = pods.query({ date: day.toStringFormat('dd/MM/yyyy') });
+				var games = pods.query({ date: day.toStringFormat('MM/dd/yyyy') });
 			};
 			
 			var hideAll = function () {
