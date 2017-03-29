@@ -149,6 +149,7 @@ Array.prototype.query = function (where, fields) {
 			}
 		}
 	}
+	return results;
 }
 
 Array.prototype.getElementById = function (id) {
