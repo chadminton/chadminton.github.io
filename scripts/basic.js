@@ -99,7 +99,7 @@ Date.prototype.toStringFormat = function (format) {
 	format = format.replace(/dddd/g, this.getDayName());
 	format = format.replace(/ddd/g, this.getDayName().substring(0, 3).toUpperCase());
 	format = format.replace(/dd/g, this.getDate().toString().padLeft(2, '0'));
-	format = format.replace(/d/g, (this.getDate() + 1));
+	format = format.replace(/d/g, this.getDate());
 	
 	format = format.replace(/HH/g, this.getHours().toString().padLeft(2, '0'));
 	format = format.replace(/H/g, this.getHours());
