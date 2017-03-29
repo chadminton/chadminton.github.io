@@ -133,7 +133,8 @@ Array.prototype.query = function (where, fields) {
 	for (var i=0; i < this.length; i++) {
 		var obj = this[i];
 		var match = true;
-		for (var key in where) {
+		for (var k=0; k < where.length; k++) {
+			var key = where[k];
 			match = match && obj[key] == where[key];
 		}
 		if (match) {
