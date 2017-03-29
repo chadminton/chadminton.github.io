@@ -4,7 +4,7 @@
 }
 
 .header {
-	width: 100%;
+	width: calc(100% - (15% + 5px));
 	background-color: #0072dd;
 	color: #fff;
 	font-size: 20pt;
