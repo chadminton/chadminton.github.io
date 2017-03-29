@@ -1,6 +1,8 @@
 
 var get = function (query) {
-	return document.querySelectorAll(query);
+	var elems = document.querySelectorAll(query)
+	if (elems.length == 1) return elems[0];
+	else return elems;
 };
 
 var getFile = function (filename, callback) {
@@ -133,8 +135,10 @@ Array.prototype.query = function (where, fields) {
 	for (var i=0; i < this.length; i++) {
 		var obj = this[i];
 		var match = true;
-		for (var k=0; k < where.length; k++) {
-			var key = where[k];
+		var keys = Object.keys(where);
+		for (var k=0; k < keys.length; k++) {
+			var key = keys[k];
+			if (key == 'each') continue;
 			match = match && obj[key] == where[key];
 		}
 		if (match) {
