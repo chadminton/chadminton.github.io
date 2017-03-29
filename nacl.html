@@ -48,8 +48,8 @@
 			
 			var showGames = function (day) {
 				console.log('showing games for ' + day);
-				var pods = pods.query({ date: day.toStringFormat('M/d/yyyy') });
-                if (pods.length == 1) {
+				var t = pods.query({ date: day.toStringFormat('M/d/yyyy') });
+                if (t.length == 1) {
                     getFile('nacl/game-template.html', function (template) {
                         
                         var getTeamInfo = function (team) {
@@ -57,7 +57,7 @@
                         };
                         
                         var guts = '';
-                        pods[0].games.each(function (game) {
+                        t[0].games.each(function (game) {
                             var away = teams.getElementById(game.away == 'a' ? game.a : game.b);
                             var home = teams.getElementById(game.home == 'a' ? game.a : game.b);
                             var awayScore = game.away == 'a' ? game.aScore : game.bScore;
