@@ -1,0 +1,13 @@
+#content {
+	margin: 0px;
+	padding: 0px;
+}
+
+.header {
+	width: 100%;
+	background-color: #0072dd;
+	color: #fff;
+	font-size: 20pt;
+	padding: 5px;
+	padding-left: 15%;
+}

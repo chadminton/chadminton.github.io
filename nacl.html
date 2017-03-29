@@ -1,0 +1,40 @@
+<html>
+	<head>
+		<title>North American Chadminton League</title>
+        <link rel="stylesheet" href="style.css">
+        <link rel="stylesheet" href="nacl.css">		
+		<script src="https://www.youtube.com/player_api"></script>
+		<script src="scripts/basic.js"></script>
+		<script type="text/javascript">
+			
+			var teams, games, cache = getLocalValue('nacl-cache') || {};
+			
+			var ready = function () {
+				getJSONfile('nacl/league.json', function (lg) {
+					teams = lg.league;
+					getJSONfile('nacl/games.json', function (gm) {
+						games = gm;
+					}
+				}
+			};
+			
+		</script>
+	</head>
+	<body onload="ready()">
+		<div id="top" class="nacl">
+			<div class="links">
+				<a href="https://www.facebook.com/chadmintonOhio/"><img src="img/facebook.png" /></a>
+				<a href="https://twitter.com/chadm1nton"><img src="img/twitter.png" /></a>
+			</div>
+			<div class="logo"></div>
+		</div>
+		<div id="today-games" class="content">
+			<div class="header">TODAY'S GAMES</div>
+			<div class="body">
+			</div>
+		</div>
+		<div id="footer">
+			Chadminton &trade; 2004-2017
+		</div>
+	</body>
+</html>

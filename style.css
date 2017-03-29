@@ -46,6 +46,15 @@ a:hover {
 	text-align: right;
 }
 
+#top.nacl > .links::before {
+	content: 'North American Chadminton League';
+	opacity: 0.8;
+}
+
+#top.nacl > .links {
+	background-color: #b00;
+}
+
 .links > a {
 	margin-left: 10px;
 	font-size: 20pt;
@@ -75,6 +84,10 @@ a:hover {
 	background-color: #fff;
 	border: solid thin white;
 	border-radius: 5px;
+}
+
+#top.nacl > .logo {
+	box-shadow: 0px 0px 0px 8px #b00;
 }
 
 #content {
