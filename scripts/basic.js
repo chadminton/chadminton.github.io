@@ -40,7 +40,7 @@ var getJSONfile = function (filename, callback) {
 	});
 };
 
-String.prototype.padLeft(len, pad) {
+String.prototype.padLeft = function (len, pad) {
 	var ret = this;
 	while (ret.length < len) {
 		ret = pad + ret;
