@@ -40,6 +40,12 @@ var getJSONfile = function (filename, callback) {
 	});
 };
 
+Array.prototype.each = function (callback) {
+	for (var i=0; i < this.length; i++) {
+		callback(this[i], i, this);
+	}
+}
+
 Array.prototype.getElementById = function (id) {
 	var value = null;
 	for (var i in this) {

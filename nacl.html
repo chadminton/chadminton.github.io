@@ -50,10 +50,9 @@
 			
 			var hideAll = function () {
 				var divs = get('#content > div');
-				for(var i in divs) {
-					if (i == 'length') continue;
-					divs[i].style.display = 'none';
-				}
+				divs.each(function (item) {
+					item.style.display = 'none';
+				});
 			};
 			
 			var updatePage = function () {
