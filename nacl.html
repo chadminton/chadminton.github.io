@@ -49,16 +49,24 @@
 			var showGames = function (day) {
 				console.log('showing games for ' + day);
 				var t = pods.query({ date: day.toStringFormat('yyyy-MM-ddT00:00:00') });
+                var guts = '';
                 if (t.length == 1) {
                     getFile('nacl/game-template.html', function (template) {
                         
                         var getTeamInfo = function (team) {
 							var wins = team.wins || 0;
 							var losses = team.losses || 0;
-                            return wins + '-' + losses + ' ' + team.city + ' ' + team.name;  
+							var html = '<div class="team" style="background-color: ' + 
+										team.color1 + '; color: ' + 
+										team.color2 + '; background-image: url(\'img/teams/' +
+										team.abbr + '.png\');">';
+                            html += '<div class="record">' + wins + '-' + losses + '</div>' +
+									'<div class="city">' + team.city + '</div>' +
+									'<div class="name">' + team.name + '</div>';  
+							html += '</div>';
+							return html;
                         };
                         
-                        var guts = '';
                         t[0].games.each(function (game) {
 							// if game hasn't been played yet
 							game.aScore = game.aScore || '';
@@ -68,14 +76,46 @@
                             var home = teams.getElementById(game.home == 'a' ? game.a : game.b);
                             var awayScore = game.away == 'a' ? game.aScore : game.bScore;
                             var homeScore = game.home == 'a' ? game.aScore : game.bScore;
-                            guts += template.replace(/{{away-team}}/g, getTeamInfo(away) + ' ' + awayScore)
-                                    .replace(/{{home-team}}/g, getTeamInfo(home) + ' ' + homeScore);
+							var awayWinner = awayScore > homeScore ? ' winner' : '';
+							var homeWinner = homeScore > awayScore ? ' winner' : '';
+                            guts += template.replace(/{{away-team}}/g, getTeamInfo(away))
+                                    .replace(/{{home-team}}/g, getTeamInfo(home));
+							if (awayScore != '' && homeScore != '') {
+								guts = guts.replace(/{{away-score}}/g, '<div class="away score' + awayWinner + '">' + awayScore + '</div>')
+										.replace(/{{home-score}}/g, '<div class="home score' + homeWinner + '">' + homeScore + '</div>');
+							}
+							else {
+								guts = guts.replace(/{{away-score}}/g, '')
+										.replace(/{{home-score}}/g, '');
+							}
+							dayContainer.children[1].innerHTML = guts;							
                         });
-                        var day = get('#day');
-                        day.innerHTML = guts;
-                        day.style.display = 'block';
                     }); 
-                }
+                } else {
+					guts = 'No games';
+				}
+						
+				var headerHtml = '<a class="nav" href="javascript:changeDay(-1)">&ltrif;</a> ' + 
+								 'Games for ' + day.toStringFormat('M/d/yyyy') +
+								 '<a class="nav" href="javascript:changeDay(1)">&rtrif;</a>';
+				
+				var dayContainer = get('#day');
+				dayContainer.children[0].innerHTML = headerHtml;
+				dayContainer.children[1].innerHTML = guts;
+				dayContainer.style.display = 'block';
+			};
+			
+			var changeDay = function (delta) {
+				var page = window.location.hash;
+				var path = page.split('/');
+				var day = new Date();
+				if (path.length > 1) {
+					day = new Date(path[1]);
+				}
+				var ticks = day.getTime() + (delta * 24 * 60 * 60 * 1000);
+				var next = new Date();
+				next.setTime(ticks);
+				window.location.hash = '#day/' + next.toStringFormat('M-d-yyyy');
 			};
 			
 			var hideAll = function () {
@@ -107,7 +147,7 @@
 				</div>
 			</div>
 			<div id="team">
-				<div id="team-header" class="header"></div>
+				<div class="header"></div>
 				<div class="body">
 				</div>
 			</div>
