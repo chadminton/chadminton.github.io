@@ -10,4 +10,92 @@
 	font-size: 20pt;
 	padding: 5px;
 	padding-left: 15%;
+	vertical-align: middle;
+	line-height: 100%;
+}
+
+.header > a.nav {
+	font-size: 24pt;
+}
+
+.game-summary {
+	position: relative;
+	display: inline-block;
+	width: 23%;
+	margin: 20px 1% 5px 1%;
+}
+
+.game-summary::after {
+	position: absolute;
+	left: 10px;
+	height: 24px;
+	width: 24px;
+	background-color: #222;
+	color: #fff;
+	content: 'vs';
+	border-radius: 12px;
+	top: 50%;
+	-webkit-transform: translate(0, -50%);
+	text-align: center;
+	font-size: 14pt;
+	vertical-align: middle;
+	line-height: 100%;
+}
+
+.team {
+	position: relative;
+	display: block;
+	width: 100%;
+	height: 100px;
+	background-size: auto 140%;
+	background-position: 100% 50%;
+	background-repeat: no-repeat;
+}
+
+.team > .record {
+	font-size: 14pt;
+	position: absolute;
+	top: 15px;
+	right: 150px;
+}
+
+.team > .city {
+	font-size: 16pt;
+	position: absolute;
+	top: 15px;
+	left: 8px;
+}
+
+.team > .name {
+	font-size: 32pt;
+	position: absolute;
+	bottom: 10px;
+	left: 5px;
+}
+
+.game-summary > .score {
+	position: absolute;
+	right: 5px;
+	height: 80px;
+	width: 80px;
+	border-radius: 5px;
+	text-align: center;
+	vertical-align: middle;
+	line-height: 100%;
+	background-color: #222;
+	color: #fff;
+	font-size: 48pt;
+	overflow: hidden;
+}
+
+.game-summary > .score.winner {
+	box-shadow: 0px 0px 0px 3px #fff;
+}
+
+.game-summary > .score.away {
+	top: 10px;
+}
+
+.game-summary > .score.home {
+	bottom: 10px;
 }
