@@ -73,7 +73,7 @@
 	left: 5px;
 }
 
-.game-summary > .score {
+.score {
 	position: absolute;
 	right: 5px;
 	height: 80px;
@@ -86,16 +86,96 @@
 	color: #fff;
 	font-size: 48pt;
 	overflow: hidden;
-}
-
-.game-summary > .score.winner {
 	box-shadow: 0px 0px 0px 3px #fff;
 }
 
-.game-summary > .score.away {
+.score.away {
 	top: 10px;
 }
 
-.game-summary > .score.home {
+.score.home {
 	bottom: 10px;
+}
+
+#game .team {
+	display: inline-block;
+	width: 50%;
+	height: 200px;
+}
+
+#game .team > .record {
+	font-size: 32pt;
+	right: 35%;
+}
+
+#game .team > .city {
+	font-size: 32pt;
+}
+
+#game .team > .name {
+	font-size: 64pt;
+}
+
+#game .summary {
+	border: none;
+	width: 50%;
+	margin-left: 25%;
+	margin-top: 25px;
+}
+
+#game .score {
+	height: 50px;
+	width: 50px;
+	font-size: 32pt;
+	bottom: 15px;
+	right: 15px;
+	box-shadow: 0px 0px 0px 3px #fff;
+}
+
+.summary td:hover {
+	background-color: #444;
+}
+
+@media only screen and (max-width: 1400px) {
+
+	#game .team > .record {
+		font-size: 28pt;
+		right: 45%;
+	}
+
+	#game .team > .name {
+		font-size: 56pt;
+	}
+	
+	.game-summary {
+		width: 30%;
+	}
+}
+
+@media only screen and (max-width: 500px) {
+
+	.links {
+		top: 0px;
+	}
+
+	#top.nacl > .links::before {
+		content: 'NACL';
+		left: 5px;
+	}
+
+	#top {
+		height: 55px;
+	}
+	
+	#top > .logo {
+		display: none;
+	}
+	
+	.game-summary {
+		width: 98%;
+	}
+}
+	
+#footer {
+	display: none;
 }
