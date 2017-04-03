@@ -1,6 +1,8 @@
 <html>
 	<head>
 		<title>North American Chadminton League</title>
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="viewport" content="target-densitydpi=device-dpi, width=device-width, user-scalable=no, maximum-scale=1, minimum-scale=1" />
         <link rel="stylesheet" href="style.css">
         <link rel="stylesheet" href="nacl.css">		
 		<script src="https://www.youtube.com/player_api"></script>
@@ -31,6 +33,12 @@
 						break;
 					case '#stats':
 						break;
+					case '#game':
+						var day = new Date(path[1]);
+						var a = path[2];
+						var b = path[3];
+						showGameSummary(day, a, b);
+						break;
 					case '#day':
 					default:
 						var day = new Date();
@@ -44,6 +52,49 @@
 						showGames(day);
 						break;
 				}
+			};                  
+			
+			var getTeamInfo = function (team, score) {
+				var wins = team.wins || 0;
+				var losses = team.losses || 0;
+				var html = '<div class="team" style="background-color: ' + 
+							team.color1 + '; color: ' + 
+							team.color2 + '; background-image: url(\'img/teams/' +
+							team.abbr + '.png\');">';
+				html += '<div class="record">' + wins + '-' + losses + '</div>' +
+						'<div class="city">' + team.city + '</div>' +
+						'<div class="name">' + team.name + '</div>';
+				if (score) {
+					html += '<div class="score">' + score + '</div>'
+				}
+				html += '</div>';
+				return html;
+			};
+			
+			var showGameSummary = function (day, a, b) {
+				var t = pods.query({ date: day.toStringFormat('yyyy-MM-ddT00:00:00') });
+                var guts = '';
+                if (t.length == 1) {
+					var gs = t[0].games.query({ a: a, b: b });
+					if (gs.length == 1) {
+						var game = gs[0];
+						game.aScore = game.aScore || '';
+						game.bScore = game.bScore || '';						
+						var away = teams.getElementById(game.away == 'a' ? game.a : game.b);
+						var home = teams.getElementById(game.home == 'a' ? game.a : game.b);
+						var awayScore = game.away == 'a' ? game.aScore : game.bScore;
+						var homeScore = game.home == 'a' ? game.aScore : game.bScore;
+						var awayWinner = awayScore > homeScore ? ' winner' : '';
+						var homeWinner = homeScore > awayScore ? ' winner' : '';
+						
+						var guts = getTeamInfo(away, awayScore) + getTeamInfo(home, homeScore) +
+							'<table class="summary" cellpadding="3" cellspacing="0">' + game.log + '</table>';
+						
+						var gameContainer = get('#game');
+						gameContainer.children[1].innerHTML = guts;
+						gameContainer.style.display = 'block';
+					}
+				}
 			};
 			
 			var showGames = function (day) {
@@ -51,21 +102,7 @@
 				var t = pods.query({ date: day.toStringFormat('yyyy-MM-ddT00:00:00') });
                 var guts = '';
                 if (t.length == 1) {
-                    getFile('nacl/game-template.html', function (template) {
-                        
-                        var getTeamInfo = function (team) {
-							var wins = team.wins || 0;
-							var losses = team.losses || 0;
-							var html = '<div class="team" style="background-color: ' + 
-										team.color1 + '; color: ' + 
-										team.color2 + '; background-image: url(\'img/teams/' +
-										team.abbr + '.png\');">';
-                            html += '<div class="record">' + wins + '-' + losses + '</div>' +
-									'<div class="city">' + team.city + '</div>' +
-									'<div class="name">' + team.name + '</div>';  
-							html += '</div>';
-							return html;
-                        };
+                    getFile('nacl/game-template.html', function (template) {  
                         
                         t[0].games.each(function (game) {
 							// if game hasn't been played yet
@@ -76,13 +113,13 @@
                             var home = teams.getElementById(game.home == 'a' ? game.a : game.b);
                             var awayScore = game.away == 'a' ? game.aScore : game.bScore;
                             var homeScore = game.home == 'a' ? game.aScore : game.bScore;
-							var awayWinner = awayScore > homeScore ? ' winner' : '';
-							var homeWinner = homeScore > awayScore ? ' winner' : '';
+							
                             guts += template.replace(/{{away-team}}/g, getTeamInfo(away))
-                                    .replace(/{{home-team}}/g, getTeamInfo(home));
+                                    .replace(/{{home-team}}/g, getTeamInfo(home))
+									.replace(/{{game-id}}/g, day.toStringFormat('M-d-yyyy') + '/' + game.a + '/' + game.b);
 							if (awayScore != '' && homeScore != '') {
-								guts = guts.replace(/{{away-score}}/g, '<div class="away score' + awayWinner + '">' + awayScore + '</div>')
-										.replace(/{{home-score}}/g, '<div class="home score' + homeWinner + '">' + homeScore + '</div>');
+								guts = guts.replace(/{{away-score}}/g, '<div class="away score">' + awayScore + '</div>')
+										.replace(/{{home-score}}/g, '<div class="home score">' + homeScore + '</div>');
 							}
 							else {
 								guts = guts.replace(/{{away-score}}/g, '')
@@ -118,6 +155,10 @@
 				window.location.hash = '#day/' + next.toStringFormat('M-d-yyyy');
 			};
 			
+			var navigate = function (path) {
+				window.location.hash = path;
+			};
+			
 			var hideAll = function () {
 				var divs = get('#content > div');
 				divs.each(function (item) {
@@ -135,14 +176,17 @@
 	<body onload="ready()" onhashchange="updatePage()">
 		<div id="top" class="nacl">
 			<div class="links">
-				<a href="https://www.facebook.com/chadmintonOhio/"><img src="img/facebook.png" /></a>
-				<a href="https://twitter.com/chadm1nton"><img src="img/twitter.png" /></a>
 			</div>
 			<div class="logo"></div>
 		</div>
 		<div id="content">
 			<div id="day">
 				<div class="header">TODAY'S GAMES</div>
+				<div class="body">
+				</div>
+			</div>
+			<div id="game">
+				<div class="header"><a href="javascript:history.back()">&ltrif; BACK</a></div>
 				<div class="body">
 				</div>
 			</div>
