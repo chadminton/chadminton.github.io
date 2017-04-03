@@ -38,11 +38,20 @@
 	},
 	{
 		"id": 5,
-		"name": "16-Bit",
+		"name": "",
 		"font": "Arial",
 		"href": "http://www.16-bitbar.com/columbus",
 		"images": [
 			"img/ads/16-bit-logo.png"
+		]
+	},
+	{
+		"id": 6,
+		"name": "",
+		"font": "Arial",
+		"href": "http://www.gronauerfurs.com/",
+		"images": [
+			"img/ads/gronauer-furs.jpg"
 		]
 	}
 ]
