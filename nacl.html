@@ -64,7 +64,7 @@
 				html += '<div class="record">' + wins + '-' + losses + '</div>' +
 						'<div class="city">' + team.city + '</div>' +
 						'<div class="name">' + team.name + '</div>';
-				if (score) {
+				if (!isNaN(score)) {
 					html += '<div class="score">' + score + '</div>'
 				}
 				html += '</div>';
@@ -78,8 +78,8 @@
 					var gs = t[0].games.query({ a: a, b: b });
 					if (gs.length == 1) {
 						var game = gs[0];
-						game.aScore = game.aScore || '';
-						game.bScore = game.bScore || '';						
+						game.aScore = isNaN(game.aScore) ? '' : game.aScore;
+						game.bScore = isNaN(game.bScore) ? '' : game.bScore;				
 						var away = teams.getElementById(game.away == 'a' ? game.a : game.b);
 						var home = teams.getElementById(game.home == 'a' ? game.a : game.b);
 						var awayScore = game.away == 'a' ? game.aScore : game.bScore;
@@ -106,8 +106,8 @@
                         
                         t[0].games.each(function (game) {
 							// if game hasn't been played yet
-							game.aScore = game.aScore || '';
-							game.bScore = game.bScore || '';
+							game.aScore = isNaN(game.aScore) ? '' : game.aScore;
+							game.bScore = isNaN(game.bScore) ? '' : game.bScore;
 							
                             var away = teams.getElementById(game.away == 'a' ? game.a : game.b);
                             var home = teams.getElementById(game.home == 'a' ? game.a : game.b);
@@ -117,7 +117,7 @@
                             guts += template.replace(/{{away-team}}/g, getTeamInfo(away))
                                     .replace(/{{home-team}}/g, getTeamInfo(home))
 									.replace(/{{game-id}}/g, day.toStringFormat('M-d-yyyy') + '/' + game.a + '/' + game.b);
-							if (awayScore != '' && homeScore != '') {
+							if (awayScore != homeScore) {
 								guts = guts.replace(/{{away-score}}/g, '<div class="away score">' + awayScore + '</div>')
 										.replace(/{{home-score}}/g, '<div class="home score">' + homeScore + '</div>');
 							}
