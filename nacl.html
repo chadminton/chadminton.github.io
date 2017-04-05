@@ -230,14 +230,22 @@
 						'</tr>';
 						
 				var sortFn = function (a, b) {
+					return (b.wins - b.losses - gamesBack(b) + (b.wins / (b.wins + b.losses))) - (a.wins - a.losses - gamesBack(a) + (a.wins / (a.wins + a.losses)));
+				};
+						
+				var confSortFn = function (a, b) {
 					return (b.wins - b.losses + (b.wins / (b.wins + b.losses))) - (a.wins - a.losses + (a.wins / (a.wins + a.losses)));
+				};
+				
+				var gamesBack = function (team) {
+					var cid = team.conferenceId;
+					var conf = teams.query({ conferenceId: team.conferenceId }).sort(confSortFn);
+					var leader = conf[0];
+					return ((leader.wins - team.wins) / 2) + ((team.losses - leader.losses) / 2);
 				};
 						
 				var getGamesBack = function (team) {
-					var cid = team.conferenceId;
-					var conf = teams.query({ conferenceId: team.conferenceId }).sort(sortFn);
-					var leader = conf[0];
-					var gb = ((leader.wins - team.wins) / 2) + ((team.losses - leader.losses) / 2);
+					var gb = gamesBack(team);
 					var msg = team.conference + ' ';
 					if (gb == 0) {
 						msg += 'LEADER';
