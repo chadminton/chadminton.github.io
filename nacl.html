@@ -230,7 +230,7 @@
 						'</tr>';
 						
 				var sortFn = function (a, b) {
-					return (b.wins + (b.wins / (b.wins + b.losses))) - (a.wins + (a.wins / (a.wins + a.losses)));
+					return (b.wins - b.losses + (b.wins / (b.wins + b.losses))) - (a.wins - a.losses + (a.wins / (a.wins + a.losses)));
 				};
 						
 				var getGamesBack = function (team) {
