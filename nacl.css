@@ -123,7 +123,8 @@
 }
 
 #game .summary,
-#team-view table {
+#team-view table,
+#standings table {
 	border: none;
 	width: 50%;
 	margin-left: 25%;

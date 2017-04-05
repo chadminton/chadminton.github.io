@@ -33,6 +33,8 @@
 						showTeam(id, sort);
 						break;
 					case '#standings':
+						var conf = path[1];
+						showStandings(conf);
 						break;
 					case '#stats':
 						break;
@@ -215,6 +217,58 @@
 				teamContainer.style.display = 'block';				
 			};
 			
+			var showStandings = function (conferenceId) {	
+				teamSortsApplied = 0;			
+				var guts = '<table style="border: none; font-size: 20pt;" cellpadding="5" cellspacing="0">';				
+				guts += '<tr style="font-size: 12pt;">' +
+						'<td></td>' +
+						'<td></td>' +
+						'<td>team</td>' +
+						'<td>record</td>' +
+						'<td>pct</td>' +
+						'<td>games back</td>' +
+						'</tr>';
+						
+				var sortFn = function (a, b) {
+					return (b.wins + (b.wins / (b.wins + b.losses))) - (a.wins + (a.wins / (a.wins + a.losses)));
+				};
+						
+				var getGamesBack = function (team) {
+					var cid = team.conferenceId;
+					var conf = teams.query({ conferenceId: team.conferenceId }).sort(sortFn);
+					var leader = conf[0];
+					var gb = ((leader.wins - team.wins) / 2) + ((team.losses - leader.losses) / 2);
+					var msg = team.conference + ' ';
+					if (gb == 0) {
+						msg += 'LEADER';
+					} else {
+						msg += gb + ' gb';
+					}
+					return msg;
+				};
+						
+				var teamsShow = (conferenceId ? teams.query({ conferenceId: conferenceId }) : teams.slice()).sort(sortFn);
+				teamsShow.each(function(team, i) {
+					if (i == 16) {
+						guts += '<tr style="background-color: #888;"><td colspan="6"></td></tr>';
+					}
+					guts += '<tr style="background-color: ' + team.color1 + '; color: ' + team.color2 + '">' +
+							'<td><img style="width: 80px;" src="img/teams/' + team.abbr + '.png"/></td>' +
+							'<td>' + (i + 1) + '</td>' +
+							'<td style="cursor: pointer;" onclick="navigate(\'#team/' + team.id + '\')">' + team.city + ' ' + team.name + '</td>' +
+							'<td>' + team.Record + '</td>' +
+							'<td>' + (team.wins / (team.wins + team.losses)).roundTo(3) + '</td>' +
+							'<td style="font-size: 12pt; cursor: pointer;" onclick="navigate(\'#standings/' + team.conferenceId + '\')">' + getGamesBack(team) + '</td>' +
+							'</tr>';
+				});
+				guts += '</table>';
+				
+				var container = get('#standings');
+				container.children[1].innerHTML = guts;
+				container.children[1].style.backgroundImage = '';
+				container.style.display = 'block';		
+			};
+			
 			var changeDay = function (delta) {
 				var page = window.location.hash;
 				var path = page.split('/');
@@ -267,6 +321,11 @@
 			</div>
 			<div id="team-view">
 				<div class="header"><a href="javascript:history.go(0 - teamSortsApplied)">&ltrif; BACK</a></div>
+				<div class="body">
+				</div>
+			</div>
+			<div id="standings">
+				<div class="header"><a href="javascript:history.back()">&ltrif; BACK</a></div>
 				<div class="body">
 				</div>
 			</div>

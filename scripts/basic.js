@@ -42,6 +42,20 @@ var getJSONfile = function (filename, callback) {
 	});
 };
 
+Number.prototype.roundTo = function (places) {
+	var value = (Math.round(this*Math.pow(10, places))/Math.pow(10, places)).toString();
+	var splitsies = value.split('.');
+	if (splitsies.length == 1) {
+		value += '.0';
+		splitsies = value.split('.');
+	}
+	while (splitsies[1].length < places) {
+		value += '0';
+		splitsies = value.split('.');
+	}
+	return value;
+};
+
 String.prototype.padLeft = function (len, pad) {
 	var ret = this;
 	while (ret.length < len) {
