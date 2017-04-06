@@ -148,7 +148,12 @@ Array.prototype.getAll = function (field, chasers) {
 	var addChasers = function (target, origin) {
 		for(var c=0; c < chasers.length; c++) {
 			var field = chasers[c];
-			target[field] = origin[field];
+			var rename = field;
+			if (field.split(':').length == 2) {
+				field = field.split(':')[0];
+				rename = rename.split(':')[1];
+			}
+			target[rename] = origin[field];
 		}
 	};
 	

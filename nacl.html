@@ -37,6 +37,9 @@
 						showStandings(conf);
 						break;
 					case '#stats':
+						var sort = path[1] || 'points';
+						var date = path[2] ? new Date(path[2]) : new Date();
+						showStats(sort, date);
 						break;
 					case '#game':
 						var day = new Date(path[1]);
@@ -78,6 +81,7 @@
 			
 			var showGameSummary = function (day, a, b) {
 				teamSortsApplied = 0;
+				statsSortsApplied = 0;	
 				var t = pods.query({ date: day.toStringFormat('yyyy-MM-ddT00:00:00') });
                 var guts = '';
                 if (t.length == 1) {
@@ -105,6 +109,7 @@
 			
 			var showGames = function (day) {
 				teamSortsApplied = 0;
+				statsSortsApplied = 0;	
 				console.log('showing games for ' + day);
 				var t = pods.query({ date: day.toStringFormat('yyyy-MM-ddT00:00:00') });
                 var guts = '';
@@ -164,9 +169,11 @@
 				return value;
 			};
 			
-			var teamSortsApplied = 0;
+			var teamSortsApplied = 0;			
+			var statsSortsApplied = 0;
 			
 			var showTeam = function (id, sort) {
+				statsSortsApplied = 0;
 				teamSortsApplied++;
 				var team = teams.getElementById(id);
 				var guts = getTeamInfo(team);
@@ -247,7 +254,8 @@
 			};
 			
 			var showStandings = function (conferenceId) {	
-				teamSortsApplied = 0;			
+				teamSortsApplied = 0;
+				statsSortsApplied = 0;		
 				var guts = '<table style="border: none; font-size: 20pt;" cellpadding="5" cellspacing="0">';				
 				guts += '<tr style="font-size: 12pt;">' +
 						'<td></td>' +
@@ -304,6 +312,56 @@
 				container.children[1].innerHTML = guts;
 				container.children[1].style.backgroundImage = '';
 				container.style.display = 'block';		
+			};
+			var showStats = function (sort, date) {
+				teamSortsApplied = 0;
+				statsSortsApplied++;
+				
+				var navOpen = 'style="cursor: pointer; font-weight: bold; background-color: #222; color: #fff" ' +
+							  'onclick="navigate(\'#stats/';
+				var navClose = '/' + date.toStringFormat('M-d-yyyy') + '\')"';
+				
+				var guts = '<table style="border: none;" cellpadding="5" cellspacing="0">';				
+				guts += '<tr>' +
+						'<td style="font-weight: bold; background-color: #222; color: #fff">team</td>' +
+						'<td ' + navOpen + 'number' + navClose + '>#</td>' +
+						'<td ' + navOpen + 'first' + navClose + '>first</td>' +
+						'<td ' + navOpen + 'last' + navClose + '>last</td>' +
+						'<td ' + navOpen + 'position' + navClose + '>position</td>' +
+						'<td ' + navOpen + 'goals' + navClose + '>goals</td>' +
+						'<td ' + navOpen + 'assists' + navClose + '>assists</td>' +
+						'<td ' + navOpen + 'points' + navClose + '>points</td>' +
+						'</tr>';
+				
+				teams.getAll('players', ['id:teamId']).sort(function (a, b) { 
+					if (sort == 'position') {
+						return getPosition(team, a) - getPosition(team, b);
+					} else if (sort == 'points') {
+						return (b.goals + b.assists) - (a.goals + a.assists);
+					} else if (sort == 'goals' || sort == 'assists') {
+						return parseInt(b[sort]) - parseInt(a[sort]);
+					} else {
+						return parseInt(a[sort]) - parseInt(b[sort]);
+					}
+				}).each(function (player) {
+					var team = teams.getElementById(player.teamId);
+					guts += '<tr>' +
+							'<td style="cursor: pointer; background-color: ' + team.color1 + '; color: ' + team.color2 + ';" onclick="navigate(\'#team/' + team.id + '\')"><img style="width: 40px; vertical-align: middle;" src="img/teams/' + team.abbr + '.png"/>' + team.abbr + '</td>' +
+							'<td>' + player.number + '</td>' +
+							'<td>' + player.first + '</td>' +
+							'<td>' + player.last + '</td>' +
+							'<td>' + getPosition(team, player) + '</td>' +
+							'<td>' + player.goals + '</td>' +
+							'<td>' + player.assists + '</td>' +
+							'<td>' + (player.goals + player.assists) + '</td>' +
+							'</tr>';
+				});
+				
+				guts += '</table>';				
+				
+				var container = get('#stats');
+				container.children[1].innerHTML = guts;
+				container.style.display = 'block';	
 			};
 			
 			var changeDay = function (delta) {
@@ -369,8 +427,8 @@
 				<div class="body">
 				</div>
 			</div>
-			<div id="statistics">
-				<div class="header"><a href="javascript:history.back()">&ltrif; BACK</a></div>
+			<div id="stats">
+				<div class="header"><a href="javascript:history.go(0 - statsSortsApplied)">&ltrif; BACK</a></div>
 				<div class="body">
 				</div>
 			</div>
