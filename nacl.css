@@ -59,6 +59,14 @@
 	right: 150px;
 }
 
+.team > .games-back {
+	font-size: 14pt;
+	position: absolute;
+	bottom: 15px;
+	right: 150px;
+	display: none;
+}
+
 .team > .city {
 	font-size: 16pt;
 	position: absolute;
@@ -106,6 +114,12 @@
 #game .team > .record {
 	font-size: 32pt;
 	right: 35%;
+}
+
+#game .team > .games-back {
+	font-size: 16pt;
+	right: 35%;
+	display: block;
 }
 
 #game .team > .city {
@@ -166,6 +180,12 @@ table.schedule {
 #team-view .team > .record {
 	font-size: 32pt;
 	right: 45%;
+}
+
+#team-view .team > .games-back {
+	font-size: 24pt;
+	right: 45%;
+	display: block;
 }
 
 #team-view .team > .city {

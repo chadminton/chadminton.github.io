@@ -70,6 +70,7 @@
 							team.color2 + '; background-image: url(\'img/teams/' +
 							team.abbr + '.png\');">';
 				html += '<div class="record">' + wins + '-' + losses + '</div>' +
+						'<div class="games-back">' + getGamesBack(team) + '</div>' +
 						'<div class="city" onclick="navigate(\'#team/' + team.id + '\')">' + team.city + '</div>' +
 						'<div class="name" onclick="navigate(\'#team/' + team.id + '\')">' + team.name + '</div>';
 				if (!isNaN(score)) {
@@ -301,6 +302,52 @@
 				teamContainer.style.display = 'block';				
 			};
 			
+			var getTeamPowerRanking = function (team) {
+				var allGames = pods.getAll('games', ['date']);				
+				var myGames = allGames.query({ a: team.id })
+						      .concat(allGames.query({ b: team.id }))
+							  .where(function (g) { 
+									return g.aScore != g.bScore; })
+							  .sort(function (a, b) {
+									return Date.parse(a.date) - Date.parse(b.date);
+							  });
+				var wins = 1;
+				var games = 2;
+				myGames.each(function(game) {
+					games++;
+					var myScore = game.a == team.id ? game.aScore : game.bScore;
+					var oppScore = game.a == team.id ? game.bScore : game.aScore;
+					if (myScore > oppScore) {
+						var opp = teams.getElementById(game.a == team.id ? game.b : game.a);
+						var pct = opp.wins / (opp.wins + opp.losses);
+						wins += pct;
+					}
+				});
+				return wins/games;
+			};
+				
+			var gamesBack = function (team) {
+				var cid = team.conferenceId;
+				var conf = teams.query({ conferenceId: team.conferenceId }).sort(advancedSortFn);
+				var leader = conf[0];
+				return ((leader.wins - team.wins) / 2) + ((team.losses - leader.losses) / 2);
+			};
+					
+			var getGamesBack = function (team) {
+				var gb = gamesBack(team);
+				var msg = team.conference + ' ';
+				if (gb == 0) {
+					msg += 'LEADER';
+				} else {
+					msg += gb + ' gb';
+				}
+				return msg;
+			};
+				
+			var advancedSortFn = function (a, b) {
+				return (b.wins - b.losses + getTeamPowerRanking(b)) - (a.wins - a.losses + getTeamPowerRanking(a));
+			};
+			
 			var showStandings = function (conferenceId) {	
 				teamSortsApplied = 0;
 				statsSortsApplied = 0;		
@@ -311,39 +358,14 @@
 						'<td>team</td>' +
 						'<td>record</td>' +
 						'<td>pct</td>' +
+						'<td>win value</td>' +
 						'<td>games back</td>' +
 						'</tr>';
 						
-				var sortFn = function (a, b) {
-					return (b.wins - b.losses - gamesBack(b) + (b.wins / (b.wins + b.losses))) - (a.wins - a.losses - gamesBack(a) + (a.wins / (a.wins + a.losses)));
-				};
-						
-				var confSortFn = function (a, b) {
-					return (b.wins - b.losses + (b.wins / (b.wins + b.losses))) - (a.wins - a.losses + (a.wins / (a.wins + a.losses)));
-				};
-				
-				var gamesBack = function (team) {
-					var cid = team.conferenceId;
-					var conf = teams.query({ conferenceId: team.conferenceId }).sort(confSortFn);
-					var leader = conf[0];
-					return ((leader.wins - team.wins) / 2) + ((team.losses - leader.losses) / 2);
-				};
-						
-				var getGamesBack = function (team) {
-					var gb = gamesBack(team);
-					var msg = team.conference + ' ';
-					if (gb == 0) {
-						msg += 'LEADER';
-					} else {
-						msg += gb + ' gb';
-					}
-					return msg;
-				};
-						
-				var teamsShow = (conferenceId ? teams.query({ conferenceId: conferenceId }) : teams.slice()).sort(sortFn);
+				var teamsShow = (conferenceId ? teams.query({ conferenceId: conferenceId }) : teams.slice()).sort(advancedSortFn);
 				teamsShow.each(function(team, i) {
 					if (i == 16) {
-						guts += '<tr style="background-color: #888;"><td colspan="6"></td></tr>';
+						guts += '<tr style="background-color: #888;"><td colspan="7"></td></tr>';
 					}
 					guts += '<tr style="background-color: ' + team.color1 + '; color: ' + team.color2 + '">' +
 							'<td><img style="width: 80px;" src="img/teams/' + team.abbr + '.png"/></td>' +
@@ -351,6 +373,7 @@
 							'<td style="cursor: pointer;" onclick="navigate(\'#team/' + team.id + '\')">' + team.city + ' ' + team.name + '</td>' +
 							'<td>' + team.Record + '</td>' +
 							'<td>' + (team.wins / (team.wins + team.losses)).roundTo(3) + '</td>' +
+							'<td style="font-size: 12pt;">' + getTeamPowerRanking(team).roundTo(3) + '</td>' +
 							'<td style="font-size: 12pt; cursor: pointer;" onclick="navigate(\'#standings/' + team.conferenceId + '\')">' + getGamesBack(team) + '</td>' +
 							'</tr>';
 				});
@@ -361,6 +384,7 @@
 				container.children[1].style.backgroundImage = '';
 				container.style.display = 'block';		
 			};
+			
 			var showStats = function (sort, date) {
 				teamSortsApplied = 0;
 				statsSortsApplied++;
