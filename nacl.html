@@ -218,8 +218,8 @@
 				});
 				
 				myGames.each(function (game) {
-					game.aScore = isNaN(game.aScore) || game.aScore == 0 ? '' : game.aScore;
-					game.bScore = isNaN(game.bScore) || game.bScore == 0 ? '' : game.bScore;
+					game.aScore = isNaN(game.aScore) || game.aScore == game.bScore ? '' : game.aScore;
+					game.bScore = isNaN(game.bScore) || game.aScore == game.bScore ? '' : game.bScore;
 					var awayScore = game.away == 'a' ? game.aScore : game.bScore;
 					var homeScore = game.home == 'a' ? game.aScore : game.bScore;
 					var isAway = (game.away == 'a' && game.a == team.id) || (game.away == 'b' && game.b == team.id);
