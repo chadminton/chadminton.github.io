@@ -131,6 +131,14 @@
 	margin-top: 25px;
 }
 
+table.schedule {
+	position: absolute;
+	right: 5px;
+	top: 400px;
+	width: 23% !important;
+	background-color: #fff;
+}
+
 #team-view .team {
 	display: inline-block;
 	width: 100%;

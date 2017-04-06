@@ -144,16 +144,43 @@ Array.prototype.each = function (callback) {
 	}
 }
 
+Array.prototype.getAll = function (field, chasers) {
+	var addChasers = function (target, origin) {
+		for(var c=0; c < chasers.length; c++) {
+			var field = chasers[c];
+			target[field] = origin[field];
+		}
+	};
+	
+	var results = [];
+	for (var i=0; i < this.length; i++) {
+		var obj = this[i];
+		var target = obj[field];
+		if (Array.isArray(target)) {
+			for(var j=0; j < target.length; j++) {
+				addChasers(target[j], obj);
+			}
+			results = results.concat(target);
+		} else {
+			addChasers(target, obj);
+			results.push(target);
+		}
+	}
+	return results;
+}
+
 Array.prototype.query = function (where, fields) {
 	var results = [];
 	for (var i=0; i < this.length; i++) {
 		var obj = this[i];
 		var match = true;
-		var keys = Object.keys(where);
-		for (var k=0; k < keys.length; k++) {
-			var key = keys[k];
-			if (key == 'each') continue;
-			match = match && obj[key] == where[key];
+		if (where !== true) {
+			var keys = Object.keys(where);
+			for (var k=0; k < keys.length; k++) {
+				var key = keys[k];
+				if (key == 'each') continue;
+				match = match && obj[key] == where[key];
+			}
 		}
 		if (match) {
 			if (fields) {
