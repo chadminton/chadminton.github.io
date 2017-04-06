@@ -2,8 +2,31 @@
 	<head>
 		<title>Chadminton</title>
         <link rel="stylesheet" href="style.css">
+		<script type="text/javascript" src="scripts/basic.js"></script>
+		<script type="text/javascript">			
+			
+			var loadAds = function () {
+				getJSONfile('advertisements.json', function (ads) {
+                    var advertisements = ads.query({ show: true }).sort(function(a, b) { return Math.random() - 0.5; });
+					var currentAd = 0;
+					var changeAd = function () {
+						var ad = advertisements[currentAd];
+						var adBox = get('#ad');
+						adBox.onclick = function () {
+							window.open(ad.href);
+						};
+						var image = ad.images[Math.floor(Math.random()*ad.images.length)];
+						adBox.style.backgroundImage = 'url(\'' + image + '\')';
+						currentAd = (currentAd + 1) % advertisements.length;
+					};
+					window.setInterval(changeAd, (10000)); // change ad every 30 seconds
+					changeAd();
+				});
+			};
+		
+		</script>
 	</head>
-	<body>
+	<body onload="loadAds()">
 		<div id="top">
 			<div class="links">
 				<a href="index.html">HOME</a>
@@ -44,5 +67,6 @@
 		<div id="footer">
 			Chadminton &trade; 2004-2017
 		</div>
+		<div id="ad"></div>
 	</body>
 </html>

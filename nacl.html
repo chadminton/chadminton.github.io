@@ -28,8 +28,13 @@
 				
 				switch(first) {
 					case '#team':
+						var id = path[1];
+						var sort = path[2] || 'number';
+						showTeam(id, sort);
 						break;
 					case '#standings':
+						var conf = path[1];
+						showStandings(conf);
 						break;
 					case '#stats':
 						break;
@@ -62,8 +67,8 @@
 							team.color2 + '; background-image: url(\'img/teams/' +
 							team.abbr + '.png\');">';
 				html += '<div class="record">' + wins + '-' + losses + '</div>' +
-						'<div class="city">' + team.city + '</div>' +
-						'<div class="name">' + team.name + '</div>';
+						'<div class="city" onclick="navigate(\'#team/' + team.id + '\')">' + team.city + '</div>' +
+						'<div class="name" onclick="navigate(\'#team/' + team.id + '\')">' + team.name + '</div>';
 				if (!isNaN(score)) {
 					html += '<div class="score">' + score + '</div>'
 				}
@@ -72,6 +77,7 @@
 			};
 			
 			var showGameSummary = function (day, a, b) {
+				teamSortsApplied = 0;
 				var t = pods.query({ date: day.toStringFormat('yyyy-MM-ddT00:00:00') });
                 var guts = '';
                 if (t.length == 1) {
@@ -98,6 +104,7 @@
 			};
 			
 			var showGames = function (day) {
+				teamSortsApplied = 0;
 				console.log('showing games for ' + day);
 				var t = pods.query({ date: day.toStringFormat('yyyy-MM-ddT00:00:00') });
                 var guts = '';
@@ -141,6 +148,134 @@
 				dayContainer.children[1].innerHTML = guts;
 				dayContainer.style.display = 'block';
 			};
+				
+			var getPosition = function (team, player) {
+				var value = '?';
+				if (team.roster.offense.query({ number: player.number }).length > 0) {
+					value = "Striker (S)";
+				} else if (team.roster.defense.query({ number: player.number }).length > 0) {
+					value = "Sweeper/Chad (W)";
+				} else if (team.roster.midfield.query({ number: player.number }).length > 0) {
+					value = "Defense (D)";
+				} else if (team.roster.goalies.query({ number: player.number }).length > 0) {
+					value = "Goalkeeper (G)";
+				}
+				
+				return value;
+			};
+			
+			var teamSortsApplied = 0;
+			
+			var showTeam = function (id, sort) {
+				teamSortsApplied++;
+				var team = teams.getElementById(id);
+				var guts = getTeamInfo(team);
+				
+				var navOpen = 'style="cursor: pointer; font-weight: bold; background-color: #222; color: #fff" ' +
+							  'onclick="navigate(\'#team/' + id + '/';
+				var navClose = '\')"';
+				
+				guts += '<table style="border: none;" cellpadding="5" cellspacing="0">';
+				
+				guts += '<tr>' +
+						'<td ' + navOpen + 'number' + navClose + '>#</td>' +
+						'<td ' + navOpen + 'first' + navClose + '>first</td>' +
+						'<td ' + navOpen + 'last' + navClose + '>last</td>' +
+						'<td ' + navOpen + 'position' + navClose + '>position</td>' +
+						'<td ' + navOpen + 'goals' + navClose + '>goals</td>' +
+						'<td ' + navOpen + 'assists' + navClose + '>assists</td>' +
+						'<td ' + navOpen + 'points' + navClose + '>points</td>' +
+						'</tr>';
+				
+				team.players.sort(function (a, b) { 
+					if (sort == 'position') {
+						return getPosition(team, a) - getPosition(team, b);
+					} else if (sort == 'points') {
+						return (b.goals + b.assists) - (a.goals + a.assists);
+					} else if (sort == 'goals' || sort == 'assists') {
+						return parseInt(b[sort]) - parseInt(a[sort]);
+					} else {
+						return parseInt(a[sort]) - parseInt(b[sort]);
+					}
+				}).each(function (player) {
+					guts += '<tr>' +
+							'<td>' + player.number + '</td>' +
+							'<td>' + player.first + '</td>' +
+							'<td>' + player.last + '</td>' +
+							'<td>' + getPosition(team, player) + '</td>' +
+							'<td>' + player.goals + '</td>' +
+							'<td>' + player.assists + '</td>' +
+							'<td>' + (player.goals + player.assists) + '</td>' +
+							'</tr>';
+				});
+				
+				guts += '</table>';
+				
+				var teamContainer = get('#team-view');
+				teamContainer.children[1].innerHTML = guts;
+				teamContainer.children[1].style.backgroundImage = 'url(\'img/teams/' + team.abbr + '.png\')';
+				teamContainer.style.display = 'block';				
+			};
+			
+			var showStandings = function (conferenceId) {	
+				teamSortsApplied = 0;			
+				var guts = '<table style="border: none; font-size: 20pt;" cellpadding="5" cellspacing="0">';				
+				guts += '<tr style="font-size: 12pt;">' +
+						'<td></td>' +
+						'<td></td>' +
+						'<td>team</td>' +
+						'<td>record</td>' +
+						'<td>pct</td>' +
+						'<td>games back</td>' +
+						'</tr>';
+						
+				var sortFn = function (a, b) {
+					return (b.wins - b.losses - gamesBack(b) + (b.wins / (b.wins + b.losses))) - (a.wins - a.losses - gamesBack(a) + (a.wins / (a.wins + a.losses)));
+				};
+						
+				var confSortFn = function (a, b) {
+					return (b.wins - b.losses + (b.wins / (b.wins + b.losses))) - (a.wins - a.losses + (a.wins / (a.wins + a.losses)));
+				};
+				
+				var gamesBack = function (team) {
+					var cid = team.conferenceId;
+					var conf = teams.query({ conferenceId: team.conferenceId }).sort(confSortFn);
+					var leader = conf[0];
+					return ((leader.wins - team.wins) / 2) + ((team.losses - leader.losses) / 2);
+				};
+						
+				var getGamesBack = function (team) {
+					var gb = gamesBack(team);
+					var msg = team.conference + ' ';
+					if (gb == 0) {
+						msg += 'LEADER';
+					} else {
+						msg += gb + ' gb';
+					}
+					return msg;
+				};
+						
+				var teamsShow = (conferenceId ? teams.query({ conferenceId: conferenceId }) : teams.slice()).sort(sortFn);
+				teamsShow.each(function(team, i) {
+					if (i == 16) {
+						guts += '<tr style="background-color: #888;"><td colspan="6"></td></tr>';
+					}
+					guts += '<tr style="background-color: ' + team.color1 + '; color: ' + team.color2 + '">' +
+							'<td><img style="width: 80px;" src="img/teams/' + team.abbr + '.png"/></td>' +
+							'<td>' + (i + 1) + '</td>' +
+							'<td style="cursor: pointer;" onclick="navigate(\'#team/' + team.id + '\')">' + team.city + ' ' + team.name + '</td>' +
+							'<td>' + team.Record + '</td>' +
+							'<td>' + (team.wins / (team.wins + team.losses)).roundTo(3) + '</td>' +
+							'<td style="font-size: 12pt; cursor: pointer;" onclick="navigate(\'#standings/' + team.conferenceId + '\')">' + getGamesBack(team) + '</td>' +
+							'</tr>';
+				});
+				guts += '</table>';
+				
+				var container = get('#standings');
+				container.children[1].innerHTML = guts;
+				container.children[1].style.backgroundImage = '';
+				container.style.display = 'block';		
+			};
 			
 			var changeDay = function (delta) {
 				var page = window.location.hash;
@@ -157,6 +292,8 @@
 			
 			var navigate = function (path) {
 				window.location.hash = path;
+				window.event.stopPropagation();
+				window.event.preventDefault();
 			};
 			
 			var hideAll = function () {
@@ -190,8 +327,13 @@
 				<div class="body">
 				</div>
 			</div>
-			<div id="team">
-				<div class="header"></div>
+			<div id="team-view">
+				<div class="header"><a href="javascript:history.go(0 - teamSortsApplied)">&ltrif; BACK</a></div>
+				<div class="body">
+				</div>
+			</div>
+			<div id="standings">
+				<div class="header"><a href="javascript:history.back()">&ltrif; BACK</a></div>
 				<div class="body">
 				</div>
 			</div>

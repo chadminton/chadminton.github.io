@@ -116,11 +116,52 @@
 	font-size: 64pt;
 }
 
-#game .summary {
+#team-view > .body {
+	background-repeat: no-repeat;
+	background-size: 20% auto;
+	background-position: 1% 80%;
+}
+
+#game .summary,
+#team-view table,
+#standings table {
 	border: none;
 	width: 50%;
 	margin-left: 25%;
 	margin-top: 25px;
+}
+
+#team-view .team {
+	display: inline-block;
+	width: 100%;
+	height: 200px;
+	background-size: auto 200%;
+	background-position: 80% 50%;
+}
+
+#team-view .team > .record {
+	font-size: 32pt;
+	right: 45%;
+}
+
+#team-view .team > .city {
+	font-size: 44pt;
+	left: 15%;
+}
+
+#team-view .team > .name {
+	font-size: 72pt;
+	left: 15%;
+}
+
+.team > .city:hover {
+	text-decoration: underline;
+	cursor: pointer;
+}
+
+.team > .name:hover {
+	text-decoration: underline;
+	cursor: pointer;
 }
 
 #game .score {
