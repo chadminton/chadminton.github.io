@@ -283,6 +283,7 @@
 					var myScore = isAway ? awayScore : homeScore;
 					var oppScore = isAway ? homeScore : awayScore;
 					var date = new Date(game.date);
+					date.addDays(1);
 					
 					guts += '<tr>' +
 							'<td>' + date.toStringFormat('M/d') + '</td>' +

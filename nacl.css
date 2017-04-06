@@ -62,7 +62,7 @@
 .team > .games-back {
 	font-size: 14pt;
 	position: absolute;
-	bottom: 15px;
+	bottom: 1px;
 	right: 150px;
 	display: none;
 }
@@ -77,8 +77,8 @@
 .team > .name {
 	font-size: 32pt;
 	position: absolute;
-	bottom: 10px;
-	left: 5px;
+	bottom: 15px;
+	left: 7px;
 }
 
 .score {
@@ -133,7 +133,7 @@
 #team-view > .body {
 	background-repeat: no-repeat;
 	background-size: 20% auto;
-	background-position: 1% 80%;
+	background-position: 1% 40%;
 }
 
 #game .away-details,
@@ -195,7 +195,8 @@ table.schedule {
 
 #team-view .team > .name {
 	font-size: 72pt;
-	left: 15%;
+	left: calc(15% - 5px);
+	bottom: 24px;
 }
 
 .team > .city:hover {

@@ -101,6 +101,11 @@ Date.prototype.get12Hours = function () {
 	return hour;
 }
 
+Date.prototype.addDays = function (days) {
+	var millsecondsInADay = 1000 * 60 * 60 * 24;
+	this.setTime(this.getTime() + (days * millsecondsInADay));
+}
+
 Date.prototype.toStringFormat = function (format) {
 	format = format.replace(/yyyy/g, this.getFullYear());
 	format = format.replace(/yy/g, this.getFullYear().toString().substring(2));
