@@ -174,6 +174,32 @@ Array.prototype.getAll = function (field, chasers) {
 	return results;
 }
 
+Array.prototype.where = function (criteria) {
+	var results = [];
+	for (var i=0; i < this.length; i++) {
+		if (criteria(this[i])) results.push(this[i]);
+	}
+	return results;
+};
+
+Array.prototype.last = function (limit) {
+	limit = limit || 1;
+	if (this.length > limit) {
+		return this.slice(this.length - (limit + 1));
+	} else {
+		return this.slice();
+	}
+};
+
+Array.prototype.first = function (limit) {
+	limit = limit || 1;
+	if (this.length > limit) {
+		return this.slice(0, limit - 1);
+	} else {
+		return this.slice();
+	}
+};
+
 Array.prototype.query = function (where, fields) {
 	var results = [];
 	for (var i=0; i < this.length; i++) {

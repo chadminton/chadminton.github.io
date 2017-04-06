@@ -97,14 +97,62 @@
 						var awayWinner = awayScore > homeScore ? ' winner' : '';
 						var homeWinner = homeScore > awayScore ? ' winner' : '';
 						
-						var guts = getTeamInfo(away, awayScore) + getTeamInfo(home, homeScore) +
-							'<table class="summary" cellpadding="3" cellspacing="0">' + game.log + '</table>';
+						var guts = getTeamInfo(away, awayScore) + getTeamInfo(home, homeScore);
+
+						if (game.aScore != game.bScore) {
+							guts += '<table class="summary" cellpadding="3" cellspacing="0">' + game.log + '</table>';
+						} else {
+							guts += '<div class="away-details">' + getTeamDetails(away) + '</div>' +
+									'<div class="home-details">' + getTeamDetails(home) + '</div>';
+						}
 						
 						var gameContainer = get('#game');
 						gameContainer.children[1].innerHTML = guts;
 						gameContainer.style.display = 'block';
 					}
 				}
+			};
+			
+			var getTeamDetails = function (team) {
+				var html = '';
+				
+				var allGames = pods.getAll('games', ['date']);
+				var myGames = allGames.query({ a: team.id })
+						      .concat(allGames.query({ b: team.id }))
+							  .where(function (g) { 
+									return g.aScore != g.bScore; })
+							  .sort(function (a, b) {
+									return Date.parse(a.date) - Date.parse(b.date);
+							  })
+							  .last(5);
+				
+				html += '<div>Last ' + myGames.length + ' games</div>';			
+				html += '<table>';	
+				
+				myGames.each(function (game) {
+					game.aScore = isNaN(game.aScore) || game.aScore == game.bScore ? '' : game.aScore;
+					game.bScore = isNaN(game.bScore) || game.aScore == game.bScore ? '' : game.bScore;
+					var awayScore = game.away == 'a' ? game.aScore : game.bScore;
+					var homeScore = game.home == 'a' ? game.aScore : game.bScore;
+					var isAway = (game.away == 'a' && game.a == team.id) || (game.away == 'b' && game.b == team.id);
+					var opp = isAway ? teams.getElementById(game.home == 'a' ? game.a : game.b) : teams.getElementById(game.away == 'a' ? game.a : game.b);
+					var myScore = isAway ? awayScore : homeScore;
+					var oppScore = isAway ? homeScore : awayScore;
+					var date = new Date(game.date);
+					
+					html += '<tr>' +
+							'<td>' + date.toStringFormat('M/d') + '</td>' +
+							'<td>' + (isAway ? '@' : 'vs') + '</td>' +
+							'<td style="cursor: pointer;" onclick="navigate(\'#team/' + opp.id + '\')"><img style="width: 30px;" src="img/teams/' + opp.abbr + '.png"/></td>' +
+							'<td>' + opp.abbr + ' (' + opp.Record + ')' + '</td>' +
+							'<td style="font-size: 18pt;">' + myScore + (!myScore && !oppScore ? '' : '-') + oppScore + '</td>' +
+							'<td style="font-size: 18pt;">' + (myScore > oppScore ? 'W' : myScore < oppScore ? 'L' : '') + '</td>' +
+							'</tr>';
+				});				
+				html += '</table>';
+				
+				
+				return html;
 			};
 			
 			var showGames = function (day) {

@@ -122,6 +122,21 @@
 	background-position: 1% 80%;
 }
 
+#game .away-details,
+#game .home-details {
+	position: absolute;
+	top: 400px;
+	width: 45%;
+}
+
+#game .away-details{
+	left: 20px;
+}
+
+#game .home-details{
+	right: 20px;
+}
+
 #game .summary,
 #team-view table,
 #standings table,
