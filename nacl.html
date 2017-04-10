@@ -73,7 +73,9 @@
 				html += '<div class="record">' + wins + '-' + losses + '</div>' +
 						'<div class="games-back">' + getGamesBack(team) + '</div>' +
 						'<div class="city" onclick="navigate(\'#team/' + team.id + '\')">' + team.city + '</div>' +
-						'<div class="name" onclick="navigate(\'#team/' + team.id + '\')">' + team.name + '</div>';
+						'<div class="name" style="background-color: ' + 
+							team.color1 + '; color: ' + 
+							team.color2 + '; border-radius: 20px; padding-right: 10px;" onclick="navigate(\'#team/' + team.id + '\')">' + team.name + '</div>';
 				if (!isNaN(score)) {
 					html += '<div class="score">' + score + '</div>'
 				}
@@ -125,11 +127,10 @@
 									return g.aScore != g.bScore; })
 							  .sort(function (a, b) {
 									return Date.parse(a.date) - Date.parse(b.date);
-							  })
-							  .last(5);
+							  });
 				
-				html += '<div>Last ' + myGames.length + ' games</div>';			
-				html += '<table>';	
+				var goalsFor = 0;
+				var goalsAgainst = 0;
 				
 				myGames.each(function (game) {
 					game.aScore = isNaN(game.aScore) || game.aScore == game.bScore ? '' : game.aScore;
@@ -138,8 +139,32 @@
 					var homeScore = game.home == 'a' ? game.aScore : game.bScore;
 					var isAway = (game.away == 'a' && game.a == team.id) || (game.away == 'b' && game.b == team.id);
 					var opp = isAway ? teams.getElementById(game.home == 'a' ? game.a : game.b) : teams.getElementById(game.away == 'a' ? game.a : game.b);
+					
 					var myScore = isAway ? awayScore : homeScore;
+					goalsFor += myScore;
+					
 					var oppScore = isAway ? homeScore : awayScore;
+					goalsAgainst += oppScore;
+				});
+				
+				html += '<h2>Avg goals scored: ' + (goalsFor / myGames.length) + '</h2>';
+				html += '<h2>Avg goals allowed: ' + (goalsAgainst / myGames.length) + '</h2>';
+				html += '<h2>Goal differential: ' + (goalsFor - goalsAgainst) + '</h2>';
+				
+				html += '<div>Last ' + myGames.length + ' games</div>';			
+				html += '<table>';
+				
+				myGames.last(5).each(function (game) {
+					game.aScore = isNaN(game.aScore) || game.aScore == game.bScore ? '' : game.aScore;
+					game.bScore = isNaN(game.bScore) || game.aScore == game.bScore ? '' : game.bScore;
+					var awayScore = game.away == 'a' ? game.aScore : game.bScore;
+					var homeScore = game.home == 'a' ? game.aScore : game.bScore;
+					var isAway = (game.away == 'a' && game.a == team.id) || (game.away == 'b' && game.b == team.id);
+					var opp = isAway ? teams.getElementById(game.home == 'a' ? game.a : game.b) : teams.getElementById(game.away == 'a' ? game.a : game.b);
+					
+					var myScore = isAway ? awayScore : homeScore;					
+					var oppScore = isAway ? homeScore : awayScore;
+					
 					var date = new Date(game.date);
 					
 					html += '<tr>' +
@@ -152,7 +177,6 @@
 							'</tr>';
 				});				
 				html += '</table>';
-				
 				
 				return html;
 			};
