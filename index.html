@@ -12,6 +12,17 @@
 				var index = Math.floor(Math.random() * 3);
 				get('#header-background').src = 'img/header-' + index.toString() + '.jpg';
 			};
+			
+			var showPic = function (img) {
+				$('#big-picture').show();
+				$('#big-picture > img')[0].src = img;
+				$('#shroud').show();
+			};
+			
+			var imageClick = function (event) {
+				$('#shroud').hide();
+				$('#big-picture').hide();
+			};
 		
 		</script>
 	</head>
@@ -48,7 +59,7 @@
 				<span class="red-text">NO EXPERIENCE NECESSARY</span>
 			</div>
 			<div class="content">
-				Anyone can play Chadminton (and everyone should). Be the envy of all your friends!
+				<a href="javascript:showPic('img/photos/2012/morgan.JPG')">Anyone</a> can play Chadminton (and everyone should). Be the envy of all your friends!
 				Chadminton is free, co-ed, safe (as safe as any other sport) and fun, as well as an excellent way to get some 
 				excercise if you want it. It's also a great way to meet new people! Whether you are an experienced 
 				athlete or a couch potato, Chadminton is fun for all skill levels.
@@ -74,6 +85,10 @@
 				<div class="line"> facebook: <a href="javascript:window.open('https://www.facebook.com/chadmintonOhio/')">chadmintonOhio</a> </div>
 				<div class="line"> twitter: <a href="javascript:window.open('https://www.twitter.com/chadm1nton/'">@chadm1nton</a> </div>
 			</div>
+		</div>
+		<div id="shroud" onclick="$(this).hide(); $('#big-picture').hide();"></div>
+		<div id="big-picture" onclick="imageClick(event)">
+			<img />
 		</div>
 	</body>
 </html>
