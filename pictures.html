@@ -7,23 +7,44 @@
 		<script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
 		<script type="text/javascript">
 		
-			var folder = "img/photos/2017";
-
-			// borrowed from Stack Overflow
+			var currentImage = 0;
+			var images = [];
+		
 			$.ajax({
-				url : folder,
+				url : 'https://api.github.com/repos/chadminton/chadminton.github.io/contents/img/photos/2017/',
 				success: function (data) {
-					$(data).find("a").attr("href", function (i, val) {
-						if( val.match(/\.(jpe?g|png|gif)$/) ) { 
-							$("#picture-album").append( "<img onclick=\"enlarge(this.src)\" src='"+ folder + '/' + val +"'>" );
-						} 
-					});
+					console.log(data);
+					for (var i = 0; i < data.length; i++) {
+						images.push(data[i].path);
+						$('#picture-album').append('<img onclick="enlarge(' + i + ')" src="' + data[i].path + '"/>');
+					}
 				}
 			});
 			
-			var enlarge = function (img) {
+			var enlarge = function (index) {
+				currentImage = index;
 				$('#big-picture').show();
-				$('#big-picture > img')[0].src = img;
+				$('#big-picture > img')[0].src = images[index];
+				$('#shroud').show();
+			};
+			
+			var imageClick = function (event) {
+				console.log(event);
+				if (event.layerX < 0) {
+					if (currentImage > 0) {
+						enlarge(currentImage - 1);
+					} else {
+						$('#shroud').hide();
+						$('#big-picture').hide();
+					}
+				} else {
+					if (currentImage < images.length - 1) {
+						enlarge(currentImage + 1);
+					} else {
+						$('#shroud').hide();
+						$('#big-picture').hide();
+					}
+				}
 			};
 		
 		</script>
@@ -52,7 +73,8 @@
 			<div id="picture-album" class="content">
 			</div>
 		</div>
-		<div id="big-picture" onclick="$(this).hide()">
+		<div id="shroud" onclick="$(this).hide(); $('#big-picture').hide();"></div>
+		<div id="big-picture" onclick="imageClick(event)">
 			<img />
 		</div>
 	</body>

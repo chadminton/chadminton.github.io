@@ -14,6 +14,17 @@ html, body {
 	cursor: pointer;
 }
 
+#shroud {
+	position: fixed;
+	top: 0px;
+	bottom: 0px;
+	left: 0px;
+	right: 0px;
+	background-color: #000;
+	opacity: 0.5;
+	display: none;
+}
+
 #big-picture {
 	position: fixed;
 	top: 5%;
