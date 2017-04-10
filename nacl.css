@@ -3,7 +3,7 @@
 	padding: 0px;
 }
 
-.header {
+#content > div > .header {
 	width: calc(100% - (15% + 5px));
 	background-color: #0072dd;
 	color: #fff;
@@ -14,8 +14,20 @@
 	line-height: 100%;
 }
 
+.header > a {
+	color: inherit;
+}
+
+.header > a:hover {
+	text-decoration: none;
+}
+
 .header > a.nav {
 	font-size: 24pt;
+}
+
+.header > .links {
+	line-height: 32px;
 }
 
 .game-summary {
