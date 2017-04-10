@@ -1,0 +1,59 @@
+<html>
+	<head>
+		<title>Chadminton Photos</title>
+		<meta name="viewport" content="target-densitydpi=device-dpi, width=device-width, user-scalable=no, maximum-scale=1, minimum-scale=1" />
+		<link href="https://fonts.googleapis.com/css?family=Palanquin+Dark|Raleway" rel="stylesheet">
+        <link rel="stylesheet" href="style.css">
+		<script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+		<script type="text/javascript">
+		
+			var folder = "img/photos/2017";
+
+			// borrowed from Stack Overflow
+			$.ajax({
+				url : folder,
+				success: function (data) {
+					$(data).find("a").attr("href", function (i, val) {
+						if( val.match(/\.(jpe?g|png|gif)$/) ) { 
+							$("#picture-album").append( "<img onclick=\"enlarge(this.src)\" src='"+ folder + '/' + val +"'>" );
+						} 
+					});
+				}
+			});
+			
+			var enlarge = function (img) {
+				$('#big-picture').show();
+				$('#big-picture > img')[0].src = img;
+			};
+		
+		</script>
+	</head>
+	<body>
+		<div class="header">
+			<div class="no-header-image"></div>
+			<a class="title" href="index.html">
+				<img src="img/new-chad-square.png"/>
+				CHADMINTON
+			</a>
+			<div class="links">
+				<a href="javascript:window.open('https://www.facebook.com/chadmintonOhio/')"><img src="img/facebook.png" /></a>
+				<a href="javascript:window.open('https://twitter.com/chadm1nton')"><img src="img/twitter.png" /></a>
+			</div>
+		</div>
+		<div class="section">
+			<div class="title">
+				<span class="red-text">SEE FOR YOURSELF</span>
+			</div>
+			<div class="content">
+				Check out images from our 2017 season.
+			</div>
+		</div>
+		<div class="section">
+			<div id="picture-album" class="content">
+			</div>
+		</div>
+		<div id="big-picture" onclick="$(this).hide()">
+			<img />
+		</div>
+	</body>
+</html>

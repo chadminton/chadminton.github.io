@@ -1,196 +1,143 @@
 html, body {
 	margin: 0px;			
-	font-family: "Segoe UI", Arial;
+	font-family: 'Raleway', sans-serif;
+}
+
+.no-header-image {
+	height: 60px;
+}
+
+#picture-album > img {
+	width: 32%;
+	margin-right: 1%;
+	margin-top: 1%;
+	cursor: pointer;
+}
+
+#big-picture {
+	position: fixed;
+	top: 5%;
+	bottom: 5%;
+	left: 50%;
+	-webkit-transform: translate(-50%, 0%);
+	box-shadow: 0px 0px 0px 3px #fff;
+	display: none;
+}
+
+#big-picture > img {
+	height: 100%;
+	width: auto;
 }
 
 a {
-	color: inherit;
 	text-decoration: none;
 }
 
 a:hover {
+	text-decoration: underline;
+}
+
+a.title:hover {
+	text-decoration: none;
+}
+
+.blue-text,
+a {
+	color: #0071bc;
+}
+
+.red-text {
+	color: #cc0000;
+}
+
+.header,
+.section {
+	width: 100vw;
+	position: relative;
+	margin-bottom: 20px;
+}
+
+.content {
+	margin-left: 18%;
+	margin-right: 18%;
+	font-size: 14pt;
+	text-align: justify;
+}
+
+.content > .line {
+	margin-left: 25px;
+	margin-top: 5px;
+}
+
+.content > .return {
+	margin-top: 8px;
+}
+
+.content > .return > a {
+	margin-right: 35px;
+}
+
+.header > #header-background {
+	width: 90%;
+	margin-left: 5%;
+	margin-top: 80px;
+}
+
+.title {
+	font-family: 'Palanquin Dark', sans-serif;
+	font-size: 36px;
+	letter-spacing: 3px;
+}
+
+.header > .title {
+	position: absolute;
+	top: 10px;
+	left: 5%;
+	/*
+	left: 50%;
+	-webkit-transform: translate(-50%, 0%);
+	*/
+	color: #444;
+}
+
+.header > .title > img {
+	height: 35px;
+	vertical-align: middle;
+	margin-top: -8px;
+	margin-right: 5px;
+	border-radius: 3px;
+	background-color: white;
+}
+
+.header > .links {
+	position: absolute;
+	top: 10px;
+	right: 5%;
+	height: 65px;
+}
+
+.header > .links > a {
+	text-decoration: none;
 	color: inherit;
 }
 
-#top {
-	height: 150px;
-	width: 100%;
-	position: relative;
-}
-
-.twitter-container {
-	position: absolute;
-	right: 0px;
-	top: 150px;
-	bottom: 30px;
-	overflow-y: auto;
-}
-
-.links::before {
-	content: 'CHADMINTON';
-	position: absolute;
-	left: 200px;
-	font-size: 20pt;
-	opacity: 0.2;
-}
-
-.links {
-	position: absolute;
-	top: 50px;
-	left: 0px;
-	right: 0px;
-	height: 40px;
-	padding: 5px 20px;
-	background-color: #444;
-	color: #fff;
-	text-align: right;
-}
-
-#top.nacl > .links::before {
-	content: 'North American Chadminton League';
-	opacity: 0.8;
-}
-
-#top.nacl > .links {
-	background-color: #b00;
-}
-
-.links > a {
-	margin-left: 10px;
-	font-size: 20pt;
-}
-
-.links > a:hover {
-	color: #0077dd;
-}
-
-.links > a > img {
-	height: 30px;
-	width: auto;
+.header > .links > a > img {
+	height: 25px;
 	vertical-align: middle;
 }
 
-#top > .logo {
-	position: absolute;
-	height: 120px;
-	width: 120px;
-	left: 50px;
-	top: 15px;
-	box-shadow: 0px 0px 0px 8px #444;
-	background-image: url('img/new-chad-square.png');
-	background-size: 120px 120px;
-	background-position: top left;
-	background-repeat: no-repeat;
-	background-color: #fff;
-	border: solid thin white;
-	border-radius: 5px;
-}
-
-#top.nacl > .logo {
-	box-shadow: 0px 0px 0px 8px #b00;
-}
-
-#content {
-	padding: 10px 20px;
-}
-
-img.block {
-	width: 70vw;
-	height: auto;
-	margin: 10px;
-	margin-left: 175px;
-	box-shadow: 0px 0px 0px 5px #07d;
-}
-
-.story {
-	padding: 0px 0px 50px 0px;
-	margin-left: 170px;
-	width: 70vw;
-	font-size: 16pt;
-	position: relative;
-}
-
-.story > .title {
-	font-size: 30pt;
-	background-color: #d00;
-	color: #fff;
-	padding: 5px;
-	height: 55px;
-	width: 56vw;
-	margin-bottom: 3px;
-}
-
-.story > .title + div {
-    width: 0px;
-    height: 0px;
-    border-top: 65px solid #d00;
-    border-right: 60px solid transparent;
-	width: 0px;
-	height: 0px;
-	position: absolute;
-	left: calc(56vw + 10px);
-	top: 0px;
-}
-
-.story > .image {
-	display: inline-block;
-	width: 100px;
-	height: auto;
-	box-shadow: 0px 0px 0px 1px #444;
-}
-
-.story > .image > img {
-	width: 100px;
-	height: auto;
-}
-
-.story > .image + .body {
-	display: inline-block;
-	margin-left: 10px;
-	width: 85%;
-}
-
-.story > .body > a {
-	color: #07d;
-}
-
-.story > .body > a:hover {
-	color: #d00;
-}
-
-#footer {
-	position: fixed;
-	left: 0px;
-	right: 0px;
-	bottom: 5px;
-	height: 25px;
-	background-color: #444;
-	color: #fff;
+.section > .title {
+	margin: 0px;
+	width: 100%;
 	text-align: center;
-	font-style: italic;
 }
 
-#ad::before {
-	font-size: 8pt;
-	content: 'advertisement';
-}
-
-#ad {
-	position: fixed;
-	bottom: 5px;
-	left: 5px;
-	width: 146px;
-	height: 146px;
-	padding: 2px;
-	background-color: #444;
-	color: #fff;
-	background-position: center;
-	background-repeat: no-repeat;
-	background-size: 99% auto;
-	text-align: left;
-}
-
-#ad:hover {
-	box-shadow: 0px 0px 5px 3px #f00;
-	cursor: pointer;
+@media screen and (max-width: 760px) {
+    .header > .title {
+		font-size: 6vw;
+	}
+	
+	.header > .title > img {
+		display: none;
+	}
 }

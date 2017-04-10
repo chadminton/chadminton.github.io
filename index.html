@@ -1,72 +1,78 @@
 <html>
 	<head>
 		<title>Chadminton</title>
+		<meta name="viewport" content="target-densitydpi=device-dpi, width=device-width, user-scalable=no, maximum-scale=1, minimum-scale=1" />
+		<link href="https://fonts.googleapis.com/css?family=Palanquin+Dark|Raleway" rel="stylesheet">
         <link rel="stylesheet" href="style.css">
 		<script type="text/javascript" src="scripts/basic.js"></script>
-		<script type="text/javascript">			
+		<script type="text/javascript">
 			
-			var loadAds = function () {
-				getJSONfile('advertisements.json', function (ads) {
-                    var advertisements = ads.query({ show: true }).sort(function(a, b) { return Math.random() - 0.5; });
-					var currentAd = 0;
-					var changeAd = function () {
-						var ad = advertisements[currentAd];
-						var adBox = get('#ad');
-						adBox.onclick = function () {
-							window.open(ad.href);
-						};
-						var image = ad.images[Math.floor(Math.random()*ad.images.length)];
-						adBox.style.backgroundImage = 'url(\'' + image + '\')';
-						currentAd = (currentAd + 1) % advertisements.length;
-					};
-					window.setInterval(changeAd, (10000)); // change ad every 30 seconds
-					changeAd();
-				});
+			var getRandomHeaderImage = function () {
+				var index = Math.floor(Math.random() * 3);
+				get('#header-background').src = 'img/header-' + index.toString() + '.jpg';
 			};
 		
 		</script>
 	</head>
-	<body onload="loadAds()">
-		<div id="top">
+	<body onload="getRandomHeaderImage()">
+		<div class="header">
+			<img id="header-background"/>
+			<a class="title" href="index.html">
+				<img src="img/new-chad-square.png"/>
+				CHADMINTON
+			</a>
 			<div class="links">
-				<a href="index.html">HOME</a>
-				<a href="about.html">ABOUT</a>
-				<a href="rules.html">RULES</a>
-				<a href="https://www.facebook.com/chadmintonOhio/"><img src="img/facebook.png" /></a>
-				<a href="https://twitter.com/chadm1nton"><img src="img/twitter.png" /></a>
-			</div>
-			<div class="logo"></div>
-		</div>
-		<div class="twitter-container">
-			<a class="twitter-timeline" data-width="220" href="https://twitter.com/chadm1nton">#chadminton</a>
-			<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
-		</div>
-		<div id="content">
-			<div class="story">
-				<div class="title">Weekend Chadminton</div><div></div>
-				<div class="body">
-					This Saturday, April 8th, we'll be playing some special weekend chadminton from 2:30 pm to 4:30 pm at <a href="https://drive.google.com/open?id=1bzxZB0FKp0OPNs0Rc_Hd-MqHyoo&usp=sharing">Whetstone Park</a>. We hope we'll see you there!
-				</div>
-			</div>
-			<div class="story">
-				<div class="title">Pickup Games Every Thursday</div><div></div>
-				<a href="https://www.meetup.com/Columbus-Sports-and-Social/" class="image"><img src="img/columbus-sports-social.jpg" /></a>
-				<div class="body">
-					We're very fortunate to be partnering with <a href="https://www.meetup.com/Columbus-Sports-and-Social/">Columbus Sports & Social</a> to bring chadminton pickup games in 2017! Every Thursday (starting 4/13) at 6:30 pm at <a href="https://drive.google.com/open?id=1bzxZB0FKp0OPNs0Rc_Hd-MqHyoo&usp=sharing">Whetstone Park</a>. Bring cleats if you have them, but they're not necessary. We'll provide the rest of the equipment!
-				</div>
-			</div>
-			<div class="story">
-				<div class="title">Chad-Minn-ton</div><div></div>
-				<div class="body">
-					In March, students from Minnesota's Zumbrota-Mazeppa High School played chadminton in their Physical Education class! We're very excited about this development. Chadminton is a great sport to engage your P.E. students or even start an intramural rec league!
-					<br/>
-					<iframe src="https://www.facebook.com/plugins/post.php?href=https%3A%2F%2Fwww.facebook.com%2Fkatie.kennedy.90038%2Fvideos%2F10158594311955438%2F&width=250" width="250" height="380" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowTransparency="true"></iframe>
-				</div>
+				<a href="javascript:window.open('https://www.facebook.com/chadmintonOhio/')"><img src="img/facebook.png" /></a>
+				<a href="javascript:window.open('https://twitter.com/chadm1nton')"><img src="img/twitter.png" /></a>
 			</div>
 		</div>
-		<div id="footer">
-			Chadminton &trade; 2004-2017
+		<div class="section">
+			<div class="title">
+				<span class="red-text">LACROSSE</span>
+				<span class="blue-text">+</span>
+				<span class="red-text">HOCKEY</span>
+				<span class="blue-text">+</span>
+				<span class="red-text">PILLOW FIGHTS</span>
+			</div>
+			<div class="content">
+				Chadminton takes all the best parts of games you've never played and mixes them into the sport of your dreams.
+				Players on each team are equipped with scoops that are elaborately decorated with duct tape by chadminton players past and present.
+				The crazy part? Each team also has a player called the <span style="font-weight: bold;">chad</span>, who weilds a pillow as a weapon of chaos and destruction.
+				At each end of a field is a goal, and the objective of the game is to score more points than the other team by throwing or hitting the ball into the goal.
+				<div class="return"><a href="about.html">History of Chadminton&rtrif;</a><a href="scoops.html">Check out our scoops&rtrif;</a></div>
+			</div>
 		</div>
-		<div id="ad"></div>
+		<div class="section">
+			<div class="title">
+				<span class="red-text">NO EXPERIENCE NECESSARY</span>
+			</div>
+			<div class="content">
+				Anyone can play Chadminton (and everyone should). Be the envy of all your friends!
+				Chadminton is free, co-ed, safe (as safe as any other sport) and fun, as well as an excellent way to get some 
+				excercise if you want it. It's also a great way to meet new people! Whether you are an experienced 
+				athlete or a couch potato, Chadminton is fun for all skill levels.
+				<div class="return"><a href="pictures.html">See Chadminton in action&rtrif;</a><a href="rules.html">Learn the rules of the game&rtrif;</a></div>
+			</div>
+		</div>
+		<div class="section">
+			<div class="title">
+				<span class="red-text">DROP-INS WELCOME</span>
+			</div>
+			<div class="content">
+				We play pick-up Chadminton games every Thursday at <a href="javascript:window.open('https://www.google.com/maps/d/edit?mid=1bzxZB0FKp0OPNs0Rc_Hd-MqHyoo&ll=40.04212183840591%2C-83.02091089999999&z=18')">Whetstone Park</a> from 6:30 pm to 8:00 pm. Feel free to drop by and check it out as often as you like! Watch for our events on <a href="javascript:window.open('https://www.meetup.com/Columbus-Sports-and-Social/')">Columbus Sports &amp; Social</a> on Meetup. Bring cleats if you have them, but we provide all the other necessary equipment.
+			</div>
+		</div>
+		<div class="section">
+			<div class="title">
+				<span class="red-text">QUESTIONS?</span>
+			</div>
+			<div class="content">
+				If you'd like to learn more about Chadminton, contact us!
+				<div class="line"> email: <a href="mailto:chadminton.17@gmail.com">chadminton.17@gmail.com</a> </div>
+				<div class="line"> text: <a href="sms://+16143792474">614-379-2474</a> </div>
+				<div class="line"> facebook: <a href="javascript:window.open('https://www.facebook.com/chadmintonOhio/')">chadmintonOhio</a> </div>
+				<div class="line"> twitter: <a href="javascript:window.open('https://www.twitter.com/chadm1nton/'">@chadm1nton</a> </div>
+			</div>
+		</div>
 	</body>
 </html>
