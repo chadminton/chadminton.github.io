@@ -5,9 +5,23 @@
 
 		<title>Footy/Ausball Scoreboard</title>
 		<script type="text/javascript">
+			
+			var parseTime = function (value) {
+				var t = time;
+				var timesplit = value.split(':');
+				if (timesplit.length == 2) {
+					var min = parseInt(timesplit[0]);
+					var sec = parseFloat(timesplit[1]);
+					t = Math.round((min * 60 + sec) * 1000);
+				}
+				return t;
+			};
+			
 			var play = false;
-			var defaultTime = 20 * 60 * 1000; // X minutes * 60 seconds * 1000 thousandths
+			var periodLength = '15:00';
+			var defaultTime = parseTime(periodLength);
 			var period = 1;
+			var numPeriods = 4;
 			var time = defaultTime;
 			var last = null;
 			
@@ -65,9 +79,12 @@
 					
 					if (time <= 0) {
 						time = 0;
-						play = false;
-						document.getElementById('buzzer-sound').play();
-						navigator.vibrate(1000);
+						if (play) {
+							document.getElementById('buzzer-sound').play();
+							navigator.vibrate(1000);
+							play = false;
+						}
+						window.setTimeout(togglePeriod, 5000);
 					}
 					document.getElementById('clock').classList.remove('stopped');
 				} else {
@@ -83,12 +100,14 @@
 				if (min == 0) {
 					display = sec.toString() + '.' + tenths;
 					if (sec <= 30 && tenths == 0) {
-						window.setTimeout(function () {
-							document.getElementById('beep-sound').pause();
-							document.getElementById('beep-sound').load();
-						}, 250);
-						document.getElementById('beep-sound').play();
-						navigator.vibrate(100);
+						if (play) {
+							window.setTimeout(function () {
+								document.getElementById('beep-sound').pause();
+								document.getElementById('beep-sound').load();
+							}, 250);
+							document.getElementById('beep-sound').play();
+							navigator.vibrate(100);
+						}
 					}
 				} else {
 					var zero = sec < 10 ? '0' : '';
@@ -111,27 +130,13 @@
 			}
 			
 			var togglePeriod = function (side) {
-				if (period == 1) {
-					period = 2;
-				} else {
-					period = 'OT';
+				period++;
+				if (period > numPeriods) {
+					period = 1;
 				}
 				time = defaultTime;
 				document.getElementById('period').innerHTML = period;
 			}
-			
-			var ready = displayTime;
-			
-			var parseTime = function (value) {
-				var t = time;
-				var timesplit = value.split(':');
-				if (timesplit.length == 2) {
-					var min = parseInt(timesplit[0]);
-					var sec = parseFloat(timesplit[1]);
-					t = Math.round((min * 60 + sec) * 1000);
-				}
-				return t;
-			};
 			
 			var saveSettings = function (){
 				if (document.getElementById('timeSet').dirty) {
@@ -139,6 +144,9 @@
 					time = parseTime(document.getElementById('timeSet').value);
 				}
 				if (document.getElementById('periodSet').dirty) period = parseInt(document.getElementById('periodSet').value);
+				
+				if (document.getElementById('lengthSet').dirty) periodLength = document.getElementById('lengthSet').value;
+				if (document.getElementById('halves').dirty || document.getElementById('quarters').dirty) numPeriods = document.getElementById('halves').checked ? 2 : 4;
 				
 				if (document.getElementById('color1').dirty) teams[0].c = document.getElementById('color1').value;
 				if (document.getElementById('goals1').dirty) teams[0].g = parseInt(document.getElementById('goals1').value);
@@ -163,6 +171,11 @@
 				document.getElementById('timeSet').value = document.getElementById('clock').innerHTML;
 				document.getElementById('periodSet').value = period;
 				
+				document.getElementById('lengthSet').value = periodLength;
+				
+				document.getElementById('halves').checked = numPeriods != 4;
+				document.getElementById('quarters').checked = numPeriods == 4;
+				
 				document.getElementById('color1').value = teams[0].c;
 				document.getElementById('goals1').value = teams[0].g;
 				document.getElementById('behinds1').value = teams[0].b;
@@ -173,6 +186,8 @@
 				
 				document.getElementById('settings').style.display = 'block';
 			};
+			
+			var ready = displayTime;
 		
 		</script>
 		<style>
@@ -212,8 +227,8 @@
 			}
 			
 			#period::before { 
-				content: 'P'; 
-				font-size: 22pt; 
+				content: 'period'; 
+				font-size: 10pt; 
 			}
 			
 			#clock {
@@ -332,9 +347,9 @@
 	</head>
 	<body onload="ready()">
 		<div class="top">
-			<div id="version">1.2.1</div>
-			<div id="period" onclick="togglePeriod()">1</div>
-			<div id="clock" onclick="toggleClock()">20:00</div>
+			<div id="version">1.3.0</div>
+			<div id="period">1</div>
+			<div id="clock" onclick="toggleClock()">0:00</div>
 		</div>
 		<div class="bottom">
 			<div class="away">
@@ -352,6 +367,13 @@
 		<div id="settings" style="display: none;">
 			<div>
 				Time: <input id="timeSet" style="width: 25vw;" onfocus="this.dirty = true;" onchange="this.dirty = true;" /> Period: <input style="width: 10vw;" id="periodSet" onchange="this.dirty = true;" type="number" />
+			</div>
+			<div>
+				Period Length: <input id="lengthSet" style="width: 25vw;" onfocus="this.dirty = true;" onchange="this.dirty = true;" />
+			</div>
+			<div>
+				<input type="radio" id="halves" name="numPeriods" onfocus="this.dirty = true;" onchange="this.dirty = true;" /><label for="halves">halves</label>
+				<input type="radio" id="quarters" name="numPeriods" onfocus="this.dirty = true;" onchange="this.dirty = true;" /><label for="quarters">quarters</label>
 			</div>
 			<hr/>
 			<div>Team 1</div>
