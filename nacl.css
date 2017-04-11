@@ -4,14 +4,19 @@
 }
 
 #content > div > .header {
-	width: calc(100% - (15% + 5px));
-	background-color: #0072dd;
+	width: calc(100% - (5% + 5px));
+	background-color: #444;
 	color: #fff;
 	font-size: 20pt;
 	padding: 5px;
-	padding-left: 15%;
+	padding-left: 5%;
 	vertical-align: middle;
 	line-height: 100%;
+}
+
+#content .body {
+	margin-left: 5%;
+	margin-right: 5%;
 }
 
 .header > a {
@@ -33,8 +38,8 @@
 .game-summary {
 	position: relative;
 	display: inline-block;
-	width: 23%;
-	margin: 20px 1% 5px 1%;
+	width: 48%;
+	margin: 20px 1% 5px 0%;
 }
 
 .game-summary::after {
@@ -60,15 +65,19 @@
 	width: 100%;
 	height: 100px;
 	background-size: auto 140%;
-	background-position: 100% 50%;
+	background-position: 70% 50%;
 	background-repeat: no-repeat;
+}
+
+.team:not(first-child) {
+	border-top: solid thin white;
 }
 
 .team > .record {
 	font-size: 14pt;
 	position: absolute;
 	top: 15px;
-	right: 150px;
+	left: 40%;
 }
 
 .team > .games-back {
@@ -100,15 +109,11 @@
 	right: 5px;
 	height: 80px;
 	width: 80px;
-	border-radius: 5px;
 	text-align: center;
 	vertical-align: middle;
 	line-height: 100%;
-	background-color: #222;
-	color: #fff;
 	font-size: 48pt;
 	overflow: hidden;
-	box-shadow: 0px 0px 0px 3px #fff;
 }
 
 .score.away {
@@ -121,27 +126,36 @@
 
 #game .team {
 	display: inline-block;
-	width: 50%;
+	width: calc(50% - 1px);
 	height: 200px;
+	background-size: auto 100%;
+	background-position: 75% 0%;
+}
+
+#game .team:not(first-child) {
+	border-top: none;
+	border-left: solid thin white;
 }
 
 #game .team > .record {
 	font-size: 32pt;
-	right: 35%;
+	top: 58%;
+	left: 7px;
 }
 
 #game .team > .games-back {
 	font-size: 16pt;
-	right: 35%;
+	left: 7px;
 	display: block;
 }
 
 #game .team > .city {
-	font-size: 32pt;
+	font-size: 24pt;
 }
 
 #game .team > .name {
-	font-size: 64pt;
+	font-size: 32pt;
+	bottom: 50%
 }
 
 #team-view > .body {
@@ -226,9 +240,12 @@ table.schedule {
 #game .score {
 	height: 50px;
 	width: 50px;
+	background-color: black;
+	color: white;
 	font-size: 32pt;
 	bottom: 15px;
 	right: 15px;
+	border-radius: 5px;
 	box-shadow: 0px 0px 0px 3px #fff;
 }
 
@@ -236,23 +253,7 @@ table.schedule {
 	background-color: #444;
 }
 
-@media only screen and (max-width: 1400px) {
-
-	#game .team > .record {
-		font-size: 28pt;
-		right: 45%;
-	}
-
-	#game .team > .name {
-		font-size: 56pt;
-	}
-	
-	.game-summary {
-		width: 30%;
-	}
-}
-
-@media only screen and (max-width: 500px) {
+@media only screen and (max-width: 900px) {
 
 	.links {
 		top: 0px;
@@ -272,7 +273,7 @@ table.schedule {
 	}
 	
 	.game-summary {
-		width: 98%;
+		width: 80%;
 	}
 }
 	

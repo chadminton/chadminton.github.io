@@ -204,8 +204,8 @@
                                     .replace(/{{home-team}}/g, getTeamInfo(home))
 									.replace(/{{game-id}}/g, day.toStringFormat('M-d-yyyy') + '/' + game.a + '/' + game.b);
 							if (awayScore != homeScore) {
-								guts = guts.replace(/{{away-score}}/g, '<div class="away score">' + awayScore + '</div>')
-										.replace(/{{home-score}}/g, '<div class="home score">' + homeScore + '</div>');
+								guts = guts.replace(/{{away-score}}/g, '<div style="color: ' + away.color2 + ';" class="away score">' + awayScore + '</div>')
+										.replace(/{{home-score}}/g, '<div style="color: ' + home.color2 + ';" class="home score">' + homeScore + '</div>');
 							}
 							else {
 								guts = guts.replace(/{{away-score}}/g, '')
@@ -515,22 +515,22 @@
 				</div>
 			</div>
 			<div id="game">
-				<div class="header"><a href="javascript:history.back()">&ltrif; BACK</a></div>
+				<div class="header"><a href="javascript:history.back()">&ltrif; Back</a></div>
 				<div class="body">
 				</div>
 			</div>
 			<div id="team-view">
-				<div class="header"><a href="javascript:history.go(0 - teamSortsApplied)">&ltrif; BACK</a></div>
+				<div class="header"><a href="javascript:history.go(0 - teamSortsApplied)">&ltrif; Back</a></div>
 				<div class="body">
 				</div>
 			</div>
 			<div id="standings">
-				<div class="header"><a href="javascript:history.back()">&ltrif; BACK</a></div>
+				<div class="header"><a href="javascript:history.back()">&ltrif; Back</a></div>
 				<div class="body">
 				</div>
 			</div>
 			<div id="stats">
-				<div class="header"><a href="javascript:history.go(0 - statsSortsApplied)">&ltrif; BACK</a></div>
+				<div class="header"><a href="javascript:history.go(0 - statsSortsApplied)">&ltrif; Back</a></div>
 				<div class="body">
 				</div>
 			</div>
