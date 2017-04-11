@@ -391,7 +391,11 @@
 				var teamsShow = (conferenceId ? teams.query({ conferenceId: conferenceId }) : teams.slice()).sort(advancedSortFn);
 				teamsShow.each(function(team, i) {
 					if (i == 16) {
-						guts += '<tr style="background-color: #888;"><td colspan="7"></td></tr>';
+						guts += '<tr style="background-color: #555; color: #fff; text-align: center;">' + 
+								'<td colspan="7">' + 
+								'top 16 teams make the playoffs'
+								'</td>' + 
+								'</tr>';
 					}
 					guts += '<tr style="background-color: ' + team.color1 + '; color: ' + team.color2 + '">' +
 							'<td><img style="width: 80px;" src="img/teams/' + team.abbr + '.png"/></td>' +

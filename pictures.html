@@ -7,6 +7,20 @@
 		<script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
 		<script type="text/javascript">
 		
+			var videoHTML = '<iframe width="100%" height="100%" src="https://www.youtube.com/embed/{{videoId}}" frameborder="0" allowfullscreen></iframe>';
+			
+			var videos = [
+				'zXGlswayVsM' // chadminton 4/8 highlights
+			];
+		
+			document.onreadystatechange = function (event) {
+				if (document.readyState == 'complete') {
+					var container = document.getElementById('big-video');
+					container.style.height = container.clientWidth * 9 / 16;
+					container.innerHTML = videoHTML.replace(/{{videoId}}/, videos[0]);
+				}
+			};
+		
 			var currentImage = 0;
 			var images = [];
 		
@@ -61,8 +75,7 @@
 				<a href="javascript:window.open('https://twitter.com/chadm1nton')"><img src="img/twitter.png" /></a>
 			</div>
 		</div>
-		<div class="center">
-			<iframe width="90%" height="100%" src="https://www.youtube.com/embed/zXGlswayVsM" frameborder="0" allowfullscreen></iframe>
+		<div id="big-video">
 		</div>
 		<div class="section">
 			<div class="title">

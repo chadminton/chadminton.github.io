@@ -171,12 +171,44 @@ a {
 	background-color: white;
 }
 
+#big-video {
+	margin-left: 5%;
+	width: 90%;
+	text-align: center;
+}
+
 @media screen and (max-width: 760px) {
     .header > .title {
-		font-size: 6vw;
+		font-size: 18pt;
 	}
 	
 	.header > .title > img {
-		display: none;
+		height: 13pt;
+		margin-top: -3px;
+		margin-right: 3px;
+		border-radius: 3px;
+		background-color: white;
+	}
+
+	.section > .title {
+		font-size: 18pt;
+	}
+	
+	.section > .content {
+		font-size: 12pt;
+	}
+
+	.header > .links {
+		height: 40px;
+		line-height: 40px;
+	}
+
+	.content {
+		text-align: left;
+	}
+
+	.content > .return > a {
+		display: block;
+		margin: 0px;
 	}
 }
