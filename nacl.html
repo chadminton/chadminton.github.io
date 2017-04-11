@@ -86,7 +86,7 @@
 			var showGameSummary = function (day, a, b) {
 				teamSortsApplied = 0;
 				statsSortsApplied = 0;	
-				var t = pods.query({ date: day.toStringFormat('yyyy-MM-ddT00:00:00') });
+				var t = pods.query({ date: day.toStringFormat('yyyy-MM-ddT00:00:00') }).concat(pods.query({ date: day.toStringFormat('M/d/yyyy') }));
                 var guts = '';
                 if (t.length == 1) {
 					var gs = t[0].games.query({ a: a, b: b });
@@ -185,7 +185,7 @@
 				teamSortsApplied = 0;
 				statsSortsApplied = 0;	
 				console.log('showing games for ' + day);
-				var t = pods.query({ date: day.toStringFormat('yyyy-MM-ddT00:00:00') });
+				var t = pods.query({ date: day.toStringFormat('yyyy-MM-ddT00:00:00') }).concat(pods.query({ date: day.toStringFormat('M/d/yyyy') }));
                 var guts = '';
                 if (t.length == 1) {
                     getFile('nacl/game-template.html', function (template) {  
