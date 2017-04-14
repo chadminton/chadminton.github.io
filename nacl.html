@@ -17,6 +17,30 @@
 					teams = lg.league;
 					getJSONfile('nacl/games.json', function (gm) {
 						pods = gm.schedule;
+				
+						var allGames = pods.getAll('games', ['date']).where(function (g) { 
+											return g.aScore != g.bScore; 
+									  })
+									  .sort(function (a, b) {
+											return Date.parse(a.date) - Date.parse(b.date);
+									  });
+						
+						allGames.each(function (game) {
+							var teamA = teams.getElementById(game.a);
+							var teamB = teams.getElementById(game.b);
+							
+							var addGoalStats = function (team, gf, ga) {
+								team.stats = team.stats || {};
+								team.stats.goalsFor = team.stats.goalsFor || 0;
+								team.stats.goalsAgainst = team.stats.goalsAgainst || 0;
+								team.stats.goalsFor += gf;
+								team.stats.goalsAgainst += ga;
+							};
+							
+							addGoalStats(teamA, game.aScore, game.bScore);
+							addGoalStats(teamB, game.bScore, game.aScore);
+						});
+						
 						updatePage();
 					});
 				});
@@ -104,10 +128,12 @@
 						var guts = getTeamInfo(away, awayScore) + getTeamInfo(home, homeScore);
 
 						if (game.aScore != game.bScore) {
-							guts += '<table class="summary" cellpadding="3" cellspacing="0">' + game.log + '</table>';
+							var log = game.log.replace(/#fff/g, 'inherit').replace(/#000/g, 'inherit');
+							guts += '<h1>' + day.toStringFormat('dddd, MMMM dd yyyy') + '</h1>';
+							guts += '<table class="summary" cellpadding="3" cellspacing="0">' + log + '</table>';
 						} else {
-							guts += '<div class="away-details">' + getTeamDetails(away) + '</div>' +
-									'<div class="home-details">' + getTeamDetails(home) + '</div>';
+							guts += '<div class="away-details">' + getTeamDetails(away, home) + '</div>' +
+									'<div class="home-details">' + getTeamDetails(home, away) + '</div>';
 						}
 						
 						var gameContainer = get('#game');
@@ -117,7 +143,7 @@
 				}
 			};
 			
-			var getTeamDetails = function (team) {
+			var getTeamDetails = function (team, opp) {
 				var html = '';
 				
 				var allGames = pods.getAll('games', ['date']);
@@ -128,30 +154,19 @@
 							  .sort(function (a, b) {
 									return Date.parse(a.date) - Date.parse(b.date);
 							  });
+							  
+				var myRating = (team.Rating - 50) * getTeamPowerRanking(team);
+				var oppRating = (opp.Rating - 50) * getTeamPowerRanking(opp);
+				var pct = (myRating * 100 / (myRating + oppRating)).roundTo(1);
+				var width = 600 * (pct/100); 
 				
-				var goalsFor = 0;
-				var goalsAgainst = 0;
+				html += '<div id="team-chance-' + team.id + '" class="pct-chance" style="width: ' + width + 'px; background-color: ' + team.color1 + '; color: ' + team.color2 + '">' + pct + '%' + '</div>';
 				
-				myGames.each(function (game) {
-					game.aScore = isNaN(game.aScore) || game.aScore == game.bScore ? '' : game.aScore;
-					game.bScore = isNaN(game.bScore) || game.aScore == game.bScore ? '' : game.bScore;
-					var awayScore = game.away == 'a' ? game.aScore : game.bScore;
-					var homeScore = game.home == 'a' ? game.aScore : game.bScore;
-					var isAway = (game.away == 'a' && game.a == team.id) || (game.away == 'b' && game.b == team.id);
-					var opp = isAway ? teams.getElementById(game.home == 'a' ? game.a : game.b) : teams.getElementById(game.away == 'a' ? game.a : game.b);
-					
-					var myScore = isAway ? awayScore : homeScore;
-					goalsFor += myScore;
-					
-					var oppScore = isAway ? homeScore : awayScore;
-					goalsAgainst += oppScore;
-				});
+				html += '<div class="stat">Avg goals scored: ' + (team.stats.goalsFor / myGames.length) + '</div>';
+				html += '<div class="stat">Avg goals allowed: ' + (team.stats.goalsAgainst / myGames.length) + '</div>';
+				html += '<div class="stat">Goal differential: ' + (team.stats.goalsFor - team.stats.goalsAgainst) + '</div>';
 				
-				html += '<h2>Avg goals scored: ' + (goalsFor / myGames.length) + '</h2>';
-				html += '<h2>Avg goals allowed: ' + (goalsAgainst / myGames.length) + '</h2>';
-				html += '<h2>Goal differential: ' + (goalsFor - goalsAgainst) + '</h2>';
-				
-				html += '<div>Last ' + myGames.length + ' games</div>';			
+				html += '<div class="stat">Last ' + myGames.length + ' games</div>';			
 				html += '<table>';
 				
 				myGames.last(5).each(function (game) {
@@ -291,12 +306,18 @@
 				});
 				
 				guts += '</table>';				
-				guts += '<table class="schedule">';
 				
 				var allGames = pods.getAll('games', ['date']);
 				var myGames = allGames.query({ a: team.id }).concat(allGames.query({ b: team.id })).sort(function (a, b) {
 					return Date.parse(a.date) - Date.parse(b.date);
 				});
+				guts += '<div class="stats-container">';
+				guts += '<div class="stat">Avg goals scored: ' + (team.stats.goalsFor / myGames.length) + '</div>';
+				guts += '<div class="stat">Avg goals allowed: ' + (team.stats.goalsAgainst / myGames.length) + '</div>';
+				guts += '<div class="stat">Goal differential: ' + (team.stats.goalsFor - team.stats.goalsAgainst) + '</div>';
+				guts += '</div>';
+				
+				guts += '<table class="schedule">';
 				
 				myGames.each(function (game) {
 					game.aScore = isNaN(game.aScore) || game.aScore == game.bScore ? '' : game.aScore;
@@ -324,7 +345,6 @@
 				
 				var teamContainer = get('#team-view');
 				teamContainer.children[1].innerHTML = guts;
-				teamContainer.children[1].style.backgroundImage = 'url(\'img/teams/' + team.abbr + '.png\')';
 				teamContainer.style.display = 'block';				
 			};
 			
@@ -371,10 +391,13 @@
 			};
 				
 			var advancedSortFn = function (a, b) {
-				return (b.wins - b.losses + getTeamPowerRanking(b)) - (a.wins - a.losses + getTeamPowerRanking(a));
+				var aDiff = a.stats.goalsFor - a.stats.goalsAgainst;
+				var bDiff = b.stats.goalsFor - b.stats.goalsAgainst;
+				return (b.wins - b.losses + getTeamPowerRanking(b) + (bDiff / 10000)) - (a.wins - a.losses + getTeamPowerRanking(a) + (bDiff / 10000));
 			};
 			
-			var showStandings = function (conferenceId) {	
+			var showStandings = function (conferenceId) {
+				
 				teamSortsApplied = 0;
 				statsSortsApplied = 0;		
 				var guts = '<table style="border: none; font-size: 20pt;" cellpadding="5" cellspacing="0">';				
@@ -384,7 +407,10 @@
 						'<td>team</td>' +
 						'<td>record</td>' +
 						'<td>pct</td>' +
-						'<td>win value</td>' +
+						'<td>win power</td>' +
+						'<td>goals per game</td>' +
+						'<td>goals against avg</td>' +
+						'<td>differential</td>' +
 						'<td>games back</td>' +
 						'</tr>';
 						
@@ -392,19 +418,23 @@
 				teamsShow.each(function(team, i) {
 					if (i == 16) {
 						guts += '<tr style="background-color: #555; color: #fff; text-align: center;">' + 
-								'<td colspan="7">' + 
+								'<td colspan="10">' + 
 								'top 16 teams make the playoffs'
 								'</td>' + 
 								'</tr>';
 					}
-					guts += '<tr style="background-color: ' + team.color1 + '; color: ' + team.color2 + '">' +
+					var games = team.wins + team.losses;
+					guts += '<tr style="background-color: ' + team.color1 + '; color: ' + team.color2 + ';">' +
+							'<td style="background-color: #444; color: #fff;">' + (i + 1) + '</td>' +
 							'<td><img style="width: 80px;" src="img/teams/' + team.abbr + '.png"/></td>' +
-							'<td>' + (i + 1) + '</td>' +
-							'<td style="cursor: pointer;" onclick="navigate(\'#team/' + team.id + '\')">' + team.city + ' ' + team.name + '</td>' +
+							'<td><a href="#team/' + team.id + '">' + team.city + ' ' + team.name + '</a></td>' +
 							'<td>' + team.Record + '</td>' +
-							'<td>' + (team.wins / (team.wins + team.losses)).roundTo(3) + '</td>' +
-							'<td style="font-size: 12pt;">' + getTeamPowerRanking(team).roundTo(3) + '</td>' +
-							'<td style="font-size: 12pt; cursor: pointer;" onclick="navigate(\'#standings/' + team.conferenceId + '\')">' + getGamesBack(team) + '</td>' +
+							'<td>' + (team.wins / games).roundTo(3) + '</td>' +
+							'<td>' + getTeamPowerRanking(team).roundTo(3) + '</td>' +
+							'<td>' + (team.stats.goalsFor / games).roundTo(3) + '</td>' +
+							'<td>' + (team.stats.goalsAgainst / games).roundTo(3) + '</td>' +
+							'<td>' + (team.stats.goalsFor - team.stats.goalsAgainst).roundTo(3) + '</td>' +
+							'<td><a href="#standings/' + team.conferenceId + '">' + getGamesBack(team) + '</a></td>' +
 							'</tr>';
 				});
 				guts += '</table>';
