@@ -9,7 +9,7 @@
 	}, 100);
 	
 	window.setTimeout(function () {
-		if (!hasScrolled) {
+		if (!hasScrolled && document.body.scrollTop == 0) {
 			easyScroll();
 		}
 	}, 15000);

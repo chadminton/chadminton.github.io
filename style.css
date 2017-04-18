@@ -273,6 +273,89 @@ a {
 	text-align: center;
 }
 
+.timeline {
+	position: relative;
+	margin-top: 120px;
+	margin-bottom: 120px;
+}
+
+.timeline > .center-line {
+	position: absolute;
+	top: -40px;
+	bottom: -40px;
+	left: calc(50% - 7.5px);
+	right: calc(50% - 7.5px);
+	background-color: #cc0000;
+}
+
+.timeline > .center-line::before {
+	position: absolute;
+	content: ' ';
+	height: 30px;
+	width: 30px;
+	border-radius: 15px;
+	background-color: #cc0000;
+	top: -15px;
+	left: -7.5px;
+}
+
+.timeline > .center-line::after {
+	position: absolute;
+	content: ' ';
+	height: 30px;
+	width: 30px;
+	border-radius: 15px;
+	background-color: #cc0000;
+	bottom: -15px;
+	left: -7.5px;
+}
+
+.timeline > .content {
+	width: calc(39.5% - 20px);
+	padding: 10px;
+}
+
+.timeline > .content:not(first-child) {
+	margin-top: -40px;
+}
+
+.timeline > .content:nth-child(even) {
+	margin-left: 10%;
+	margin-right: auto;
+	text-align: right;
+}
+
+.timeline > .content:nth-child(odd) {
+	margin-left: auto;
+	margin-right: 10%;
+}
+
+.timeline > .content > .date {
+	font-family: 'Palanquin Dark', sans-serif;
+	color: #cc0000;
+	position: relative;
+}
+
+.timeline > .content:nth-child(even) > .date::before {
+	content: ' ';
+	position: absolute;
+	top: -2px;
+	right: -20px;
+	height: 5px;
+	left: 75%;
+	background-color: #cc0000;
+}
+
+.timeline > .content:nth-child(odd) > .date::before {
+	content: ' ';
+	position: absolute;
+	top: -2px;
+	left: -20px;
+	height: 5px;
+	right: 75%;
+	background-color: #cc0000;
+}
+
 @media screen and (max-width: 760px) {
     .header > .title {
 		font-size: 18pt;
