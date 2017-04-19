@@ -93,6 +93,21 @@ a {
 	margin-right: 35px;
 }
 
+.header > #weather {
+	position: absolute;
+	top: 10px;
+	height: 65px;
+	right: 10%;
+	color: #444;
+	line-height: 65px;
+	vertical-align: middle;
+}
+
+.header > #weather > img {
+	width: 50px;
+	vertical-align: middle;
+}
+
 .header > #header-background {
 	width: 90%;
 	margin-left: 5%;

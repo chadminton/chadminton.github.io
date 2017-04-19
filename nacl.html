@@ -25,7 +25,7 @@
 											return Date.parse(a.date) - Date.parse(b.date);
 									  });
 						
-						allGames.each(function (game) {
+						allGames.forEach(function (game) {
 							var teamA = teams.getElementById(game.a);
 							var teamB = teams.getElementById(game.b);
 							
@@ -171,7 +171,7 @@
 				html += '<div class="stat">Last ' + myGames.length + ' games</div>';			
 				html += '<table>';
 				
-				myGames.last(5).each(function (game) {
+				myGames.last(5).forEach(function (game) {
 					game.aScore = isNaN(game.aScore) || game.aScore == game.bScore ? '' : game.aScore;
 					game.bScore = isNaN(game.bScore) || game.aScore == game.bScore ? '' : game.bScore;
 					var awayScore = game.away == 'a' ? game.aScore : game.bScore;
@@ -207,7 +207,7 @@
                 if (t.length == 1) {
                     getFile('nacl/game-template.html', function (template) {  
                         
-                        t[0].games.each(function (game) {
+                        t[0].games.forEach(function (game) {
 							// if game hasn't been played yet
 							game.aScore = isNaN(game.aScore) ? '' : game.aScore;
 							game.bScore = isNaN(game.bScore) ? '' : game.bScore;
@@ -295,7 +295,7 @@
 					} else {
 						return parseInt(a[sort]) - parseInt(b[sort]);
 					}
-				}).each(function (player) {
+				}).forEach(function (player) {
 					guts += '<tr>' +
 							'<td>' + player.number + '</td>' +
 							'<td>' + player.first + '</td>' +
@@ -323,7 +323,7 @@
 				
 				guts += '<table class="schedule">';
 				
-				myGames.each(function (game) {
+				myGames.forEach(function (game) {
 					game.aScore = isNaN(game.aScore) || game.aScore == game.bScore ? '' : game.aScore;
 					game.bScore = isNaN(game.bScore) || game.aScore == game.bScore ? '' : game.bScore;
 					var awayScore = game.away == 'a' ? game.aScore : game.bScore;
@@ -363,7 +363,7 @@
 							  });
 				var wins = 1;
 				var games = 2;
-				myGames.each(function(game) {
+				myGames.forEach(function(game) {
 					games++;
 					var myScore = game.a == team.id ? game.aScore : game.bScore;
 					var oppScore = game.a == team.id ? game.bScore : game.aScore;
@@ -419,7 +419,7 @@
 						'</tr>';
 						
 				var teamsShow = (conferenceId ? teams.query({ conferenceId: conferenceId }) : teams.slice()).sort(advancedSortFn);
-				teamsShow.each(function(team, i) {
+				teamsShow.forEach(function(team, i) {
 					if (i == 16) {
 						guts += '<tr style="background-color: #555; color: #fff; text-align: center;">' + 
 								'<td colspan="10">' + 
@@ -479,7 +479,7 @@
 					} else {
 						return parseInt(a[sort]) - parseInt(b[sort]);
 					}
-				}).each(function (player) {
+				}).forEach(function (player) {
 					var team = teams.getElementById(player.teamId);
 					guts += '<tr>' +
 							'<td style="cursor: pointer; background-color: ' + team.color1 + '; color: ' + team.color2 + ';" onclick="navigate(\'#team/' + team.id + '\')"><img style="width: 40px; vertical-align: middle;" src="img/teams/' + team.abbr + '.png"/>' + team.abbr + '</td>' +
@@ -521,7 +521,7 @@
 			
 			var hideAll = function () {
 				var divs = get('#content > div');
-				divs.each(function (item) {
+				divs.forEach(function (item) {
 					item.style.display = 'none';
 				});
 			};

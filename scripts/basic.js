@@ -141,14 +141,14 @@ Date.prototype.toStringFormat = function (format) {
 	return format;
 }
 
-Object.prototype.each = function (callback) {
+Object.prototype.forEach = function (callback) {
 	var keys = Object.keys(this);
 	for (var i=0; i < keys.length; i++) {
 		callback(this[keys[i]], keys[i], this);
 	}
 }
 
-Array.prototype.each = function (callback) {
+Array.prototype.forEach = function (callback) {
 	for (var i=0; i < this.length; i++) {
 		callback(this[i], i, this);
 	}
