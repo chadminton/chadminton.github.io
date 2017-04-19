@@ -160,10 +160,12 @@
 				var pct = (myRating * 100 / (myRating + oppRating)).roundTo(1);
 				var width = 600 * (pct/100); 
 				
+				var gamesPlayed = team.wins + team.losses;
+				
 				html += '<div id="team-chance-' + team.id + '" class="pct-chance" style="width: ' + width + 'px; background-color: ' + team.color1 + '; color: ' + team.color2 + '">' + pct + '%' + '</div>';
 				
-				html += '<div class="stat">Avg goals scored: ' + (team.stats.goalsFor / myGames.length) + '</div>';
-				html += '<div class="stat">Avg goals allowed: ' + (team.stats.goalsAgainst / myGames.length) + '</div>';
+				html += '<div class="stat">Avg goals scored: ' + (team.stats.goalsFor / gamesPlayed) + '</div>';
+				html += '<div class="stat">Avg goals allowed: ' + (team.stats.goalsAgainst / gamesPlayed) + '</div>';
 				html += '<div class="stat">Goal differential: ' + (team.stats.goalsFor - team.stats.goalsAgainst) + '</div>';
 				
 				html += '<div class="stat">Last ' + myGames.length + ' games</div>';			
@@ -311,9 +313,11 @@
 				var myGames = allGames.query({ a: team.id }).concat(allGames.query({ b: team.id })).sort(function (a, b) {
 					return Date.parse(a.date) - Date.parse(b.date);
 				});
+				
+				var gamesPlayed = team.wins + team.losses;
 				guts += '<div class="stats-container">';
-				guts += '<div class="stat">Avg goals scored: ' + (team.stats.goalsFor / myGames.length) + '</div>';
-				guts += '<div class="stat">Avg goals allowed: ' + (team.stats.goalsAgainst / myGames.length) + '</div>';
+				guts += '<div class="stat">Avg goals scored: ' + (team.stats.goalsFor / gamesPlayed).roundTo(3) + '</div>';
+				guts += '<div class="stat">Avg goals allowed: ' + (team.stats.goalsAgainst / gamesPlayed).roundTo(3) + '</div>';
 				guts += '<div class="stat">Goal differential: ' + (team.stats.goalsFor - team.stats.goalsAgainst) + '</div>';
 				guts += '</div>';
 				
