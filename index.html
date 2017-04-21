@@ -5,13 +5,14 @@
 		<link href="https://fonts.googleapis.com/css?family=Palanquin+Dark|Raleway" rel="stylesheet">
         <link rel="stylesheet" href="style.css">
 		<script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
-		<script type="text/javascript" src="scripts/basic.js"></script>
+		<script type="text/javascript" src="scripts/jquery.simpleWeather.min.js"></script>
+		<script type="text/javascript" src="scripts/updateWeather.js"></script>
 		<script type="text/javascript" src="scripts/auto-scroll.js"></script>
 		<script type="text/javascript">
 			
 			var getRandomHeaderImage = function () {
 				var index = Math.floor(Math.random() * 3);
-				get('#header-background').src = 'img/header-' + index.toString() + '.jpg';
+				$('#header-background')[0].src = 'img/header-' + index.toString() + '.jpg';
 			};
 			
 			var showPic = function (img) {

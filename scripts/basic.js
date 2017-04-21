@@ -110,13 +110,13 @@ Date.prototype.toStringFormat = function (format) {
 	format = format.replace(/yyyy/g, this.getFullYear());
 	format = format.replace(/yy/g, this.getFullYear().toString().substring(2));
 	
-	format = format.replace(/MMMM/g, this.getMonthName());
-	format = format.replace(/MMM/g, this.getMonthName().substring(0, 3).toUpperCase());
+	format = format.replace(/MMMM/g, 'X');
+	format = format.replace(/MMM/g, 'XX');
 	format = format.replace(/MM/g, (this.getMonth() + 1).toString().padLeft(2, '0'));
 	format = format.replace(/M/g, (this.getMonth() + 1));
 	
-	format = format.replace(/dddd/g, this.getDayName());
-	format = format.replace(/ddd/g, this.getDayName().substring(0, 3).toUpperCase());
+	format = format.replace(/dddd/g, 'XXX');
+	format = format.replace(/ddd/g, 'XXXX');
 	format = format.replace(/dd/g, this.getDate().toString().padLeft(2, '0'));
 	format = format.replace(/d/g, this.getDate());
 	
@@ -133,17 +133,22 @@ Date.prototype.toStringFormat = function (format) {
 	
 	format = format.replace(/ampm/g, this.getHours() > 11 ? 'pm' : 'am');
 	
+	format = format.replace(/XXXX/g, this.getDayName().substring(0, 3).toUpperCase());
+	format = format.replace(/XXX/g, this.getDayName());
+	format = format.replace(/XX/g, this.getMonthName().substring(0, 3).toUpperCase());
+	format = format.replace(/X/g, this.getMonthName());
+	
 	return format;
 }
 
-Object.prototype.each = function (callback) {
+Object.prototype.forEach = function (callback) {
 	var keys = Object.keys(this);
 	for (var i=0; i < keys.length; i++) {
 		callback(this[keys[i]], keys[i], this);
 	}
 }
 
-Array.prototype.each = function (callback) {
+Array.prototype.forEach = function (callback) {
 	for (var i=0; i < this.length; i++) {
 		callback(this[i], i, this);
 	}
