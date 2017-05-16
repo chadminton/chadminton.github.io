@@ -40,15 +40,15 @@ var getWeather = function () {
 		zipcode: '43214',
 		unit: 'f',
 		success: function (weather) {
-			var thu = weather;
+			var tue = weather;
 			var display = 'Today';
-			if (thu.day != 'Thu') {
-				display = 'Thursday';
-				thu = weather.forecast.query({ day: 'Thu' });
+			if (tue.day != 'Tue') {
+				display = 'Tuesday';
+				tue = weather.forecast.query({ day: 'Tue' });
 			}
-			if (thu) {
-				if (Array.isArray(thu)) thu = thu[0];
-				wrapper.html(display + '&apos;s weather <span class="temperature">' + thu.high + '&deg;F</span><img src="' + thu.thumbnail + '" />' + thu.text);
+			if (tue) {
+				if (Array.isArray(tue)) tue = tue[0];
+				wrapper.html(display + '&apos;s weather <span class="temperature">' + tue.high + '&deg;F</span><img src="' + tue.thumbnail + '" />' + tue.text);
 			}
 		},
 		error: function(error) {
