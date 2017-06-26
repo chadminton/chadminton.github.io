@@ -5694,7 +5694,7 @@
 					"away": "b",
 					"aScore": 0,
 					"bScore": 0,
-					"overtime": false,
+					"overtime": false
 				}, {
 					"a": 29,
 					"b": 33,
@@ -5702,7 +5702,7 @@
 					"away": "b",
 					"aScore": 0,
 					"bScore": 0,
-					"overtime": false,
+					"overtime": false
 				}, {
 					"a": 28,
 					"b": 16,
@@ -5710,7 +5710,7 @@
 					"away": "b",
 					"aScore": 0,
 					"bScore": 0,
-					"overtime": false,
+					"overtime": false
 				}, {
 					"a": 48,
 					"b": 4,
@@ -5718,7 +5718,7 @@
 					"away": "b",
 					"aScore": 0,
 					"bScore": 0,
-					"overtime": false,
+					"overtime": false
 				}
 			]
 		}, {
@@ -5730,7 +5730,7 @@
 					"away": "a",
 					"aScore": 0,
 					"bScore": 0,
-					"overtime": false,
+					"overtime": false
 				}, {
 					"a": 29,
 					"b": 33,
@@ -5738,7 +5738,7 @@
 					"away": "a",
 					"aScore": 0,
 					"bScore": 0,
-					"overtime": false,
+					"overtime": false
 				}, {
 					"a": 28,
 					"b": 16,
@@ -5746,7 +5746,7 @@
 					"away": "a",
 					"aScore": 0,
 					"bScore": 0,
-					"overtime": false,
+					"overtime": false
 				}, {
 					"a": 48,
 					"b": 4,
@@ -5754,7 +5754,7 @@
 					"away": "a",
 					"aScore": 0,
 					"bScore": 0,
-					"overtime": false,
+					"overtime": false
 				}
 			]
 		}
